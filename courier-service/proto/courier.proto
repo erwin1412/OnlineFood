@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package courier;
+
+option go_package = "internal/delivery/grpc/pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Courier{
+    string id = 1;
+    string user_id = 2;
+    string lat = 3;
+    string long = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+message CourierListResponse {
+    repeated Courier couriers = 1;
+}
+
+message CreateCourierReqeuest {
+    string user_id = 1;
+    string lat = 2;
+    string long = 3;
+}
+
+message UpdateLangLotCourierReqeuest {
+    string id = 1;
+    string lat = 2;
+    string long = 3;
+}
+
+message DeleteCourierRequest {
+    string id = 1;
+}
+
+message DeleteCourierResponse {
+    string message = 1;
+}
+
+message CourierResponse {
+    Courier Courier = 1;
+}
+
+message GetByIdCourierReqeuest {
+    string id = 1;
+}
+
+message GetByLongLatCourierReqeuest {
+    string lat = 1;
+    string long = 2;
+}
+
+service CourierService {
+    rpc CreateCourier(CreateCourierReqeuest) returns (CourierResponse);
+    rpc GetById(GetByIdCourierReqeuest) returns (CourierResponse);
+    rpc GetByLongLat(GetByLongLatCourierReqeuest) returns (CourierResponse);
+    rpc UpdateLongLatCourier(UpdateLangLotCourierReqeuest) returns (CourierResponse);
+    rpc DeleteCourier(DeleteCourierRequest) returns (DeleteCourierResponse);
+}

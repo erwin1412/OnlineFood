@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package transaction;
+
+option go_package = "internal/delivery/grpc/pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Transaction{
+    string id = 1;
+    string user_id = 2;
+    string courier_id = 3;
+    string merchant_id = 4;
+    int64 total = 5;
+    string status = 6;
+    string snap_token = 7;
+    google.protobuf.Timestamp created_at = 8;
+    google.protobuf.Timestamp updated_at = 9;
+}
+
+message TransactionListResponse {
+    repeated Transaction transactions = 1;
+}
+
+message CreateTransactionReqeuest {
+    string user_id = 1;
+    string courier_id = 2;
+    string merchant_id = 3;
+    int64 total = 4;
+    string status = 5;
+    string snap_token = 6;
+}
+
+message UpdateTransactionReqeuest {
+    string id = 1;
+    string user_id = 2;
+    string courier_id = 3;
+    string merchant_id = 4;
+    int64 total = 5;
+    string status = 6;
+    string snap_token = 7;
+}
+
+message DeleteTransactionRequest {
+    string id = 1;
+}
+
+message DeleteTransactionResponse {
+    string message = 1;
+}
+
+message TransactionResponse {
+    Transaction Transaction = 1;
+}
+
+message GetByIdTransactionReqeuest {
+    string id = 1;
+}
+
+message EmptyTransaction {}
+
+service TransactionService {
+    rpc CreateTransaction(CreateTransactionReqeuest) returns (TransactionResponse);
+    rpc GetAllTransaction(EmptyTransaction) returns (TransactionResponse);
+    rpc GetByIdTransaction(GetByIdTransactionReqeuest) returns (TransactionResponse);
+    rpc UpdateTransaction(UpdateTransactionReqeuest) returns (TransactionResponse);
+    rpc DeleteTransaction(DeleteTransactionRequest) returns (DeleteTransactionResponse);
+}

@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package cart;
+
+option go_package = "internal/delivery/grpc/pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Cart{
+    string id = 1;
+    int64 merchant_id = 2;
+    int64 food_id = 3;
+    int64 qty = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+message CartListResponse {
+    repeated Cart carts = 1;
+}
+
+message CreateCartReqeuest {
+    int64 merchant_id = 1;
+    int64 food_id = 2;
+    int64 qty = 3;
+}
+
+message UpdateCartReqeuest {
+    string id = 1;
+    int64 merchant_id = 2;
+    int64 food_id = 3;
+    int64 qty = 4;
+}
+
+message DeleteCartRequest {
+    string id = 1;
+}
+
+message DeleteCartResponse {
+    string message = 1;
+}
+
+message CartResponse {
+    Cart Cart = 1;
+}
+
+message GetByIdCartReqeuest {
+    string id = 1;
+}
+
+message EmptyCart {}
+
+service CartService {
+    rpc CreateCart(CreateCartReqeuest) returns (CartResponse);
+    rpc GetAllCart(EmptyCart) returns (CartResponse);
+    rpc GetByIdCart(GetByIdCartReqeuest) returns (CartResponse);
+    rpc UpdateCart(UpdateCartReqeuest) returns (CartResponse);
+    rpc DeleteCart(DeleteCartRequest) returns (DeleteCartResponse);
+}

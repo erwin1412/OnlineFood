@@ -1,0 +1,10 @@
+go 1.22.0
+
+use (
+	./auth-service
+	./courier-service
+	./food-service
+	./gateway-service
+	./merchant-service
+	./transaction-service
+)
