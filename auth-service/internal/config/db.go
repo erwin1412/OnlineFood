@@ -2,7 +2,6 @@ package config
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -11,14 +10,12 @@ import (
 )
 
 func PostgresInit() *sql.DB {
-	// DATABASE_URI=postgres://postgres:1234@localhost:5432/auth_service?sslmode=disable
 	databaseURI := os.Getenv("DATABASE_URI")
 	if databaseURI == "" {
 		log.Fatal("DATABASE_URI environment variable is not set")
 	}
-	psqlInfo := fmt.Sprintf("postgres://%s", databaseURI)
 
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", databaseURI)
 	if err != nil {
 		log.Fatal("Cannot connect to PostgreSQL:", err)
 	}
