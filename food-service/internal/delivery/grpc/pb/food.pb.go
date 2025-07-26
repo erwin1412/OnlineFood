@@ -158,7 +158,7 @@ func (x *FoodListResponse) GetFoods() []*Food {
 	return nil
 }
 
-type CreateFoodReqeuest struct {
+type CreateFoodRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	MerchantId    string                 `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
 	NameFoods     string                 `protobuf:"bytes,2,opt,name=name_foods,json=nameFoods,proto3" json:"name_foods,omitempty"`
@@ -168,20 +168,20 @@ type CreateFoodReqeuest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateFoodReqeuest) Reset() {
-	*x = CreateFoodReqeuest{}
+func (x *CreateFoodRequest) Reset() {
+	*x = CreateFoodRequest{}
 	mi := &file_proto_food_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateFoodReqeuest) String() string {
+func (x *CreateFoodRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateFoodReqeuest) ProtoMessage() {}
+func (*CreateFoodRequest) ProtoMessage() {}
 
-func (x *CreateFoodReqeuest) ProtoReflect() protoreflect.Message {
+func (x *CreateFoodRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_food_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -193,40 +193,40 @@ func (x *CreateFoodReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateFoodReqeuest.ProtoReflect.Descriptor instead.
-func (*CreateFoodReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateFoodRequest.ProtoReflect.Descriptor instead.
+func (*CreateFoodRequest) Descriptor() ([]byte, []int) {
 	return file_proto_food_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateFoodReqeuest) GetMerchantId() string {
+func (x *CreateFoodRequest) GetMerchantId() string {
 	if x != nil {
 		return x.MerchantId
 	}
 	return ""
 }
 
-func (x *CreateFoodReqeuest) GetNameFoods() string {
+func (x *CreateFoodRequest) GetNameFoods() string {
 	if x != nil {
 		return x.NameFoods
 	}
 	return ""
 }
 
-func (x *CreateFoodReqeuest) GetPrice() int64 {
+func (x *CreateFoodRequest) GetPrice() int64 {
 	if x != nil {
 		return x.Price
 	}
 	return 0
 }
 
-func (x *CreateFoodReqeuest) GetAvailability() string {
+func (x *CreateFoodRequest) GetAvailability() string {
 	if x != nil {
 		return x.Availability
 	}
 	return ""
 }
 
-type UpdateFoodReqeuest struct {
+type UpdateFoodRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	MerchantId    string                 `protobuf:"bytes,2,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
@@ -237,20 +237,20 @@ type UpdateFoodReqeuest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateFoodReqeuest) Reset() {
-	*x = UpdateFoodReqeuest{}
+func (x *UpdateFoodRequest) Reset() {
+	*x = UpdateFoodRequest{}
 	mi := &file_proto_food_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateFoodReqeuest) String() string {
+func (x *UpdateFoodRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateFoodReqeuest) ProtoMessage() {}
+func (*UpdateFoodRequest) ProtoMessage() {}
 
-func (x *UpdateFoodReqeuest) ProtoReflect() protoreflect.Message {
+func (x *UpdateFoodRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_food_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -262,40 +262,40 @@ func (x *UpdateFoodReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateFoodReqeuest.ProtoReflect.Descriptor instead.
-func (*UpdateFoodReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateFoodRequest.ProtoReflect.Descriptor instead.
+func (*UpdateFoodRequest) Descriptor() ([]byte, []int) {
 	return file_proto_food_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UpdateFoodReqeuest) GetId() string {
+func (x *UpdateFoodRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *UpdateFoodReqeuest) GetMerchantId() string {
+func (x *UpdateFoodRequest) GetMerchantId() string {
 	if x != nil {
 		return x.MerchantId
 	}
 	return ""
 }
 
-func (x *UpdateFoodReqeuest) GetNameFoods() string {
+func (x *UpdateFoodRequest) GetNameFoods() string {
 	if x != nil {
 		return x.NameFoods
 	}
 	return ""
 }
 
-func (x *UpdateFoodReqeuest) GetPrice() int64 {
+func (x *UpdateFoodRequest) GetPrice() int64 {
 	if x != nil {
 		return x.Price
 	}
 	return 0
 }
 
-func (x *UpdateFoodReqeuest) GetAvailability() string {
+func (x *UpdateFoodRequest) GetAvailability() string {
 	if x != nil {
 		return x.Availability
 	}
@@ -434,27 +434,27 @@ func (x *FoodResponse) GetFood() *Food {
 	return nil
 }
 
-type GetByIdFoodReqeuest struct {
+type GetByIdFoodRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetByIdFoodReqeuest) Reset() {
-	*x = GetByIdFoodReqeuest{}
+func (x *GetByIdFoodRequest) Reset() {
+	*x = GetByIdFoodRequest{}
 	mi := &file_proto_food_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetByIdFoodReqeuest) String() string {
+func (x *GetByIdFoodRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetByIdFoodReqeuest) ProtoMessage() {}
+func (*GetByIdFoodRequest) ProtoMessage() {}
 
-func (x *GetByIdFoodReqeuest) ProtoReflect() protoreflect.Message {
+func (x *GetByIdFoodRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_food_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -466,12 +466,12 @@ func (x *GetByIdFoodReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetByIdFoodReqeuest.ProtoReflect.Descriptor instead.
-func (*GetByIdFoodReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetByIdFoodRequest.ProtoReflect.Descriptor instead.
+func (*GetByIdFoodRequest) Descriptor() ([]byte, []int) {
 	return file_proto_food_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetByIdFoodReqeuest) GetId() string {
+func (x *GetByIdFoodRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
@@ -533,15 +533,15 @@ const file_proto_food_proto_rawDesc = "" +
 	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"4\n" +
 	"\x10FoodListResponse\x12 \n" +
 	"\x05foods\x18\x01 \x03(\v2\n" +
-	".food.FoodR\x05foods\"\x8e\x01\n" +
-	"\x12CreateFoodReqeuest\x12\x1f\n" +
+	".food.FoodR\x05foods\"\x8d\x01\n" +
+	"\x11CreateFoodRequest\x12\x1f\n" +
 	"\vmerchant_id\x18\x01 \x01(\tR\n" +
 	"merchantId\x12\x1d\n" +
 	"\n" +
 	"name_foods\x18\x02 \x01(\tR\tnameFoods\x12\x14\n" +
 	"\x05price\x18\x03 \x01(\x03R\x05price\x12\"\n" +
-	"\favailability\x18\x04 \x01(\tR\favailability\"\x9e\x01\n" +
-	"\x12UpdateFoodReqeuest\x12\x0e\n" +
+	"\favailability\x18\x04 \x01(\tR\favailability\"\x9d\x01\n" +
+	"\x11UpdateFoodRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1f\n" +
 	"\vmerchant_id\x18\x02 \x01(\tR\n" +
 	"merchantId\x12\x1d\n" +
@@ -555,18 +555,18 @@ const file_proto_food_proto_rawDesc = "" +
 	"\amessage\x18\x01 \x01(\tR\amessage\".\n" +
 	"\fFoodResponse\x12\x1e\n" +
 	"\x04Food\x18\x01 \x01(\v2\n" +
-	".food.FoodR\x04Food\"%\n" +
-	"\x13GetByIdFoodReqeuest\x12\x0e\n" +
+	".food.FoodR\x04Food\"$\n" +
+	"\x12GetByIdFoodRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\a\n" +
-	"\x05Empty2\xb3\x02\n" +
-	"\vFoodService\x12:\n" +
+	"\x05Empty2\xb4\x02\n" +
+	"\vFoodService\x129\n" +
 	"\n" +
-	"CreateFood\x12\x18.food.CreateFoodReqeuest\x1a\x12.food.FoodResponse\x12-\n" +
+	"CreateFood\x12\x17.food.CreateFoodRequest\x1a\x12.food.FoodResponse\x121\n" +
 	"\n" +
-	"GetAllFood\x12\v.food.Empty\x1a\x12.food.FoodResponse\x12<\n" +
-	"\vGetByIdFood\x12\x19.food.GetByIdFoodReqeuest\x1a\x12.food.FoodResponse\x12:\n" +
+	"GetAllFood\x12\v.food.Empty\x1a\x16.food.FoodListResponse\x12;\n" +
+	"\vGetByIdFood\x12\x18.food.GetByIdFoodRequest\x1a\x12.food.FoodResponse\x129\n" +
 	"\n" +
-	"UpdateFood\x12\x18.food.UpdateFoodReqeuest\x1a\x12.food.FoodResponse\x12?\n" +
+	"UpdateFood\x12\x17.food.UpdateFoodRequest\x1a\x12.food.FoodResponse\x12?\n" +
 	"\n" +
 	"DeleteFood\x12\x17.food.DeleteFoodRequest\x1a\x18.food.DeleteFoodResponseB\x1eZ\x1cinternal/delivery/grpc/pb;pbb\x06proto3"
 
@@ -586,12 +586,12 @@ var file_proto_food_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_proto_food_proto_goTypes = []any{
 	(*Food)(nil),                  // 0: food.Food
 	(*FoodListResponse)(nil),      // 1: food.FoodListResponse
-	(*CreateFoodReqeuest)(nil),    // 2: food.CreateFoodReqeuest
-	(*UpdateFoodReqeuest)(nil),    // 3: food.UpdateFoodReqeuest
+	(*CreateFoodRequest)(nil),     // 2: food.CreateFoodRequest
+	(*UpdateFoodRequest)(nil),     // 3: food.UpdateFoodRequest
 	(*DeleteFoodRequest)(nil),     // 4: food.DeleteFoodRequest
 	(*DeleteFoodResponse)(nil),    // 5: food.DeleteFoodResponse
 	(*FoodResponse)(nil),          // 6: food.FoodResponse
-	(*GetByIdFoodReqeuest)(nil),   // 7: food.GetByIdFoodReqeuest
+	(*GetByIdFoodRequest)(nil),    // 7: food.GetByIdFoodRequest
 	(*Empty)(nil),                 // 8: food.Empty
 	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
 }
@@ -600,13 +600,13 @@ var file_proto_food_proto_depIdxs = []int32{
 	9, // 1: food.Food.updated_at:type_name -> google.protobuf.Timestamp
 	0, // 2: food.FoodListResponse.foods:type_name -> food.Food
 	0, // 3: food.FoodResponse.Food:type_name -> food.Food
-	2, // 4: food.FoodService.CreateFood:input_type -> food.CreateFoodReqeuest
+	2, // 4: food.FoodService.CreateFood:input_type -> food.CreateFoodRequest
 	8, // 5: food.FoodService.GetAllFood:input_type -> food.Empty
-	7, // 6: food.FoodService.GetByIdFood:input_type -> food.GetByIdFoodReqeuest
-	3, // 7: food.FoodService.UpdateFood:input_type -> food.UpdateFoodReqeuest
+	7, // 6: food.FoodService.GetByIdFood:input_type -> food.GetByIdFoodRequest
+	3, // 7: food.FoodService.UpdateFood:input_type -> food.UpdateFoodRequest
 	4, // 8: food.FoodService.DeleteFood:input_type -> food.DeleteFoodRequest
 	6, // 9: food.FoodService.CreateFood:output_type -> food.FoodResponse
-	6, // 10: food.FoodService.GetAllFood:output_type -> food.FoodResponse
+	1, // 10: food.FoodService.GetAllFood:output_type -> food.FoodListResponse
 	6, // 11: food.FoodService.GetByIdFood:output_type -> food.FoodResponse
 	6, // 12: food.FoodService.UpdateFood:output_type -> food.FoodResponse
 	5, // 13: food.FoodService.DeleteFood:output_type -> food.DeleteFoodResponse

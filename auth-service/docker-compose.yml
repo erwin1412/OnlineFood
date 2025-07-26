@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    ports:
+      - "50051:50051"  # gRPC port auth-service
+    environment:
+      - DATABASE_URI=postgres://postgres:1234@postgres:5432/auth_service?sslmode=disable
+      - JWT_SECRET=your_jwt_secret_key
+      - GRPC_PORT=50051
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=your-gmail@gmail.com
+      - SMTP_PASS=isi-dengan-app-password-tadi
+      - SMTP_FROM=your-gmail@gmail.com
+    depends_on:
+      - postgres
+
+  gateway-service:
+    build:
+      context: ./gateway-service
+    container_name: gateway-service
+    ports:
+      - "8080:8080"  # Contoh: HTTP Gateway di port 8080
+    environment:
+      - AUTH_GRPC_HOST=auth-service:50051  # Gateway panggil auth-service via internal network
+    depends_on:
+      - auth-service
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: auth_service
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  pg_data:
