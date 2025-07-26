@@ -21,7 +21,7 @@ message MerchantListResponse {
     repeated Merchant merchants = 1;
 }
 
-message CreateMerchantReqeuest {
+message CreateMerchantRequest {
     string user_id = 1;
     string name_merchant = 2;
     string lat = 3;
@@ -30,7 +30,7 @@ message CreateMerchantReqeuest {
     string close_hour = 6;
 }
 
-message UpdateMerchantReqeuest {
+message UpdateMerchantRequest {
     string id = 1;
     string user_id = 2;
     string name_merchant = 3;
@@ -52,16 +52,16 @@ message MerchantResponse {
     Merchant Merchant = 1;
 }
 
-message GetByIdMerchantReqeuest {
+message GetByIdMerchantRequest {
     string id = 1;
 }
 
 message Empty {}
 
 service MerchantService {
-    rpc CreateMerchant(CreateMerchantReqeuest) returns (MerchantResponse);
-    rpc GetAllMerchant(Empty) returns (MerchantResponse);
-    rpc GetByIdMerchant(GetByIdMerchantReqeuest) returns (MerchantResponse);
-    rpc UpdateMerchant(UpdateMerchantReqeuest) returns (MerchantResponse);
-    rpc DeleteMerchant(DeleteMerchantRequest) returns (DeleteMerchantResponse);
+  rpc CreateMerchant(CreateMerchantRequest) returns (MerchantResponse);
+  rpc GetAllMerchant(Empty) returns (MerchantListResponse); // ✅ BENAR
+  rpc GetByIdMerchant(GetByIdMerchantRequest) returns (MerchantResponse);
+  rpc UpdateMerchant(UpdateMerchantRequest) returns (MerchantResponse);
+  rpc DeleteMerchant(DeleteMerchantRequest) returns (DeleteMerchantResponse);
 }

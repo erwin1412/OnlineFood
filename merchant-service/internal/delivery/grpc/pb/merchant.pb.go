@@ -174,7 +174,7 @@ func (x *MerchantListResponse) GetMerchants() []*Merchant {
 	return nil
 }
 
-type CreateMerchantReqeuest struct {
+type CreateMerchantRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	NameMerchant  string                 `protobuf:"bytes,2,opt,name=name_merchant,json=nameMerchant,proto3" json:"name_merchant,omitempty"`
@@ -186,20 +186,20 @@ type CreateMerchantReqeuest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateMerchantReqeuest) Reset() {
-	*x = CreateMerchantReqeuest{}
+func (x *CreateMerchantRequest) Reset() {
+	*x = CreateMerchantRequest{}
 	mi := &file_proto_merchant_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateMerchantReqeuest) String() string {
+func (x *CreateMerchantRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateMerchantReqeuest) ProtoMessage() {}
+func (*CreateMerchantRequest) ProtoMessage() {}
 
-func (x *CreateMerchantReqeuest) ProtoReflect() protoreflect.Message {
+func (x *CreateMerchantRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_merchant_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -211,54 +211,54 @@ func (x *CreateMerchantReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateMerchantReqeuest.ProtoReflect.Descriptor instead.
-func (*CreateMerchantReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateMerchantRequest.ProtoReflect.Descriptor instead.
+func (*CreateMerchantRequest) Descriptor() ([]byte, []int) {
 	return file_proto_merchant_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateMerchantReqeuest) GetUserId() string {
+func (x *CreateMerchantRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
 	return ""
 }
 
-func (x *CreateMerchantReqeuest) GetNameMerchant() string {
+func (x *CreateMerchantRequest) GetNameMerchant() string {
 	if x != nil {
 		return x.NameMerchant
 	}
 	return ""
 }
 
-func (x *CreateMerchantReqeuest) GetLat() string {
+func (x *CreateMerchantRequest) GetLat() string {
 	if x != nil {
 		return x.Lat
 	}
 	return ""
 }
 
-func (x *CreateMerchantReqeuest) GetLong() string {
+func (x *CreateMerchantRequest) GetLong() string {
 	if x != nil {
 		return x.Long
 	}
 	return ""
 }
 
-func (x *CreateMerchantReqeuest) GetOpenHour() string {
+func (x *CreateMerchantRequest) GetOpenHour() string {
 	if x != nil {
 		return x.OpenHour
 	}
 	return ""
 }
 
-func (x *CreateMerchantReqeuest) GetCloseHour() string {
+func (x *CreateMerchantRequest) GetCloseHour() string {
 	if x != nil {
 		return x.CloseHour
 	}
 	return ""
 }
 
-type UpdateMerchantReqeuest struct {
+type UpdateMerchantRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
@@ -271,20 +271,20 @@ type UpdateMerchantReqeuest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateMerchantReqeuest) Reset() {
-	*x = UpdateMerchantReqeuest{}
+func (x *UpdateMerchantRequest) Reset() {
+	*x = UpdateMerchantRequest{}
 	mi := &file_proto_merchant_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateMerchantReqeuest) String() string {
+func (x *UpdateMerchantRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateMerchantReqeuest) ProtoMessage() {}
+func (*UpdateMerchantRequest) ProtoMessage() {}
 
-func (x *UpdateMerchantReqeuest) ProtoReflect() protoreflect.Message {
+func (x *UpdateMerchantRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_merchant_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -296,54 +296,54 @@ func (x *UpdateMerchantReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateMerchantReqeuest.ProtoReflect.Descriptor instead.
-func (*UpdateMerchantReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateMerchantRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMerchantRequest) Descriptor() ([]byte, []int) {
 	return file_proto_merchant_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UpdateMerchantReqeuest) GetId() string {
+func (x *UpdateMerchantRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *UpdateMerchantReqeuest) GetUserId() string {
+func (x *UpdateMerchantRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
 	return ""
 }
 
-func (x *UpdateMerchantReqeuest) GetNameMerchant() string {
+func (x *UpdateMerchantRequest) GetNameMerchant() string {
 	if x != nil {
 		return x.NameMerchant
 	}
 	return ""
 }
 
-func (x *UpdateMerchantReqeuest) GetLat() string {
+func (x *UpdateMerchantRequest) GetLat() string {
 	if x != nil {
 		return x.Lat
 	}
 	return ""
 }
 
-func (x *UpdateMerchantReqeuest) GetLong() string {
+func (x *UpdateMerchantRequest) GetLong() string {
 	if x != nil {
 		return x.Long
 	}
 	return ""
 }
 
-func (x *UpdateMerchantReqeuest) GetOpenHour() string {
+func (x *UpdateMerchantRequest) GetOpenHour() string {
 	if x != nil {
 		return x.OpenHour
 	}
 	return ""
 }
 
-func (x *UpdateMerchantReqeuest) GetCloseHour() string {
+func (x *UpdateMerchantRequest) GetCloseHour() string {
 	if x != nil {
 		return x.CloseHour
 	}
@@ -482,27 +482,27 @@ func (x *MerchantResponse) GetMerchant() *Merchant {
 	return nil
 }
 
-type GetByIdMerchantReqeuest struct {
+type GetByIdMerchantRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetByIdMerchantReqeuest) Reset() {
-	*x = GetByIdMerchantReqeuest{}
+func (x *GetByIdMerchantRequest) Reset() {
+	*x = GetByIdMerchantRequest{}
 	mi := &file_proto_merchant_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetByIdMerchantReqeuest) String() string {
+func (x *GetByIdMerchantRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetByIdMerchantReqeuest) ProtoMessage() {}
+func (*GetByIdMerchantRequest) ProtoMessage() {}
 
-func (x *GetByIdMerchantReqeuest) ProtoReflect() protoreflect.Message {
+func (x *GetByIdMerchantRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_merchant_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -514,12 +514,12 @@ func (x *GetByIdMerchantReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetByIdMerchantReqeuest.ProtoReflect.Descriptor instead.
-func (*GetByIdMerchantReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetByIdMerchantRequest.ProtoReflect.Descriptor instead.
+func (*GetByIdMerchantRequest) Descriptor() ([]byte, []int) {
 	return file_proto_merchant_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetByIdMerchantReqeuest) GetId() string {
+func (x *GetByIdMerchantRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
@@ -581,16 +581,16 @@ const file_proto_merchant_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"H\n" +
 	"\x14MerchantListResponse\x120\n" +
-	"\tmerchants\x18\x01 \x03(\v2\x12.merchant.MerchantR\tmerchants\"\xb8\x01\n" +
-	"\x16CreateMerchantReqeuest\x12\x17\n" +
+	"\tmerchants\x18\x01 \x03(\v2\x12.merchant.MerchantR\tmerchants\"\xb7\x01\n" +
+	"\x15CreateMerchantRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12#\n" +
 	"\rname_merchant\x18\x02 \x01(\tR\fnameMerchant\x12\x10\n" +
 	"\x03lat\x18\x03 \x01(\tR\x03lat\x12\x12\n" +
 	"\x04long\x18\x04 \x01(\tR\x04long\x12\x1b\n" +
 	"\topen_hour\x18\x05 \x01(\tR\bopenHour\x12\x1d\n" +
 	"\n" +
-	"close_hour\x18\x06 \x01(\tR\tcloseHour\"\xc8\x01\n" +
-	"\x16UpdateMerchantReqeuest\x12\x0e\n" +
+	"close_hour\x18\x06 \x01(\tR\tcloseHour\"\xc7\x01\n" +
+	"\x15UpdateMerchantRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12#\n" +
 	"\rname_merchant\x18\x03 \x01(\tR\fnameMerchant\x12\x10\n" +
@@ -604,15 +604,15 @@ const file_proto_merchant_proto_rawDesc = "" +
 	"\x16DeleteMerchantResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\"B\n" +
 	"\x10MerchantResponse\x12.\n" +
-	"\bMerchant\x18\x01 \x01(\v2\x12.merchant.MerchantR\bMerchant\")\n" +
-	"\x17GetByIdMerchantReqeuest\x12\x0e\n" +
+	"\bMerchant\x18\x01 \x01(\v2\x12.merchant.MerchantR\bMerchant\"(\n" +
+	"\x16GetByIdMerchantRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"\a\n" +
-	"\x05Empty2\x97\x03\n" +
-	"\x0fMerchantService\x12N\n" +
-	"\x0eCreateMerchant\x12 .merchant.CreateMerchantReqeuest\x1a\x1a.merchant.MerchantResponse\x12=\n" +
-	"\x0eGetAllMerchant\x12\x0f.merchant.Empty\x1a\x1a.merchant.MerchantResponse\x12P\n" +
-	"\x0fGetByIdMerchant\x12!.merchant.GetByIdMerchantReqeuest\x1a\x1a.merchant.MerchantResponse\x12N\n" +
-	"\x0eUpdateMerchant\x12 .merchant.UpdateMerchantReqeuest\x1a\x1a.merchant.MerchantResponse\x12S\n" +
+	"\x05Empty2\x98\x03\n" +
+	"\x0fMerchantService\x12M\n" +
+	"\x0eCreateMerchant\x12\x1f.merchant.CreateMerchantRequest\x1a\x1a.merchant.MerchantResponse\x12A\n" +
+	"\x0eGetAllMerchant\x12\x0f.merchant.Empty\x1a\x1e.merchant.MerchantListResponse\x12O\n" +
+	"\x0fGetByIdMerchant\x12 .merchant.GetByIdMerchantRequest\x1a\x1a.merchant.MerchantResponse\x12M\n" +
+	"\x0eUpdateMerchant\x12\x1f.merchant.UpdateMerchantRequest\x1a\x1a.merchant.MerchantResponse\x12S\n" +
 	"\x0eDeleteMerchant\x12\x1f.merchant.DeleteMerchantRequest\x1a .merchant.DeleteMerchantResponseB\x1eZ\x1cinternal/delivery/grpc/pb;pbb\x06proto3"
 
 var (
@@ -629,29 +629,29 @@ func file_proto_merchant_proto_rawDescGZIP() []byte {
 
 var file_proto_merchant_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_proto_merchant_proto_goTypes = []any{
-	(*Merchant)(nil),                // 0: merchant.Merchant
-	(*MerchantListResponse)(nil),    // 1: merchant.MerchantListResponse
-	(*CreateMerchantReqeuest)(nil),  // 2: merchant.CreateMerchantReqeuest
-	(*UpdateMerchantReqeuest)(nil),  // 3: merchant.UpdateMerchantReqeuest
-	(*DeleteMerchantRequest)(nil),   // 4: merchant.DeleteMerchantRequest
-	(*DeleteMerchantResponse)(nil),  // 5: merchant.DeleteMerchantResponse
-	(*MerchantResponse)(nil),        // 6: merchant.MerchantResponse
-	(*GetByIdMerchantReqeuest)(nil), // 7: merchant.GetByIdMerchantReqeuest
-	(*Empty)(nil),                   // 8: merchant.Empty
-	(*timestamppb.Timestamp)(nil),   // 9: google.protobuf.Timestamp
+	(*Merchant)(nil),               // 0: merchant.Merchant
+	(*MerchantListResponse)(nil),   // 1: merchant.MerchantListResponse
+	(*CreateMerchantRequest)(nil),  // 2: merchant.CreateMerchantRequest
+	(*UpdateMerchantRequest)(nil),  // 3: merchant.UpdateMerchantRequest
+	(*DeleteMerchantRequest)(nil),  // 4: merchant.DeleteMerchantRequest
+	(*DeleteMerchantResponse)(nil), // 5: merchant.DeleteMerchantResponse
+	(*MerchantResponse)(nil),       // 6: merchant.MerchantResponse
+	(*GetByIdMerchantRequest)(nil), // 7: merchant.GetByIdMerchantRequest
+	(*Empty)(nil),                  // 8: merchant.Empty
+	(*timestamppb.Timestamp)(nil),  // 9: google.protobuf.Timestamp
 }
 var file_proto_merchant_proto_depIdxs = []int32{
 	9, // 0: merchant.Merchant.created_at:type_name -> google.protobuf.Timestamp
 	9, // 1: merchant.Merchant.updated_at:type_name -> google.protobuf.Timestamp
 	0, // 2: merchant.MerchantListResponse.merchants:type_name -> merchant.Merchant
 	0, // 3: merchant.MerchantResponse.Merchant:type_name -> merchant.Merchant
-	2, // 4: merchant.MerchantService.CreateMerchant:input_type -> merchant.CreateMerchantReqeuest
+	2, // 4: merchant.MerchantService.CreateMerchant:input_type -> merchant.CreateMerchantRequest
 	8, // 5: merchant.MerchantService.GetAllMerchant:input_type -> merchant.Empty
-	7, // 6: merchant.MerchantService.GetByIdMerchant:input_type -> merchant.GetByIdMerchantReqeuest
-	3, // 7: merchant.MerchantService.UpdateMerchant:input_type -> merchant.UpdateMerchantReqeuest
+	7, // 6: merchant.MerchantService.GetByIdMerchant:input_type -> merchant.GetByIdMerchantRequest
+	3, // 7: merchant.MerchantService.UpdateMerchant:input_type -> merchant.UpdateMerchantRequest
 	4, // 8: merchant.MerchantService.DeleteMerchant:input_type -> merchant.DeleteMerchantRequest
 	6, // 9: merchant.MerchantService.CreateMerchant:output_type -> merchant.MerchantResponse
-	6, // 10: merchant.MerchantService.GetAllMerchant:output_type -> merchant.MerchantResponse
+	1, // 10: merchant.MerchantService.GetAllMerchant:output_type -> merchant.MerchantListResponse
 	6, // 11: merchant.MerchantService.GetByIdMerchant:output_type -> merchant.MerchantResponse
 	6, // 12: merchant.MerchantService.UpdateMerchant:output_type -> merchant.MerchantResponse
 	5, // 13: merchant.MerchantService.DeleteMerchant:output_type -> merchant.DeleteMerchantResponse
