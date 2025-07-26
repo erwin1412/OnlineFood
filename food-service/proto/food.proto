@@ -19,14 +19,14 @@ message FoodListResponse {
     repeated Food foods = 1;
 }
 
-message CreateFoodReqeuest {
+message CreateFoodRequest {
     string merchant_id = 1;
     string name_foods = 2;
     int64 price = 3;
     string availability = 4;
 }
 
-message UpdateFoodReqeuest {
+message UpdateFoodRequest {
     string id = 1;
     string merchant_id = 2;
     string name_foods = 3;
@@ -46,16 +46,16 @@ message FoodResponse {
     Food Food = 1;
 }
 
-message GetByIdFoodReqeuest {
+message GetByIdFoodRequest {
     string id = 1;
 }
 
 message Empty {}
 
 service FoodService {
-    rpc CreateFood(CreateFoodReqeuest) returns (FoodResponse);
-    rpc GetAllFood(Empty) returns (FoodResponse);
-    rpc GetByIdFood(GetByIdFoodReqeuest) returns (FoodResponse);
-    rpc UpdateFood(UpdateFoodReqeuest) returns (FoodResponse);
-    rpc DeleteFood(DeleteFoodRequest) returns (DeleteFoodResponse);
+  rpc CreateFood(CreateFoodRequest) returns (FoodResponse);
+  rpc GetAllFood(Empty) returns (FoodListResponse); // ✅ Fixed!
+  rpc GetByIdFood(GetByIdFoodRequest) returns (FoodResponse);
+  rpc UpdateFood(UpdateFoodRequest) returns (FoodResponse);
+  rpc DeleteFood(DeleteFoodRequest) returns (DeleteFoodResponse);
 }

@@ -44,7 +44,6 @@ func (h *AuthHandler) Register(ctx context.Context, req *pb.RegisterRequest) (*p
 		Alamat: user.Address,
 		Lat:    user.Latitude,
 		Long:   user.Longitude,
-		// Token kosong, karena register tidak auto-login
 	}, nil
 }
 
