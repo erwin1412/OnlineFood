@@ -35,7 +35,7 @@ func main() {
 	merchantGRPC := grpcHandler.NewMerchantHandler(merchantApp)
 	grpcPort := os.Getenv("GRPC_PORT")
 	if grpcPort == "" {
-		grpcPort = "50052"
+		grpcPort = "50054"
 	}
 
 	lis, err := net.Listen("tcp", ":"+grpcPort)
