@@ -22,10 +22,16 @@ func NewPgAuthRepository(db *sql.DB) *pgAuthRepository {
 }
 
 func (r *pgAuthRepository) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
-
 	var user domain.User
 
-	err := r.db.QueryRowContext(ctx, `SELECT id,name,email,password,role,phone,address,latitude,longitude , created_at, updated_at FROM users WHERE email = $1 LIMIT 1`, email).Scan(&user.ID, &user.Name, &user.Password, &user.Role, &user.Phone, &user.Address, &user.Latitude, &user.Longitude, &user.CreatedAt, &user.UpdatedAt)
+	err := r.db.QueryRowContext(ctx, `
+		SELECT id, name, email, password, role, phone, address, latitude, longitude, created_at, updated_at 
+		FROM users 
+		WHERE email = $1 LIMIT 1
+	`, email).Scan(
+		&user.ID, &user.Name, &user.Email, &user.Password, &user.Role, &user.Phone, &user.Address,
+		&user.Latitude, &user.Longitude, &user.CreatedAt, &user.UpdatedAt,
+	)
 
 	if err != nil {
 		return nil, err
@@ -40,7 +46,13 @@ func (r *pgAuthRepository) Create(ctx context.Context, user *domain.User) (*doma
 		return nil, errors.New("failed to generate UUID")
 	}
 
-	_, err := r.db.ExecContext(ctx, `INSERT INTO users(id,name,email,password,role,phone,address,lat,long)`)
+	_, err := r.db.ExecContext(ctx, `
+		INSERT INTO users 
+		(id, name, email, password, role, phone, address, latitude, longitude, created_at, updated_at)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+	`,
+		id, user.Name, user.Email, user.Password, user.Role, user.Phone, user.Address, user.Latitude, user.Longitude, user.CreatedAt, user.UpdatedAt,
+	)
 
 	if err != nil {
 		return nil, err

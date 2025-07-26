@@ -1,26 +1,62 @@
 package main
 
 import (
+	"auth-service/internal/app"
+	"auth-service/internal/config"
+	grpcHandler "auth-service/internal/delivery/grpc"
+	"auth-service/internal/delivery/grpc/pb"
+	"auth-service/internal/infra"
+	"auth-service/pkg/hasher"
+	"auth-service/pkg/jwt"
+	"fmt"
 	"log"
+	"net"
 	"os"
 
 	"github.com/joho/godotenv"
+	"google.golang.org/grpc"
 )
 
 func main() {
 
+	// 1. Load env file
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
+
+	db := config.PostgresInit()
+	userRepo := infra.NewPgAuthRepository(db)
 
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
 		log.Fatal("JWT_SECRET must be set in .env")
 	}
+	jwtManager := jwt.NewManager(jwtSecret)
+	passwordHasher := hasher.NewBcrypt()
 
+	authApp := app.NewAuthApp(userRepo, passwordHasher, jwtManager)
+
+	// gRPC handler
+	authGRPC := grpcHandler.NewAuthHandler(authApp)
 	grpcPort := os.Getenv("GRPC_PORT")
 	if grpcPort == "" {
-		grpcPort = "50051"
+		grpcPort = "50052"
 	}
 
+	lis, err := net.Listen("tcp", ":"+grpcPort)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	grpcServer := grpc.NewServer()
+	pb.RegisterAuthServiceServer(grpcServer, authGRPC)
+
+	fmt.Println("🚀 gRPC running at : " + grpcPort)
+
+	if err := grpcServer.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
+	log.Println("Gracefully shutting down...")
+	db.Close()
 }
