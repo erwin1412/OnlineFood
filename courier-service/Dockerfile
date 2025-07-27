@@ -21,3 +21,4 @@ EXPOSE 50052
 
 # Jalankan binary
 CMD ["./courier-service"]
+# 
