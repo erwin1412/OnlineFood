@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// ✅ Detail transaksi
 type TransactionDetail struct {
 	ID            string    `json:"id"`
 	TransactionID string    `json:"transaction_id"`
@@ -15,6 +16,7 @@ type TransactionDetail struct {
 	UpdatedAt     time.Time `json:"updated_at"`
 }
 
+// ✅ Header transaksi, sekarang punya details
 type Transaction struct {
 	ID         string               `json:"id"`
 	UserID     string               `json:"user_id"`

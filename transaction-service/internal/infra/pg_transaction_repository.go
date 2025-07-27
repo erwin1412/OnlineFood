@@ -128,12 +128,13 @@ func (r *pgTransactionRepository) CreateDetail(ctx context.Context, detail *doma
 	}
 
 	_, err := r.db.ExecContext(ctx, `
-		INSERT INTO transaction_details
-		(id, transaction_id, food_id, qty, price, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
-	`,
-		id, detail.TransactionID, detail.FoodID, detail.Qty, detail.Price, detail.CreatedAt, detail.UpdatedAt,
+	INSERT INTO transaction_details
+	(id, transaction_id, food_id, merchant_id, qty, price, created_at, updated_at)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+`,
+		id, detail.TransactionID, detail.FoodID, detail.MerchantID, detail.Qty, detail.Price, detail.CreatedAt, detail.UpdatedAt,
 	)
+
 	if err != nil {
 		return nil, err
 	}
