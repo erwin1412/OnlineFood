@@ -28,8 +28,10 @@ type Courier struct {
 	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Lat           string                 `protobuf:"bytes,3,opt,name=lat,proto3" json:"lat,omitempty"`
 	Long          string                 `protobuf:"bytes,4,opt,name=long,proto3" json:"long,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	VehicleNumber string                 `protobuf:"bytes,5,opt,name=vehicle_number,json=vehicleNumber,proto3" json:"vehicle_number,omitempty"`
+	Status        string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"` // e.g., "available", "busy", "offline"
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -92,6 +94,20 @@ func (x *Courier) GetLong() string {
 	return ""
 }
 
+func (x *Courier) GetVehicleNumber() string {
+	if x != nil {
+		return x.VehicleNumber
+	}
+	return ""
+}
+
+func (x *Courier) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 func (x *Courier) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
@@ -150,29 +166,31 @@ func (x *CourierListResponse) GetCouriers() []*Courier {
 	return nil
 }
 
-type CreateCourierReqeuest struct {
+type CreateCourierRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Lat           string                 `protobuf:"bytes,2,opt,name=lat,proto3" json:"lat,omitempty"`
 	Long          string                 `protobuf:"bytes,3,opt,name=long,proto3" json:"long,omitempty"`
+	VehicleNumber string                 `protobuf:"bytes,4,opt,name=vehicle_number,json=vehicleNumber,proto3" json:"vehicle_number,omitempty"` // <== tambahkan ini
+	Status        string                 `protobuf:"bytes,5,opt,name=status,proto3" json:"status,omitempty"`                                    // <== tambahkan ini
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateCourierReqeuest) Reset() {
-	*x = CreateCourierReqeuest{}
+func (x *CreateCourierRequest) Reset() {
+	*x = CreateCourierRequest{}
 	mi := &file_proto_courier_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateCourierReqeuest) String() string {
+func (x *CreateCourierRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateCourierReqeuest) ProtoMessage() {}
+func (*CreateCourierRequest) ProtoMessage() {}
 
-func (x *CreateCourierReqeuest) ProtoReflect() protoreflect.Message {
+func (x *CreateCourierRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_courier_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -184,55 +202,72 @@ func (x *CreateCourierReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateCourierReqeuest.ProtoReflect.Descriptor instead.
-func (*CreateCourierReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateCourierRequest.ProtoReflect.Descriptor instead.
+func (*CreateCourierRequest) Descriptor() ([]byte, []int) {
 	return file_proto_courier_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateCourierReqeuest) GetUserId() string {
+func (x *CreateCourierRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
 	return ""
 }
 
-func (x *CreateCourierReqeuest) GetLat() string {
+func (x *CreateCourierRequest) GetLat() string {
 	if x != nil {
 		return x.Lat
 	}
 	return ""
 }
 
-func (x *CreateCourierReqeuest) GetLong() string {
+func (x *CreateCourierRequest) GetLong() string {
 	if x != nil {
 		return x.Long
 	}
 	return ""
 }
 
-type UpdateLangLotCourierReqeuest struct {
+func (x *CreateCourierRequest) GetVehicleNumber() string {
+	if x != nil {
+		return x.VehicleNumber
+	}
+	return ""
+}
+
+func (x *CreateCourierRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+type UpdateLongLatCourierRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Lat           string                 `protobuf:"bytes,2,opt,name=lat,proto3" json:"lat,omitempty"`
-	Long          string                 `protobuf:"bytes,3,opt,name=long,proto3" json:"long,omitempty"`
+	UserId        string                 `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Lat           string                 `protobuf:"bytes,3,opt,name=lat,proto3" json:"lat,omitempty"`
+	Long          string                 `protobuf:"bytes,4,opt,name=long,proto3" json:"long,omitempty"`
+	VehicleNumber string                 `protobuf:"bytes,5,opt,name=vehicle_number,json=vehicleNumber,proto3" json:"vehicle_number,omitempty"` // <== tambahkan ini
+	Status        string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`                                    // <== tambahkan ini
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateLangLotCourierReqeuest) Reset() {
-	*x = UpdateLangLotCourierReqeuest{}
+func (x *UpdateLongLatCourierRequest) Reset() {
+	*x = UpdateLongLatCourierRequest{}
 	mi := &file_proto_courier_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateLangLotCourierReqeuest) String() string {
+func (x *UpdateLongLatCourierRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateLangLotCourierReqeuest) ProtoMessage() {}
+func (*UpdateLongLatCourierRequest) ProtoMessage() {}
 
-func (x *UpdateLangLotCourierReqeuest) ProtoReflect() protoreflect.Message {
+func (x *UpdateLongLatCourierRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_courier_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -244,28 +279,49 @@ func (x *UpdateLangLotCourierReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateLangLotCourierReqeuest.ProtoReflect.Descriptor instead.
-func (*UpdateLangLotCourierReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateLongLatCourierRequest.ProtoReflect.Descriptor instead.
+func (*UpdateLongLatCourierRequest) Descriptor() ([]byte, []int) {
 	return file_proto_courier_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UpdateLangLotCourierReqeuest) GetId() string {
+func (x *UpdateLongLatCourierRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *UpdateLangLotCourierReqeuest) GetLat() string {
+func (x *UpdateLongLatCourierRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UpdateLongLatCourierRequest) GetLat() string {
 	if x != nil {
 		return x.Lat
 	}
 	return ""
 }
 
-func (x *UpdateLangLotCourierReqeuest) GetLong() string {
+func (x *UpdateLongLatCourierRequest) GetLong() string {
 	if x != nil {
 		return x.Long
+	}
+	return ""
+}
+
+func (x *UpdateLongLatCourierRequest) GetVehicleNumber() string {
+	if x != nil {
+		return x.VehicleNumber
+	}
+	return ""
+}
+
+func (x *UpdateLongLatCourierRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
 	}
 	return ""
 }
@@ -402,27 +458,27 @@ func (x *CourierResponse) GetCourier() *Courier {
 	return nil
 }
 
-type GetByIdCourierReqeuest struct {
+type GetByIdCourierRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetByIdCourierReqeuest) Reset() {
-	*x = GetByIdCourierReqeuest{}
+func (x *GetByIdCourierRequest) Reset() {
+	*x = GetByIdCourierRequest{}
 	mi := &file_proto_courier_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetByIdCourierReqeuest) String() string {
+func (x *GetByIdCourierRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetByIdCourierReqeuest) ProtoMessage() {}
+func (*GetByIdCourierRequest) ProtoMessage() {}
 
-func (x *GetByIdCourierReqeuest) ProtoReflect() protoreflect.Message {
+func (x *GetByIdCourierRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_courier_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -434,19 +490,19 @@ func (x *GetByIdCourierReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetByIdCourierReqeuest.ProtoReflect.Descriptor instead.
-func (*GetByIdCourierReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetByIdCourierRequest.ProtoReflect.Descriptor instead.
+func (*GetByIdCourierRequest) Descriptor() ([]byte, []int) {
 	return file_proto_courier_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *GetByIdCourierReqeuest) GetId() string {
+func (x *GetByIdCourierRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-type GetByLongLatCourierReqeuest struct {
+type GetByLongLatCourierRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Lat           string                 `protobuf:"bytes,1,opt,name=lat,proto3" json:"lat,omitempty"`
 	Long          string                 `protobuf:"bytes,2,opt,name=long,proto3" json:"long,omitempty"`
@@ -454,20 +510,20 @@ type GetByLongLatCourierReqeuest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetByLongLatCourierReqeuest) Reset() {
-	*x = GetByLongLatCourierReqeuest{}
+func (x *GetByLongLatCourierRequest) Reset() {
+	*x = GetByLongLatCourierRequest{}
 	mi := &file_proto_courier_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetByLongLatCourierReqeuest) String() string {
+func (x *GetByLongLatCourierRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetByLongLatCourierReqeuest) ProtoMessage() {}
+func (*GetByLongLatCourierRequest) ProtoMessage() {}
 
-func (x *GetByLongLatCourierReqeuest) ProtoReflect() protoreflect.Message {
+func (x *GetByLongLatCourierRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_courier_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -479,66 +535,111 @@ func (x *GetByLongLatCourierReqeuest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetByLongLatCourierReqeuest.ProtoReflect.Descriptor instead.
-func (*GetByLongLatCourierReqeuest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetByLongLatCourierRequest.ProtoReflect.Descriptor instead.
+func (*GetByLongLatCourierRequest) Descriptor() ([]byte, []int) {
 	return file_proto_courier_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *GetByLongLatCourierReqeuest) GetLat() string {
+func (x *GetByLongLatCourierRequest) GetLat() string {
 	if x != nil {
 		return x.Lat
 	}
 	return ""
 }
 
-func (x *GetByLongLatCourierReqeuest) GetLong() string {
+func (x *GetByLongLatCourierRequest) GetLong() string {
 	if x != nil {
 		return x.Long
 	}
 	return ""
 }
 
+type Empty struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Empty) Reset() {
+	*x = Empty{}
+	mi := &file_proto_courier_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Empty) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Empty) ProtoMessage() {}
+
+func (x *Empty) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_courier_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
+	return file_proto_courier_proto_rawDescGZIP(), []int{9}
+}
+
 var File_proto_courier_proto protoreflect.FileDescriptor
 
 const file_proto_courier_proto_rawDesc = "" +
 	"\n" +
-	"\x13proto/courier.proto\x12\acourier\x1a\x1fgoogle/protobuf/timestamp.proto\"\xce\x01\n" +
+	"\x13proto/courier.proto\x12\acourier\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8d\x02\n" +
 	"\aCourier\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x10\n" +
 	"\x03lat\x18\x03 \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\x04 \x01(\tR\x04long\x129\n" +
+	"\x04long\x18\x04 \x01(\tR\x04long\x12%\n" +
+	"\x0evehicle_number\x18\x05 \x01(\tR\rvehicleNumber\x12\x16\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"C\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"C\n" +
 	"\x13CourierListResponse\x12,\n" +
-	"\bcouriers\x18\x01 \x03(\v2\x10.courier.CourierR\bcouriers\"V\n" +
-	"\x15CreateCourierReqeuest\x12\x17\n" +
+	"\bcouriers\x18\x01 \x03(\v2\x10.courier.CourierR\bcouriers\"\x94\x01\n" +
+	"\x14CreateCourierRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x10\n" +
 	"\x03lat\x18\x02 \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\x03 \x01(\tR\x04long\"T\n" +
-	"\x1cUpdateLangLotCourierReqeuest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x10\n" +
-	"\x03lat\x18\x02 \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\x03 \x01(\tR\x04long\"&\n" +
+	"\x04long\x18\x03 \x01(\tR\x04long\x12%\n" +
+	"\x0evehicle_number\x18\x04 \x01(\tR\rvehicleNumber\x12\x16\n" +
+	"\x06status\x18\x05 \x01(\tR\x06status\"\xab\x01\n" +
+	"\x1bUpdateLongLatCourierRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x10\n" +
+	"\x03lat\x18\x03 \x01(\tR\x03lat\x12\x12\n" +
+	"\x04long\x18\x04 \x01(\tR\x04long\x12%\n" +
+	"\x0evehicle_number\x18\x05 \x01(\tR\rvehicleNumber\x12\x16\n" +
+	"\x06status\x18\x06 \x01(\tR\x06status\"&\n" +
 	"\x14DeleteCourierRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"1\n" +
 	"\x15DeleteCourierResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\"=\n" +
 	"\x0fCourierResponse\x12*\n" +
-	"\aCourier\x18\x01 \x01(\v2\x10.courier.CourierR\aCourier\"(\n" +
-	"\x16GetByIdCourierReqeuest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"C\n" +
-	"\x1bGetByLongLatCourierReqeuest\x12\x10\n" +
+	"\aCourier\x18\x01 \x01(\v2\x10.courier.CourierR\aCourier\"'\n" +
+	"\x15GetByIdCourierRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"B\n" +
+	"\x1aGetByLongLatCourierRequest\x12\x10\n" +
 	"\x03lat\x18\x01 \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\x02 \x01(\tR\x04long2\x9a\x03\n" +
-	"\x0eCourierService\x12I\n" +
-	"\rCreateCourier\x12\x1e.courier.CreateCourierReqeuest\x1a\x18.courier.CourierResponse\x12D\n" +
-	"\aGetById\x12\x1f.courier.GetByIdCourierReqeuest\x1a\x18.courier.CourierResponse\x12N\n" +
-	"\fGetByLongLat\x12$.courier.GetByLongLatCourierReqeuest\x1a\x18.courier.CourierResponse\x12W\n" +
-	"\x14UpdateLongLatCourier\x12%.courier.UpdateLangLotCourierReqeuest\x1a\x18.courier.CourierResponse\x12N\n" +
-	"\rDeleteCourier\x12\x1d.courier.DeleteCourierRequest\x1a\x1e.courier.DeleteCourierResponseB\x1eZ\x1cinternal/delivery/grpc/pb;pbb\x06proto3"
+	"\x04long\x18\x02 \x01(\tR\x04long\"\a\n" +
+	"\x05Empty2\xd6\x03\n" +
+	"\x0eCourierService\x12H\n" +
+	"\rCreateCourier\x12\x1d.courier.CreateCourierRequest\x1a\x18.courier.CourierResponse\x12C\n" +
+	"\aGetById\x12\x1e.courier.GetByIdCourierRequest\x1a\x18.courier.CourierResponse\x12M\n" +
+	"\fGetByLongLat\x12#.courier.GetByLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12V\n" +
+	"\x14UpdateLongLatCourier\x12$.courier.UpdateLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12N\n" +
+	"\rDeleteCourier\x12\x1d.courier.DeleteCourierRequest\x1a\x1e.courier.DeleteCourierResponse\x12>\n" +
+	"\x0eGetAllCouriers\x12\x0e.courier.Empty\x1a\x1c.courier.CourierListResponseB\x1eZ\x1cinternal/delivery/grpc/pb;pbb\x06proto3"
 
 var (
 	file_proto_courier_proto_rawDescOnce sync.Once
@@ -552,39 +653,42 @@ func file_proto_courier_proto_rawDescGZIP() []byte {
 	return file_proto_courier_proto_rawDescData
 }
 
-var file_proto_courier_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_proto_courier_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_proto_courier_proto_goTypes = []any{
-	(*Courier)(nil),                      // 0: courier.Courier
-	(*CourierListResponse)(nil),          // 1: courier.CourierListResponse
-	(*CreateCourierReqeuest)(nil),        // 2: courier.CreateCourierReqeuest
-	(*UpdateLangLotCourierReqeuest)(nil), // 3: courier.UpdateLangLotCourierReqeuest
-	(*DeleteCourierRequest)(nil),         // 4: courier.DeleteCourierRequest
-	(*DeleteCourierResponse)(nil),        // 5: courier.DeleteCourierResponse
-	(*CourierResponse)(nil),              // 6: courier.CourierResponse
-	(*GetByIdCourierReqeuest)(nil),       // 7: courier.GetByIdCourierReqeuest
-	(*GetByLongLatCourierReqeuest)(nil),  // 8: courier.GetByLongLatCourierReqeuest
-	(*timestamppb.Timestamp)(nil),        // 9: google.protobuf.Timestamp
+	(*Courier)(nil),                     // 0: courier.Courier
+	(*CourierListResponse)(nil),         // 1: courier.CourierListResponse
+	(*CreateCourierRequest)(nil),        // 2: courier.CreateCourierRequest
+	(*UpdateLongLatCourierRequest)(nil), // 3: courier.UpdateLongLatCourierRequest
+	(*DeleteCourierRequest)(nil),        // 4: courier.DeleteCourierRequest
+	(*DeleteCourierResponse)(nil),       // 5: courier.DeleteCourierResponse
+	(*CourierResponse)(nil),             // 6: courier.CourierResponse
+	(*GetByIdCourierRequest)(nil),       // 7: courier.GetByIdCourierRequest
+	(*GetByLongLatCourierRequest)(nil),  // 8: courier.GetByLongLatCourierRequest
+	(*Empty)(nil),                       // 9: courier.Empty
+	(*timestamppb.Timestamp)(nil),       // 10: google.protobuf.Timestamp
 }
 var file_proto_courier_proto_depIdxs = []int32{
-	9, // 0: courier.Courier.created_at:type_name -> google.protobuf.Timestamp
-	9, // 1: courier.Courier.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 2: courier.CourierListResponse.couriers:type_name -> courier.Courier
-	0, // 3: courier.CourierResponse.Courier:type_name -> courier.Courier
-	2, // 4: courier.CourierService.CreateCourier:input_type -> courier.CreateCourierReqeuest
-	7, // 5: courier.CourierService.GetById:input_type -> courier.GetByIdCourierReqeuest
-	8, // 6: courier.CourierService.GetByLongLat:input_type -> courier.GetByLongLatCourierReqeuest
-	3, // 7: courier.CourierService.UpdateLongLatCourier:input_type -> courier.UpdateLangLotCourierReqeuest
-	4, // 8: courier.CourierService.DeleteCourier:input_type -> courier.DeleteCourierRequest
-	6, // 9: courier.CourierService.CreateCourier:output_type -> courier.CourierResponse
-	6, // 10: courier.CourierService.GetById:output_type -> courier.CourierResponse
-	6, // 11: courier.CourierService.GetByLongLat:output_type -> courier.CourierResponse
-	6, // 12: courier.CourierService.UpdateLongLatCourier:output_type -> courier.CourierResponse
-	5, // 13: courier.CourierService.DeleteCourier:output_type -> courier.DeleteCourierResponse
-	9, // [9:14] is the sub-list for method output_type
-	4, // [4:9] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	10, // 0: courier.Courier.created_at:type_name -> google.protobuf.Timestamp
+	10, // 1: courier.Courier.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: courier.CourierListResponse.couriers:type_name -> courier.Courier
+	0,  // 3: courier.CourierResponse.Courier:type_name -> courier.Courier
+	2,  // 4: courier.CourierService.CreateCourier:input_type -> courier.CreateCourierRequest
+	7,  // 5: courier.CourierService.GetById:input_type -> courier.GetByIdCourierRequest
+	8,  // 6: courier.CourierService.GetByLongLat:input_type -> courier.GetByLongLatCourierRequest
+	3,  // 7: courier.CourierService.UpdateLongLatCourier:input_type -> courier.UpdateLongLatCourierRequest
+	4,  // 8: courier.CourierService.DeleteCourier:input_type -> courier.DeleteCourierRequest
+	9,  // 9: courier.CourierService.GetAllCouriers:input_type -> courier.Empty
+	6,  // 10: courier.CourierService.CreateCourier:output_type -> courier.CourierResponse
+	6,  // 11: courier.CourierService.GetById:output_type -> courier.CourierResponse
+	6,  // 12: courier.CourierService.GetByLongLat:output_type -> courier.CourierResponse
+	6,  // 13: courier.CourierService.UpdateLongLatCourier:output_type -> courier.CourierResponse
+	5,  // 14: courier.CourierService.DeleteCourier:output_type -> courier.DeleteCourierResponse
+	1,  // 15: courier.CourierService.GetAllCouriers:output_type -> courier.CourierListResponse
+	10, // [10:16] is the sub-list for method output_type
+	4,  // [4:10] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_proto_courier_proto_init() }
@@ -598,7 +702,7 @@ func file_proto_courier_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_courier_proto_rawDesc), len(file_proto_courier_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -24,17 +24,19 @@ const (
 	CourierService_GetByLongLat_FullMethodName         = "/courier.CourierService/GetByLongLat"
 	CourierService_UpdateLongLatCourier_FullMethodName = "/courier.CourierService/UpdateLongLatCourier"
 	CourierService_DeleteCourier_FullMethodName        = "/courier.CourierService/DeleteCourier"
+	CourierService_GetAllCouriers_FullMethodName       = "/courier.CourierService/GetAllCouriers"
 )
 
 // CourierServiceClient is the client API for CourierService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CourierServiceClient interface {
-	CreateCourier(ctx context.Context, in *CreateCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error)
-	GetById(ctx context.Context, in *GetByIdCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error)
-	GetByLongLat(ctx context.Context, in *GetByLongLatCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error)
-	UpdateLongLatCourier(ctx context.Context, in *UpdateLangLotCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error)
+	CreateCourier(ctx context.Context, in *CreateCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	GetById(ctx context.Context, in *GetByIdCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	GetByLongLat(ctx context.Context, in *GetByLongLatCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
+	UpdateLongLatCourier(ctx context.Context, in *UpdateLongLatCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error)
 	DeleteCourier(ctx context.Context, in *DeleteCourierRequest, opts ...grpc.CallOption) (*DeleteCourierResponse, error)
+	GetAllCouriers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CourierListResponse, error)
 }
 
 type courierServiceClient struct {
@@ -45,7 +47,7 @@ func NewCourierServiceClient(cc grpc.ClientConnInterface) CourierServiceClient {
 	return &courierServiceClient{cc}
 }
 
-func (c *courierServiceClient) CreateCourier(ctx context.Context, in *CreateCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *courierServiceClient) CreateCourier(ctx context.Context, in *CreateCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierResponse)
 	err := c.cc.Invoke(ctx, CourierService_CreateCourier_FullMethodName, in, out, cOpts...)
@@ -55,7 +57,7 @@ func (c *courierServiceClient) CreateCourier(ctx context.Context, in *CreateCour
 	return out, nil
 }
 
-func (c *courierServiceClient) GetById(ctx context.Context, in *GetByIdCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *courierServiceClient) GetById(ctx context.Context, in *GetByIdCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierResponse)
 	err := c.cc.Invoke(ctx, CourierService_GetById_FullMethodName, in, out, cOpts...)
@@ -65,7 +67,7 @@ func (c *courierServiceClient) GetById(ctx context.Context, in *GetByIdCourierRe
 	return out, nil
 }
 
-func (c *courierServiceClient) GetByLongLat(ctx context.Context, in *GetByLongLatCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *courierServiceClient) GetByLongLat(ctx context.Context, in *GetByLongLatCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierResponse)
 	err := c.cc.Invoke(ctx, CourierService_GetByLongLat_FullMethodName, in, out, cOpts...)
@@ -75,7 +77,7 @@ func (c *courierServiceClient) GetByLongLat(ctx context.Context, in *GetByLongLa
 	return out, nil
 }
 
-func (c *courierServiceClient) UpdateLongLatCourier(ctx context.Context, in *UpdateLangLotCourierReqeuest, opts ...grpc.CallOption) (*CourierResponse, error) {
+func (c *courierServiceClient) UpdateLongLatCourier(ctx context.Context, in *UpdateLongLatCourierRequest, opts ...grpc.CallOption) (*CourierResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CourierResponse)
 	err := c.cc.Invoke(ctx, CourierService_UpdateLongLatCourier_FullMethodName, in, out, cOpts...)
@@ -95,15 +97,26 @@ func (c *courierServiceClient) DeleteCourier(ctx context.Context, in *DeleteCour
 	return out, nil
 }
 
+func (c *courierServiceClient) GetAllCouriers(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*CourierListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CourierListResponse)
+	err := c.cc.Invoke(ctx, CourierService_GetAllCouriers_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CourierServiceServer is the server API for CourierService service.
 // All implementations must embed UnimplementedCourierServiceServer
 // for forward compatibility.
 type CourierServiceServer interface {
-	CreateCourier(context.Context, *CreateCourierReqeuest) (*CourierResponse, error)
-	GetById(context.Context, *GetByIdCourierReqeuest) (*CourierResponse, error)
-	GetByLongLat(context.Context, *GetByLongLatCourierReqeuest) (*CourierResponse, error)
-	UpdateLongLatCourier(context.Context, *UpdateLangLotCourierReqeuest) (*CourierResponse, error)
+	CreateCourier(context.Context, *CreateCourierRequest) (*CourierResponse, error)
+	GetById(context.Context, *GetByIdCourierRequest) (*CourierResponse, error)
+	GetByLongLat(context.Context, *GetByLongLatCourierRequest) (*CourierResponse, error)
+	UpdateLongLatCourier(context.Context, *UpdateLongLatCourierRequest) (*CourierResponse, error)
 	DeleteCourier(context.Context, *DeleteCourierRequest) (*DeleteCourierResponse, error)
+	GetAllCouriers(context.Context, *Empty) (*CourierListResponse, error)
 	mustEmbedUnimplementedCourierServiceServer()
 }
 
@@ -114,20 +127,23 @@ type CourierServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedCourierServiceServer struct{}
 
-func (UnimplementedCourierServiceServer) CreateCourier(context.Context, *CreateCourierReqeuest) (*CourierResponse, error) {
+func (UnimplementedCourierServiceServer) CreateCourier(context.Context, *CreateCourierRequest) (*CourierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateCourier not implemented")
 }
-func (UnimplementedCourierServiceServer) GetById(context.Context, *GetByIdCourierReqeuest) (*CourierResponse, error) {
+func (UnimplementedCourierServiceServer) GetById(context.Context, *GetByIdCourierRequest) (*CourierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
-func (UnimplementedCourierServiceServer) GetByLongLat(context.Context, *GetByLongLatCourierReqeuest) (*CourierResponse, error) {
+func (UnimplementedCourierServiceServer) GetByLongLat(context.Context, *GetByLongLatCourierRequest) (*CourierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByLongLat not implemented")
 }
-func (UnimplementedCourierServiceServer) UpdateLongLatCourier(context.Context, *UpdateLangLotCourierReqeuest) (*CourierResponse, error) {
+func (UnimplementedCourierServiceServer) UpdateLongLatCourier(context.Context, *UpdateLongLatCourierRequest) (*CourierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLongLatCourier not implemented")
 }
 func (UnimplementedCourierServiceServer) DeleteCourier(context.Context, *DeleteCourierRequest) (*DeleteCourierResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCourier not implemented")
+}
+func (UnimplementedCourierServiceServer) GetAllCouriers(context.Context, *Empty) (*CourierListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllCouriers not implemented")
 }
 func (UnimplementedCourierServiceServer) mustEmbedUnimplementedCourierServiceServer() {}
 func (UnimplementedCourierServiceServer) testEmbeddedByValue()                        {}
@@ -151,7 +167,7 @@ func RegisterCourierServiceServer(s grpc.ServiceRegistrar, srv CourierServiceSer
 }
 
 func _CourierService_CreateCourier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateCourierReqeuest)
+	in := new(CreateCourierRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -163,13 +179,13 @@ func _CourierService_CreateCourier_Handler(srv interface{}, ctx context.Context,
 		FullMethod: CourierService_CreateCourier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourierServiceServer).CreateCourier(ctx, req.(*CreateCourierReqeuest))
+		return srv.(CourierServiceServer).CreateCourier(ctx, req.(*CreateCourierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _CourierService_GetById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetByIdCourierReqeuest)
+	in := new(GetByIdCourierRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -181,13 +197,13 @@ func _CourierService_GetById_Handler(srv interface{}, ctx context.Context, dec f
 		FullMethod: CourierService_GetById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourierServiceServer).GetById(ctx, req.(*GetByIdCourierReqeuest))
+		return srv.(CourierServiceServer).GetById(ctx, req.(*GetByIdCourierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _CourierService_GetByLongLat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetByLongLatCourierReqeuest)
+	in := new(GetByLongLatCourierRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -199,13 +215,13 @@ func _CourierService_GetByLongLat_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: CourierService_GetByLongLat_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourierServiceServer).GetByLongLat(ctx, req.(*GetByLongLatCourierReqeuest))
+		return srv.(CourierServiceServer).GetByLongLat(ctx, req.(*GetByLongLatCourierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _CourierService_UpdateLongLatCourier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateLangLotCourierReqeuest)
+	in := new(UpdateLongLatCourierRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -217,7 +233,7 @@ func _CourierService_UpdateLongLatCourier_Handler(srv interface{}, ctx context.C
 		FullMethod: CourierService_UpdateLongLatCourier_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CourierServiceServer).UpdateLongLatCourier(ctx, req.(*UpdateLangLotCourierReqeuest))
+		return srv.(CourierServiceServer).UpdateLongLatCourier(ctx, req.(*UpdateLongLatCourierRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -236,6 +252,24 @@ func _CourierService_DeleteCourier_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CourierServiceServer).DeleteCourier(ctx, req.(*DeleteCourierRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CourierService_GetAllCouriers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CourierServiceServer).GetAllCouriers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CourierService_GetAllCouriers_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CourierServiceServer).GetAllCouriers(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -266,6 +300,10 @@ var CourierService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCourier",
 			Handler:    _CourierService_DeleteCourier_Handler,
+		},
+		{
+			MethodName: "GetAllCouriers",
+			Handler:    _CourierService_GetAllCouriers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
