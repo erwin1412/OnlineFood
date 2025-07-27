@@ -13,10 +13,10 @@ RUN go mod download
 # Copy semua file project
 COPY . .
 
-# Build binary (pastikan main.go berada di cmd/main.go atau sesuai)
+# Build binary
 RUN go build -o transaction-service ./cmd/main.go
 
-# Expose gRPC port (default: 50055)
+# Expose gRPC port
 EXPOSE 50055
 
 # Jalankan binary

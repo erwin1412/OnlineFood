@@ -14,10 +14,10 @@ RUN go mod download
 COPY . .
 
 # Build binary
-RUN go build -o auth-service ./cmd/main.go
+RUN go build -o courier-service ./cmd/main.go
 
 # Expose gRPC port
-EXPOSE 50051
+EXPOSE 50052
 
 # Jalankan binary
-CMD ["./auth-service"]
+CMD ["./courier-service"]
