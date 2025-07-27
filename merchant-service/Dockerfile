@@ -13,10 +13,10 @@ RUN go mod download
 # Copy semua file project
 COPY . .
 
-# Build binary (pastikan main.go berada di cmd/main.go atau sesuai)
+# Build binary
 RUN go build -o merchant-service ./cmd/main.go
 
-# Expose gRPC port (default: 50053)
+# Expose gRPC port
 EXPOSE 50054
 
 # Jalankan binary
