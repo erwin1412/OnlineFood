@@ -25,7 +25,6 @@ cd ..
 echo " Transaction Service"
 cd transaction-service
 protoc --go_out=. --go-grpc_out=. proto/transaction.proto
-protoc --go_out=. --go-grpc_out=. proto/transaction_detail.proto
 protoc --go_out=. --go-grpc_out=. proto/cart.proto
 cd ..
 
