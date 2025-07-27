@@ -2,66 +2,86 @@ syntax = "proto3";
 
 package transaction;
 
-option go_package = "internal/delivery/grpc/pb;pb";
+option go_package = "internal/delivery/grpc/pb/transaction;pb";
 import "google/protobuf/timestamp.proto";
 
-message Transaction{
-    string id = 1;
-    string user_id = 2;
-    string courier_id = 3;
-    string merchant_id = 4;
-    int64 total = 5;
-    string status = 6;
-    string snap_token = 7;
-    google.protobuf.Timestamp created_at = 8;
-    google.protobuf.Timestamp updated_at = 9;
+// ✅ New: detail transaksi
+message TransactionDetail {
+  string id = 1;
+  string transaction_id = 2;
+  string food_id = 3;
+  string merchant_id = 4;
+  int64 qty = 5;
+  int64 price = 6;
+}
+
+message Transaction {
+  string id = 1;
+  string user_id = 2;
+  string courier_id = 3;
+  string merchant_id = 4;
+  int64 total = 5;
+  string status = 6;
+  string snap_token = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+
+  // ✅ Embed detail
+  repeated TransactionDetail details = 10;
 }
 
 message TransactionListResponse {
-    repeated Transaction transactions = 1;
+  repeated Transaction transactions = 1;
 }
 
-message CreateTransactionReqeuest {
-    string user_id = 1;
-    string courier_id = 2;
-    string merchant_id = 3;
-    int64 total = 4;
-    string status = 5;
-    string snap_token = 6;
+message CreateTransactionRequest {
+  string user_id = 1;
+  string courier_id = 2;
+  string merchant_id = 3;
+  int64 total = 4;
+  string status = 5;
+  string snap_token = 6;
+
+  // ✅ New: kirim detail ke backend
+  repeated TransactionDetail details = 7;
 }
 
-message UpdateTransactionReqeuest {
-    string id = 1;
-    string user_id = 2;
-    string courier_id = 3;
-    string merchant_id = 4;
-    int64 total = 5;
-    string status = 6;
-    string snap_token = 7;
+message UpdateTransactionRequest {
+  string id = 1;
+  string user_id = 2;
+  string courier_id = 3;
+  string merchant_id = 4;
+  int64 total = 5;
+  string status = 6;
+  string snap_token = 7;
 }
 
 message DeleteTransactionRequest {
-    string id = 1;
+  string id = 1;
+  string user_id = 2;
 }
 
 message DeleteTransactionResponse {
-    string message = 1;
+  string message = 1;
 }
 
 message TransactionResponse {
-    Transaction Transaction = 1;
+  Transaction transaction = 1;
 }
 
-message GetByIdTransactionReqeuest {
-    string id = 1;
+message GetByIdTransactionRequest {
+  string id = 1;
+  string user_id = 2;
 }
 
-message EmptyTransaction {}
+message GetAllTransactionRequest {
+  string user_id = 1;
+}
 
 service TransactionService {
-    rpc CreateTransaction(CreateTransactionReqeuest) returns (TransactionResponse);
-    rpc GetAllTransaction(EmptyTransaction) returns (TransactionResponse);
-    rpc GetByIdTransaction(GetByIdTransactionReqeuest) returns (TransactionResponse);
-    rpc UpdateTransaction(UpdateTransactionReqeuest) returns (TransactionResponse);
-    rpc DeleteTransaction(DeleteTransactionRequest) returns (DeleteTransactionResponse);
+  rpc CreateTransaction(CreateTransactionRequest) returns (TransactionResponse);
+  rpc GetAllTransaction(GetAllTransactionRequest) returns (TransactionListResponse);
+  rpc GetByIdTransaction(GetByIdTransactionRequest) returns (TransactionResponse);
+  rpc UpdateTransaction(UpdateTransactionRequest) returns (TransactionResponse);
+  rpc DeleteTransaction(DeleteTransactionRequest) returns (DeleteTransactionResponse);
 }

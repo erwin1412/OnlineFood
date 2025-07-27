@@ -30,10 +30,10 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TransactionServiceClient interface {
-	CreateTransaction(ctx context.Context, in *CreateTransactionReqeuest, opts ...grpc.CallOption) (*TransactionResponse, error)
-	GetAllTransaction(ctx context.Context, in *EmptyTransaction, opts ...grpc.CallOption) (*TransactionResponse, error)
-	GetByIdTransaction(ctx context.Context, in *GetByIdTransactionReqeuest, opts ...grpc.CallOption) (*TransactionResponse, error)
-	UpdateTransaction(ctx context.Context, in *UpdateTransactionReqeuest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	CreateTransaction(ctx context.Context, in *CreateTransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	GetAllTransaction(ctx context.Context, in *GetAllTransactionRequest, opts ...grpc.CallOption) (*TransactionListResponse, error)
+	GetByIdTransaction(ctx context.Context, in *GetByIdTransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
+	UpdateTransaction(ctx context.Context, in *UpdateTransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error)
 	DeleteTransaction(ctx context.Context, in *DeleteTransactionRequest, opts ...grpc.CallOption) (*DeleteTransactionResponse, error)
 }
 
@@ -45,7 +45,7 @@ func NewTransactionServiceClient(cc grpc.ClientConnInterface) TransactionService
 	return &transactionServiceClient{cc}
 }
 
-func (c *transactionServiceClient) CreateTransaction(ctx context.Context, in *CreateTransactionReqeuest, opts ...grpc.CallOption) (*TransactionResponse, error) {
+func (c *transactionServiceClient) CreateTransaction(ctx context.Context, in *CreateTransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TransactionResponse)
 	err := c.cc.Invoke(ctx, TransactionService_CreateTransaction_FullMethodName, in, out, cOpts...)
@@ -55,9 +55,9 @@ func (c *transactionServiceClient) CreateTransaction(ctx context.Context, in *Cr
 	return out, nil
 }
 
-func (c *transactionServiceClient) GetAllTransaction(ctx context.Context, in *EmptyTransaction, opts ...grpc.CallOption) (*TransactionResponse, error) {
+func (c *transactionServiceClient) GetAllTransaction(ctx context.Context, in *GetAllTransactionRequest, opts ...grpc.CallOption) (*TransactionListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TransactionResponse)
+	out := new(TransactionListResponse)
 	err := c.cc.Invoke(ctx, TransactionService_GetAllTransaction_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (c *transactionServiceClient) GetAllTransaction(ctx context.Context, in *Em
 	return out, nil
 }
 
-func (c *transactionServiceClient) GetByIdTransaction(ctx context.Context, in *GetByIdTransactionReqeuest, opts ...grpc.CallOption) (*TransactionResponse, error) {
+func (c *transactionServiceClient) GetByIdTransaction(ctx context.Context, in *GetByIdTransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TransactionResponse)
 	err := c.cc.Invoke(ctx, TransactionService_GetByIdTransaction_FullMethodName, in, out, cOpts...)
@@ -75,7 +75,7 @@ func (c *transactionServiceClient) GetByIdTransaction(ctx context.Context, in *G
 	return out, nil
 }
 
-func (c *transactionServiceClient) UpdateTransaction(ctx context.Context, in *UpdateTransactionReqeuest, opts ...grpc.CallOption) (*TransactionResponse, error) {
+func (c *transactionServiceClient) UpdateTransaction(ctx context.Context, in *UpdateTransactionRequest, opts ...grpc.CallOption) (*TransactionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(TransactionResponse)
 	err := c.cc.Invoke(ctx, TransactionService_UpdateTransaction_FullMethodName, in, out, cOpts...)
@@ -99,10 +99,10 @@ func (c *transactionServiceClient) DeleteTransaction(ctx context.Context, in *De
 // All implementations must embed UnimplementedTransactionServiceServer
 // for forward compatibility.
 type TransactionServiceServer interface {
-	CreateTransaction(context.Context, *CreateTransactionReqeuest) (*TransactionResponse, error)
-	GetAllTransaction(context.Context, *EmptyTransaction) (*TransactionResponse, error)
-	GetByIdTransaction(context.Context, *GetByIdTransactionReqeuest) (*TransactionResponse, error)
-	UpdateTransaction(context.Context, *UpdateTransactionReqeuest) (*TransactionResponse, error)
+	CreateTransaction(context.Context, *CreateTransactionRequest) (*TransactionResponse, error)
+	GetAllTransaction(context.Context, *GetAllTransactionRequest) (*TransactionListResponse, error)
+	GetByIdTransaction(context.Context, *GetByIdTransactionRequest) (*TransactionResponse, error)
+	UpdateTransaction(context.Context, *UpdateTransactionRequest) (*TransactionResponse, error)
 	DeleteTransaction(context.Context, *DeleteTransactionRequest) (*DeleteTransactionResponse, error)
 	mustEmbedUnimplementedTransactionServiceServer()
 }
@@ -114,16 +114,16 @@ type TransactionServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedTransactionServiceServer struct{}
 
-func (UnimplementedTransactionServiceServer) CreateTransaction(context.Context, *CreateTransactionReqeuest) (*TransactionResponse, error) {
+func (UnimplementedTransactionServiceServer) CreateTransaction(context.Context, *CreateTransactionRequest) (*TransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTransaction not implemented")
 }
-func (UnimplementedTransactionServiceServer) GetAllTransaction(context.Context, *EmptyTransaction) (*TransactionResponse, error) {
+func (UnimplementedTransactionServiceServer) GetAllTransaction(context.Context, *GetAllTransactionRequest) (*TransactionListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllTransaction not implemented")
 }
-func (UnimplementedTransactionServiceServer) GetByIdTransaction(context.Context, *GetByIdTransactionReqeuest) (*TransactionResponse, error) {
+func (UnimplementedTransactionServiceServer) GetByIdTransaction(context.Context, *GetByIdTransactionRequest) (*TransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByIdTransaction not implemented")
 }
-func (UnimplementedTransactionServiceServer) UpdateTransaction(context.Context, *UpdateTransactionReqeuest) (*TransactionResponse, error) {
+func (UnimplementedTransactionServiceServer) UpdateTransaction(context.Context, *UpdateTransactionRequest) (*TransactionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTransaction not implemented")
 }
 func (UnimplementedTransactionServiceServer) DeleteTransaction(context.Context, *DeleteTransactionRequest) (*DeleteTransactionResponse, error) {
@@ -151,7 +151,7 @@ func RegisterTransactionServiceServer(s grpc.ServiceRegistrar, srv TransactionSe
 }
 
 func _TransactionService_CreateTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateTransactionReqeuest)
+	in := new(CreateTransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -163,13 +163,13 @@ func _TransactionService_CreateTransaction_Handler(srv interface{}, ctx context.
 		FullMethod: TransactionService_CreateTransaction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransactionServiceServer).CreateTransaction(ctx, req.(*CreateTransactionReqeuest))
+		return srv.(TransactionServiceServer).CreateTransaction(ctx, req.(*CreateTransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _TransactionService_GetAllTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyTransaction)
+	in := new(GetAllTransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -181,13 +181,13 @@ func _TransactionService_GetAllTransaction_Handler(srv interface{}, ctx context.
 		FullMethod: TransactionService_GetAllTransaction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransactionServiceServer).GetAllTransaction(ctx, req.(*EmptyTransaction))
+		return srv.(TransactionServiceServer).GetAllTransaction(ctx, req.(*GetAllTransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _TransactionService_GetByIdTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetByIdTransactionReqeuest)
+	in := new(GetByIdTransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -199,13 +199,13 @@ func _TransactionService_GetByIdTransaction_Handler(srv interface{}, ctx context
 		FullMethod: TransactionService_GetByIdTransaction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransactionServiceServer).GetByIdTransaction(ctx, req.(*GetByIdTransactionReqeuest))
+		return srv.(TransactionServiceServer).GetByIdTransaction(ctx, req.(*GetByIdTransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _TransactionService_UpdateTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateTransactionReqeuest)
+	in := new(UpdateTransactionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -217,7 +217,7 @@ func _TransactionService_UpdateTransaction_Handler(srv interface{}, ctx context.
 		FullMethod: TransactionService_UpdateTransaction_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TransactionServiceServer).UpdateTransaction(ctx, req.(*UpdateTransactionReqeuest))
+		return srv.(TransactionServiceServer).UpdateTransaction(ctx, req.(*UpdateTransactionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
