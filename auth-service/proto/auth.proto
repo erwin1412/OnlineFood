@@ -12,8 +12,8 @@ message RegisterRequest{
     string name = 4;
     string phone = 5;
     string alamat = 6;
-    string lat = 7;
-    string long = 8;
+    string latitude = 7;
+    string longitude = 8;
     google.protobuf.Timestamp created_at = 9;
     google.protobuf.Timestamp updated_at = 10;
 }
@@ -25,8 +25,8 @@ message AuthResponse {
     string email = 4;
     string phone = 5;
     string alamat = 6;
-    string lat = 7;
-    string long = 8;
+    string latitude = 7;
+    string longitude = 8;
     string token = 9;
 }
 

@@ -12,6 +12,7 @@ type Merchant struct {
 	Long         string    `json:"long"`
 	OpenHour     string    `json:"open_hour"`
 	CloseHour    string    `json:"close_hour"`
+	Status       string    `json:"status"` // e.g. "open", "closed"
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }

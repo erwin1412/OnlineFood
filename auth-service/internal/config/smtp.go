@@ -1,8 +1,8 @@
-// config/smtp.go
 package config
 
 import (
 	"os"
+	"strconv"
 )
 
 type SMTPConfig struct {
@@ -16,8 +16,15 @@ type SMTPConfig struct {
 var SMTP SMTPConfig
 
 func InitSMTP() {
-	// Convert port ke int
+	portStr := os.Getenv("SMTP_PORT")
 	port := 587 // default
+
+	if portStr != "" {
+		if p, err := strconv.Atoi(portStr); err == nil {
+			port = p
+		}
+	}
+
 	SMTP = SMTPConfig{
 		Host: os.Getenv("SMTP_HOST"),
 		Port: port,

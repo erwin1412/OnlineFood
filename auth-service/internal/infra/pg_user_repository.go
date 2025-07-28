@@ -25,11 +25,11 @@ func (r *pgAuthRepository) GetByEmail(ctx context.Context, email string) (*domai
 	var user domain.User
 
 	err := r.db.QueryRowContext(ctx, `
-		SELECT id, name, email, password, role, phone, address, latitude, longitude, created_at, updated_at 
+		SELECT id, name, email, password, role, phone, alamat, latitude, longitude, created_at, updated_at 
 		FROM users 
 		WHERE email = $1 LIMIT 1
 	`, email).Scan(
-		&user.ID, &user.Name, &user.Email, &user.Password, &user.Role, &user.Phone, &user.Address,
+		&user.ID, &user.Name, &user.Email, &user.Password, &user.Role, &user.Phone, &user.Alamat,
 		&user.Latitude, &user.Longitude, &user.CreatedAt, &user.UpdatedAt,
 	)
 
@@ -48,10 +48,10 @@ func (r *pgAuthRepository) Create(ctx context.Context, user *domain.User) (*doma
 
 	_, err := r.db.ExecContext(ctx, `
 		INSERT INTO users 
-		(id, name, email, password, role, phone, address, latitude, longitude, created_at, updated_at)
+		(id, name, email, password, role, phone, alamat, latitude, longitude, created_at, updated_at)
 		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
 	`,
-		id, user.Name, user.Email, user.Password, user.Role, user.Phone, user.Address, user.Latitude, user.Longitude, user.CreatedAt, user.UpdatedAt,
+		id, user.Name, user.Email, user.Password, user.Role, user.Phone, user.Alamat, user.Latitude, user.Longitude, user.CreatedAt, user.UpdatedAt,
 	)
 
 	if err != nil {

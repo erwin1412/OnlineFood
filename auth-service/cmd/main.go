@@ -23,6 +23,10 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
+	log.Println("✅ GOOGLE_API_KEY =", os.Getenv("GOOGLE_API_KEY"))
+
+	config.InitSMTP()
+	// log.Println("SMTP CONFIG:", config.SMTP)
 
 	db := config.PostgresInit()
 	userRepo := infra.NewPgAuthRepository(db)
@@ -34,7 +38,9 @@ func main() {
 	jwtManager := jwt.NewManager(jwtSecret)
 	passwordHasher := hasher.NewBcrypt()
 
-	authApp := app.NewAuthApp(userRepo, passwordHasher, jwtManager)
+	producer := infra.NewKafkaProducer("localhost:9092", "user-registered")
+
+	authApp := app.NewAuthApp(userRepo, passwordHasher, jwtManager, producer)
 
 	// gRPC handler
 	authGRPC := grpcHandler.NewAuthHandler(authApp)
@@ -51,7 +57,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterAuthServiceServer(grpcServer, authGRPC)
 
-	fmt.Println("🚀 gRPC running at : " + grpcPort)
+	fmt.Println("gRPC running at : " + grpcPort)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
