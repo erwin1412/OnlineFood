@@ -2,6 +2,8 @@ package grpc
 
 import (
 	"auth-service/internal/app"
+	"auth-service/pkg/utils"
+	"fmt"
 
 	pb "auth-service/internal/delivery/grpc/pb"
 	"context"
@@ -20,6 +22,13 @@ func NewAuthHandler(app *app.AuthApp) *AuthHandler {
 }
 
 func (h *AuthHandler) Register(ctx context.Context, req *pb.RegisterRequest) (*pb.AuthResponse, error) {
+	// 1. Geocode dulu
+	lat, lng, err := utils.GetLatLong(req.GetAlamat())
+	if err != nil {
+		return nil, fmt.Errorf("failed to geocode: %w", err)
+	}
+
+	// 2. Simpan user
 	user, err := h.App.Register(
 		ctx,
 		req.GetName(),
@@ -28,22 +37,23 @@ func (h *AuthHandler) Register(ctx context.Context, req *pb.RegisterRequest) (*p
 		req.GetRole(),
 		req.GetPhone(),
 		req.GetAlamat(),
-		req.GetLat(),
-		req.GetLong(),
+		lat,
+		lng,
 	)
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "failed to register: %v", err)
 	}
 
+	// 3. Response
 	return &pb.AuthResponse{
-		Id:     user.ID,
-		Role:   user.Role,
-		Name:   user.Name,
-		Email:  user.Email,
-		Phone:  user.Phone,
-		Alamat: user.Address,
-		Lat:    user.Latitude,
-		Long:   user.Longitude,
+		Id:        user.ID,
+		Role:      user.Role,
+		Name:      user.Name,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		Alamat:    user.Alamat,
+		Latitude:  user.Latitude,
+		Longitude: user.Longitude,
 	}, nil
 }
 
@@ -57,15 +67,15 @@ func (h *AuthHandler) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Auth
 	user, _ := h.App.UserRepo.GetByEmail(ctx, req.GetEmail())
 
 	resp := &pb.AuthResponse{
-		Id:     user.ID,
-		Role:   user.Role,
-		Name:   user.Name,
-		Email:  user.Email,
-		Phone:  user.Phone,
-		Alamat: user.Address,
-		Lat:    user.Latitude,
-		Long:   user.Longitude,
-		Token:  token,
+		Id:        user.ID,
+		Role:      user.Role,
+		Name:      user.Name,
+		Email:     user.Email,
+		Phone:     user.Phone,
+		Alamat:    user.Alamat,
+		Latitude:  user.Latitude,
+		Longitude: user.Longitude,
+		Token:     token,
 	}
 
 	return resp, nil

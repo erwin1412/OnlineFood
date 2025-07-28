@@ -13,8 +13,9 @@ message Merchant{
     string long = 5;
     string open_hour = 6;
     string close_hour = 7;
-    google.protobuf.Timestamp created_at = 8;
-    google.protobuf.Timestamp updated_at = 9;
+    string status = 8; // e.g. "open", "closed"
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
 }
 
 message MerchantListResponse {
@@ -28,6 +29,7 @@ message CreateMerchantRequest {
     string long = 4;
     string open_hour = 5;
     string close_hour = 6;
+    string status = 7; // e.g. "open", "closed"
 }
 
 message UpdateMerchantRequest {
@@ -38,6 +40,7 @@ message UpdateMerchantRequest {
     string long = 5;
     string open_hour = 6;
     string close_hour = 7;
+    string status = 8; // e.g. "open", "closed"
 }
 
 message DeleteMerchantRequest {

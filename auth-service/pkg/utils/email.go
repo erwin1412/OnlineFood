@@ -20,5 +20,10 @@ func SendMail(to, subject, body string) error {
 		config.SMTP.Pass,
 	)
 
+	// Penting: aktifkan SSL jika pakai port 465
+	if config.SMTP.Port == 465 {
+		d.SSL = true
+	}
+
 	return d.DialAndSend(m)
 }

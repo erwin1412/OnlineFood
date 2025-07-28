@@ -21,27 +21,27 @@ import (
 // 	return &pgFoodRepository{db}
 // }
 
-type pgMerchantRepository struct {
+type PgMerchantRepository struct {
 	db *sql.DB
 }
 
-func NewPgMerchantRepository(db *sql.DB) *pgMerchantRepository {
+func NewPgMerchantRepository(db *sql.DB) *PgMerchantRepository {
 	if db == nil {
 		log.Fatal("Postgres DB is nil")
 	}
-	return &pgMerchantRepository{db}
+	return &PgMerchantRepository{db}
 }
 
 // Implement the MerchantRepository interface methods here
-func (r *pgMerchantRepository) GetById(ctx context.Context, id string) (*domain.Merchant, error) {
+func (r *PgMerchantRepository) GetById(ctx context.Context, id string) (*domain.Merchant, error) {
 	var merchant domain.Merchant
 	err := r.db.QueryRowContext(ctx, `
-		SELECT id, user_id, name_merchant, lat, long, open_hour, close_hour, created_at, updated_at
+		SELECT id, user_id, name_merchant, lat, long, open_hour, close_hour, status, created_at, updated_at
 		FROM merchants
 		WHERE id = $1 LIMIT 1
 	`, id).Scan(
 		&merchant.ID, &merchant.UserID, &merchant.NameMerchant, &merchant.Lat,
-		&merchant.Long, &merchant.OpenHour, &merchant.CloseHour, &merchant.CreatedAt,
+		&merchant.Long, &merchant.OpenHour, &merchant.CloseHour, &merchant.Status, &merchant.CreatedAt,
 		&merchant.UpdatedAt,
 	)
 	if err != nil {
@@ -52,18 +52,18 @@ func (r *pgMerchantRepository) GetById(ctx context.Context, id string) (*domain.
 	}
 	return &merchant, nil
 }
-func (r *pgMerchantRepository) Create(ctx context.Context, merchant *domain.Merchant) (*domain.Merchant, error) {
+func (r *PgMerchantRepository) Create(ctx context.Context, merchant *domain.Merchant) (*domain.Merchant, error) {
 	id := uuid.NewString()
 	if id == "" {
 		return nil, errors.New("failed to generate UUID")
 	}
 	_, err := r.db.ExecContext(ctx, `
 		INSERT INTO merchants
-		(id, user_id, name_merchant, lat, long, open_hour, close_hour, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+		(id, user_id, name_merchant, lat, long, open_hour, close_hour,status, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10)
 	`,
 		id, merchant.UserID, merchant.NameMerchant, merchant.Lat,
-		merchant.Long, merchant.OpenHour, merchant.CloseHour,
+		merchant.Long, merchant.OpenHour, merchant.CloseHour, merchant.Status,
 		merchant.CreatedAt, merchant.UpdatedAt,
 	)
 	if err != nil {
@@ -72,9 +72,9 @@ func (r *pgMerchantRepository) Create(ctx context.Context, merchant *domain.Merc
 	merchant.ID = id
 	return merchant, nil
 }
-func (r *pgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, error) {
+func (r *PgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, error) {
 	rows, err := r.db.QueryContext(ctx, `
-		SELECT id, user_id, name_merchant, lat, long, open_hour, close_hour, created_at, updated_at
+		SELECT id, user_id, name_merchant, lat, long, open_hour, close_hour, status , created_at, updated_at
 		FROM merchants
 	`)
 	if err != nil {
@@ -87,28 +87,28 @@ func (r *pgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, 
 		var merchant domain.Merchant
 		if err := rows.Scan(&merchant.ID, &merchant.UserID, &merchant.NameMerchant,
 			&merchant.Lat, &merchant.Long, &merchant.OpenHour,
-			&merchant.CloseHour, &merchant.CreatedAt, &merchant.UpdatedAt); err != nil {
+			&merchant.CloseHour, &merchant.Status, &merchant.CreatedAt, &merchant.UpdatedAt); err != nil {
 			return nil, err
 		}
 		merchants = append(merchants, &merchant)
 	}
 	return merchants, nil
 }
-func (r *pgMerchantRepository) Update(ctx context.Context, merchant *domain.Merchant) (*domain.Merchant, error) {
+func (r *PgMerchantRepository) Update(ctx context.Context, merchant *domain.Merchant) (*domain.Merchant, error) {
 	_, err := r.db.ExecContext(ctx, `
 		UPDATE merchants
 		SET user_id = $1, name_merchant = $2, lat = $3, long = $4,
-			open_hour = $5, close_hour = $6, updated_at = $7
-		WHERE id = $8
+			open_hour = $5, close_hour = $6, updated_at = $7 , status = $8
+		WHERE id = $9
 	`, merchant.UserID, merchant.NameMerchant, merchant.Lat,
 		merchant.Long, merchant.OpenHour, merchant.CloseHour,
-		merchant.UpdatedAt, merchant.ID)
+		merchant.UpdatedAt, merchant.Status, merchant.ID)
 	if err != nil {
 		return nil, err
 	}
 	return merchant, nil
 }
-func (r *pgMerchantRepository) Delete(ctx context.Context, id string) error {
+func (r *PgMerchantRepository) Delete(ctx context.Context, id string) error {
 	_, err := r.db.ExecContext(ctx, `
 		DELETE FROM merchants
 		WHERE id = $1

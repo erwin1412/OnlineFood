@@ -31,8 +31,9 @@ type Merchant struct {
 	Long          string                 `protobuf:"bytes,5,opt,name=long,proto3" json:"long,omitempty"`
 	OpenHour      string                 `protobuf:"bytes,6,opt,name=open_hour,json=openHour,proto3" json:"open_hour,omitempty"`
 	CloseHour     string                 `protobuf:"bytes,7,opt,name=close_hour,json=closeHour,proto3" json:"close_hour,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Status        string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"` // e.g. "open", "closed"
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -116,6 +117,13 @@ func (x *Merchant) GetCloseHour() string {
 	return ""
 }
 
+func (x *Merchant) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 func (x *Merchant) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
@@ -182,6 +190,7 @@ type CreateMerchantRequest struct {
 	Long          string                 `protobuf:"bytes,4,opt,name=long,proto3" json:"long,omitempty"`
 	OpenHour      string                 `protobuf:"bytes,5,opt,name=open_hour,json=openHour,proto3" json:"open_hour,omitempty"`
 	CloseHour     string                 `protobuf:"bytes,6,opt,name=close_hour,json=closeHour,proto3" json:"close_hour,omitempty"`
+	Status        string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"` // e.g. "open", "closed"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -258,6 +267,13 @@ func (x *CreateMerchantRequest) GetCloseHour() string {
 	return ""
 }
 
+func (x *CreateMerchantRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 type UpdateMerchantRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -267,6 +283,7 @@ type UpdateMerchantRequest struct {
 	Long          string                 `protobuf:"bytes,5,opt,name=long,proto3" json:"long,omitempty"`
 	OpenHour      string                 `protobuf:"bytes,6,opt,name=open_hour,json=openHour,proto3" json:"open_hour,omitempty"`
 	CloseHour     string                 `protobuf:"bytes,7,opt,name=close_hour,json=closeHour,proto3" json:"close_hour,omitempty"`
+	Status        string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"` // e.g. "open", "closed"
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -346,6 +363,13 @@ func (x *UpdateMerchantRequest) GetOpenHour() string {
 func (x *UpdateMerchantRequest) GetCloseHour() string {
 	if x != nil {
 		return x.CloseHour
+	}
+	return ""
+}
+
+func (x *UpdateMerchantRequest) GetStatus() string {
+	if x != nil {
+		return x.Status
 	}
 	return ""
 }
@@ -566,7 +590,7 @@ var File_proto_merchant_proto protoreflect.FileDescriptor
 
 const file_proto_merchant_proto_rawDesc = "" +
 	"\n" +
-	"\x14proto/merchant.proto\x12\bmerchant\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb0\x02\n" +
+	"\x14proto/merchant.proto\x12\bmerchant\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc8\x02\n" +
 	"\bMerchant\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12#\n" +
@@ -575,13 +599,15 @@ const file_proto_merchant_proto_rawDesc = "" +
 	"\x04long\x18\x05 \x01(\tR\x04long\x12\x1b\n" +
 	"\topen_hour\x18\x06 \x01(\tR\bopenHour\x12\x1d\n" +
 	"\n" +
-	"close_hour\x18\a \x01(\tR\tcloseHour\x129\n" +
+	"close_hour\x18\a \x01(\tR\tcloseHour\x12\x16\n" +
+	"\x06status\x18\b \x01(\tR\x06status\x129\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"H\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"H\n" +
 	"\x14MerchantListResponse\x120\n" +
-	"\tmerchants\x18\x01 \x03(\v2\x12.merchant.MerchantR\tmerchants\"\xb7\x01\n" +
+	"\tmerchants\x18\x01 \x03(\v2\x12.merchant.MerchantR\tmerchants\"\xcf\x01\n" +
 	"\x15CreateMerchantRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12#\n" +
 	"\rname_merchant\x18\x02 \x01(\tR\fnameMerchant\x12\x10\n" +
@@ -589,7 +615,8 @@ const file_proto_merchant_proto_rawDesc = "" +
 	"\x04long\x18\x04 \x01(\tR\x04long\x12\x1b\n" +
 	"\topen_hour\x18\x05 \x01(\tR\bopenHour\x12\x1d\n" +
 	"\n" +
-	"close_hour\x18\x06 \x01(\tR\tcloseHour\"\xc7\x01\n" +
+	"close_hour\x18\x06 \x01(\tR\tcloseHour\x12\x16\n" +
+	"\x06status\x18\a \x01(\tR\x06status\"\xdf\x01\n" +
 	"\x15UpdateMerchantRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12#\n" +
@@ -598,7 +625,8 @@ const file_proto_merchant_proto_rawDesc = "" +
 	"\x04long\x18\x05 \x01(\tR\x04long\x12\x1b\n" +
 	"\topen_hour\x18\x06 \x01(\tR\bopenHour\x12\x1d\n" +
 	"\n" +
-	"close_hour\x18\a \x01(\tR\tcloseHour\"'\n" +
+	"close_hour\x18\a \x01(\tR\tcloseHour\x12\x16\n" +
+	"\x06status\x18\b \x01(\tR\x06status\"'\n" +
 	"\x15DeleteMerchantRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"2\n" +
 	"\x16DeleteMerchantResponse\x12\x18\n" +

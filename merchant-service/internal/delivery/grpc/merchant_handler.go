@@ -36,6 +36,7 @@ func (h *MerchantHandler) GetByIdMerchant(ctx context.Context, req *pb.GetByIdMe
 			Long:         merchant.Long,
 			OpenHour:     merchant.OpenHour,
 			CloseHour:    merchant.CloseHour,
+			Status:       merchant.Status,
 			CreatedAt:    timestamppb.New(merchant.CreatedAt),
 			UpdatedAt:    timestamppb.New(merchant.UpdatedAt),
 		},
@@ -49,6 +50,7 @@ func (h *MerchantHandler) CreateMerchant(ctx context.Context, req *pb.CreateMerc
 		Long:         req.GetLong(),
 		OpenHour:     req.GetOpenHour(),
 		CloseHour:    req.GetCloseHour(),
+		Status:       req.GetStatus(),
 	}
 	createdMerchant, err := h.App.Create(ctx, merchant)
 	if err != nil {
@@ -63,6 +65,7 @@ func (h *MerchantHandler) CreateMerchant(ctx context.Context, req *pb.CreateMerc
 			Long:         createdMerchant.Long,
 			OpenHour:     createdMerchant.OpenHour,
 			CloseHour:    createdMerchant.CloseHour,
+			Status:       createdMerchant.Status,
 			CreatedAt:    timestamppb.New(createdMerchant.CreatedAt),
 			UpdatedAt:    timestamppb.New(createdMerchant.UpdatedAt),
 		},
@@ -83,6 +86,7 @@ func (h *MerchantHandler) GetAllMerchant(ctx context.Context, req *pb.Empty) (*p
 			Long:         merchant.Long,
 			OpenHour:     merchant.OpenHour,
 			CloseHour:    merchant.CloseHour,
+			Status:       merchant.Status,
 			CreatedAt:    timestamppb.New(merchant.CreatedAt),
 			UpdatedAt:    timestamppb.New(merchant.UpdatedAt),
 		})
@@ -99,6 +103,7 @@ func (h *MerchantHandler) UpdateMerchant(ctx context.Context, req *pb.UpdateMerc
 		Long:         req.GetLong(),
 		OpenHour:     req.GetOpenHour(),
 		CloseHour:    req.GetCloseHour(),
+		Status:       req.GetStatus(),
 	}
 	updatedMerchant, err := h.App.Update(ctx, merchant)
 	if err != nil {
@@ -113,6 +118,7 @@ func (h *MerchantHandler) UpdateMerchant(ctx context.Context, req *pb.UpdateMerc
 			Long:         updatedMerchant.Long,
 			OpenHour:     updatedMerchant.OpenHour,
 			CloseHour:    updatedMerchant.CloseHour,
+			Status:       updatedMerchant.Status,
 			CreatedAt:    timestamppb.New(updatedMerchant.CreatedAt),
 			UpdatedAt:    timestamppb.New(updatedMerchant.UpdatedAt),
 		},

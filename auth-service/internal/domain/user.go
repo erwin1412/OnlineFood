@@ -11,7 +11,7 @@ type User struct {
 	Password  string    `json:"password"`
 	Role      string    `json:"role"`
 	Phone     string    `json:"phone"`
-	Address   string    `json:"address"`
+	Alamat    string    `json:"alamat"`
 	Latitude  string    `json:"latitude"`
 	Longitude string    `json:"longitude"`
 	CreatedAt time.Time `json:"created_at"`

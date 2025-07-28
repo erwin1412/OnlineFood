@@ -30,8 +30,8 @@ type RegisterRequest struct {
 	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
 	Alamat        string                 `protobuf:"bytes,6,opt,name=alamat,proto3" json:"alamat,omitempty"`
-	Lat           string                 `protobuf:"bytes,7,opt,name=lat,proto3" json:"lat,omitempty"`
-	Long          string                 `protobuf:"bytes,8,opt,name=long,proto3" json:"long,omitempty"`
+	Latitude      string                 `protobuf:"bytes,7,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	Longitude     string                 `protobuf:"bytes,8,opt,name=longitude,proto3" json:"longitude,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -110,16 +110,16 @@ func (x *RegisterRequest) GetAlamat() string {
 	return ""
 }
 
-func (x *RegisterRequest) GetLat() string {
+func (x *RegisterRequest) GetLatitude() string {
 	if x != nil {
-		return x.Lat
+		return x.Latitude
 	}
 	return ""
 }
 
-func (x *RegisterRequest) GetLong() string {
+func (x *RegisterRequest) GetLongitude() string {
 	if x != nil {
-		return x.Long
+		return x.Longitude
 	}
 	return ""
 }
@@ -146,8 +146,8 @@ type AuthResponse struct {
 	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
 	Phone         string                 `protobuf:"bytes,5,opt,name=phone,proto3" json:"phone,omitempty"`
 	Alamat        string                 `protobuf:"bytes,6,opt,name=alamat,proto3" json:"alamat,omitempty"`
-	Lat           string                 `protobuf:"bytes,7,opt,name=lat,proto3" json:"lat,omitempty"`
-	Long          string                 `protobuf:"bytes,8,opt,name=long,proto3" json:"long,omitempty"`
+	Latitude      string                 `protobuf:"bytes,7,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	Longitude     string                 `protobuf:"bytes,8,opt,name=longitude,proto3" json:"longitude,omitempty"`
 	Token         string                 `protobuf:"bytes,9,opt,name=token,proto3" json:"token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -225,16 +225,16 @@ func (x *AuthResponse) GetAlamat() string {
 	return ""
 }
 
-func (x *AuthResponse) GetLat() string {
+func (x *AuthResponse) GetLatitude() string {
 	if x != nil {
-		return x.Lat
+		return x.Latitude
 	}
 	return ""
 }
 
-func (x *AuthResponse) GetLong() string {
+func (x *AuthResponse) GetLongitude() string {
 	if x != nil {
-		return x.Long
+		return x.Longitude
 	}
 	return ""
 }
@@ -302,30 +302,30 @@ var File_proto_auth_proto protoreflect.FileDescriptor
 
 const file_proto_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/auth.proto\x12\x04auth\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\x02\n" +
+	"\x10proto/auth.proto\x12\x04auth\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc9\x02\n" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x12\n" +
 	"\x04role\x18\x03 \x01(\tR\x04role\x12\x12\n" +
 	"\x04name\x18\x04 \x01(\tR\x04name\x12\x14\n" +
 	"\x05phone\x18\x05 \x01(\tR\x05phone\x12\x16\n" +
-	"\x06alamat\x18\x06 \x01(\tR\x06alamat\x12\x10\n" +
-	"\x03lat\x18\a \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\b \x01(\tR\x04long\x129\n" +
+	"\x06alamat\x18\x06 \x01(\tR\x06alamat\x12\x1a\n" +
+	"\blatitude\x18\a \x01(\tR\blatitude\x12\x1c\n" +
+	"\tlongitude\x18\b \x01(\tR\tlongitude\x129\n" +
 	"\n" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xc6\x01\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xda\x01\n" +
 	"\fAuthResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04role\x18\x02 \x01(\tR\x04role\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x14\n" +
 	"\x05email\x18\x04 \x01(\tR\x05email\x12\x14\n" +
 	"\x05phone\x18\x05 \x01(\tR\x05phone\x12\x16\n" +
-	"\x06alamat\x18\x06 \x01(\tR\x06alamat\x12\x10\n" +
-	"\x03lat\x18\a \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\b \x01(\tR\x04long\x12\x14\n" +
+	"\x06alamat\x18\x06 \x01(\tR\x06alamat\x12\x1a\n" +
+	"\blatitude\x18\a \x01(\tR\blatitude\x12\x1c\n" +
+	"\tlongitude\x18\b \x01(\tR\tlongitude\x12\x14\n" +
 	"\x05token\x18\t \x01(\tR\x05token\"@\n" +
 	"\fLoginRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +

@@ -3,18 +3,22 @@ package app
 import (
 	"context"
 	"food-service/internal/domain"
+	"food-service/internal/infra"
 	"time"
 )
 
 type FoodApp struct {
 	FoodRepo domain.FoodRepository
+	Producer *infra.KafkaProducer
 }
 
-func NewFoodApp(repo domain.FoodRepository) *FoodApp {
+func NewFoodApp(repo domain.FoodRepository, producer *infra.KafkaProducer) *FoodApp {
 	return &FoodApp{
 		FoodRepo: repo,
+		Producer: producer,
 	}
 }
+
 func (a *FoodApp) GetById(ctx context.Context, id string) (*domain.Food, error) {
 	if id == "" {
 		return nil, ErrValidation
@@ -27,8 +31,24 @@ func (a *FoodApp) Create(ctx context.Context, food *domain.Food) (*domain.Food, 
 	}
 	food.CreatedAt = time.Now()
 	food.UpdatedAt = time.Now()
-	return a.FoodRepo.Create(ctx, food)
+
+	createdFood, err := a.FoodRepo.Create(ctx, food)
+	if err != nil {
+		return nil, err
+	}
+
+	_ = a.Producer.Publish(map[string]interface{}{
+		"event":       "FoodCreated",
+		"id":          createdFood.ID,
+		"merchant_id": createdFood.MerchantID,
+		"name":        createdFood.Name,
+		"price":       createdFood.Price,
+		"created_at":  createdFood.CreatedAt,
+	})
+
+	return createdFood, nil
 }
+
 func (a *FoodApp) GetAll(ctx context.Context) ([]*domain.Food, error) {
 	return a.FoodRepo.GetAll(ctx)
 }

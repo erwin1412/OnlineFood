@@ -25,11 +25,9 @@ func main() {
 	db := config.PostgresInit()
 	foodRepo := infra.NewPgFoodRepository(db)
 
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		log.Fatal("JWT_SECRET must be set in .env")
-	}
-	authApp := app.NewFoodApp(foodRepo)
+	producer := infra.NewKafkaProducer("localhost:9092", "food-created")
+
+	authApp := app.NewFoodApp(foodRepo, producer)
 
 	// gRPC handler
 	authGRPC := grpcHandler.NewFoodHandler(authApp)

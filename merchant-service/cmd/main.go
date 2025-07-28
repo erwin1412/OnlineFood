@@ -8,6 +8,7 @@ import (
 	grpcHandler "merchant-service/internal/delivery/grpc"
 	"merchant-service/internal/delivery/grpc/pb"
 	"merchant-service/internal/infra"
+	"merchant-service/pkg/scheduler"
 	"net"
 	"os"
 
@@ -25,10 +26,8 @@ func main() {
 	db := config.PostgresInit()
 	merchantRepo := infra.NewPgMerchantRepository(db)
 
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		log.Fatal("JWT_SECRET must be set in .env")
-	}
+	go scheduler.StartMerchantStatusScheduler(merchantRepo)
+
 	merchantApp := app.NewMerchantApp(merchantRepo)
 
 	// gRPC handler
