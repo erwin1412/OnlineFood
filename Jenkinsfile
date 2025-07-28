@@ -14,11 +14,14 @@ pipeline {
       }
     }
 
+    // 🚫 HAPUS stage Generate
+    /*
     stage('Generate') {
       steps {
         sh 'chmod +x generate.sh && ./generate.sh'
       }
     }
+    */
 
     stage('Build Images') {
       steps {
@@ -28,10 +31,8 @@ pipeline {
 
     stage('Auth GCP') {
       steps {
-        withCredentials([file(credentialsId: 'gcp-sa-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-          sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
-          sh 'gcloud auth configure-docker $REGION-docker.pkg.dev'
-        }
+        sh 'gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS'
+        sh 'gcloud auth configure-docker $REGION-docker.pkg.dev'
       }
     }
 
