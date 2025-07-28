@@ -36,11 +36,11 @@ func NewPgMerchantRepository(db *sql.DB) *PgMerchantRepository {
 func (r *PgMerchantRepository) GetById(ctx context.Context, id string) (*domain.Merchant, error) {
 	var merchant domain.Merchant
 	err := r.db.QueryRowContext(ctx, `
-		SELECT id, user_id, name_merchant, lat, long, open_hour, close_hour, status, created_at, updated_at
+		SELECT id, user_id, name_merchant,alamat, lat, long, open_hour, close_hour, status, created_at, updated_at
 		FROM merchants
 		WHERE id = $1 LIMIT 1
 	`, id).Scan(
-		&merchant.ID, &merchant.UserID, &merchant.NameMerchant, &merchant.Lat,
+		&merchant.ID, &merchant.UserID, &merchant.NameMerchant, &merchant.Alamat, &merchant.Lat,
 		&merchant.Long, &merchant.OpenHour, &merchant.CloseHour, &merchant.Status, &merchant.CreatedAt,
 		&merchant.UpdatedAt,
 	)
@@ -59,10 +59,10 @@ func (r *PgMerchantRepository) Create(ctx context.Context, merchant *domain.Merc
 	}
 	_, err := r.db.ExecContext(ctx, `
 		INSERT INTO merchants
-		(id, user_id, name_merchant, lat, long, open_hour, close_hour,status, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10)
+		(id, user_id, name_merchant, alamat ,lat, long, open_hour, close_hour,status, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10 , $11)
 	`,
-		id, merchant.UserID, merchant.NameMerchant, merchant.Lat,
+		id, merchant.UserID, merchant.NameMerchant, merchant.Alamat, merchant.Lat,
 		merchant.Long, merchant.OpenHour, merchant.CloseHour, merchant.Status,
 		merchant.CreatedAt, merchant.UpdatedAt,
 	)
@@ -74,7 +74,7 @@ func (r *PgMerchantRepository) Create(ctx context.Context, merchant *domain.Merc
 }
 func (r *PgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, error) {
 	rows, err := r.db.QueryContext(ctx, `
-		SELECT id, user_id, name_merchant, lat, long, open_hour, close_hour, status , created_at, updated_at
+		SELECT id, user_id, name_merchant,alamat, lat, long, open_hour, close_hour, status , created_at, updated_at
 		FROM merchants
 	`)
 	if err != nil {
@@ -85,7 +85,7 @@ func (r *PgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, 
 	var merchants []*domain.Merchant
 	for rows.Next() {
 		var merchant domain.Merchant
-		if err := rows.Scan(&merchant.ID, &merchant.UserID, &merchant.NameMerchant,
+		if err := rows.Scan(&merchant.ID, &merchant.UserID, &merchant.NameMerchant, &merchant.Alamat,
 			&merchant.Lat, &merchant.Long, &merchant.OpenHour,
 			&merchant.CloseHour, &merchant.Status, &merchant.CreatedAt, &merchant.UpdatedAt); err != nil {
 			return nil, err
@@ -97,10 +97,10 @@ func (r *PgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, 
 func (r *PgMerchantRepository) Update(ctx context.Context, merchant *domain.Merchant) (*domain.Merchant, error) {
 	_, err := r.db.ExecContext(ctx, `
 		UPDATE merchants
-		SET user_id = $1, name_merchant = $2, lat = $3, long = $4,
-			open_hour = $5, close_hour = $6, updated_at = $7 , status = $8
-		WHERE id = $9
-	`, merchant.UserID, merchant.NameMerchant, merchant.Lat,
+		SET user_id = $1, name_merchant = $2, alamat = $3,lat = $4, long = $5,
+			open_hour = $6, close_hour = $7, updated_at = $8 , status = $9
+		WHERE id = $10
+	`, merchant.UserID, merchant.NameMerchant, merchant.Alamat, merchant.Lat,
 		merchant.Long, merchant.OpenHour, merchant.CloseHour,
 		merchant.UpdatedAt, merchant.Status, merchant.ID)
 	if err != nil {

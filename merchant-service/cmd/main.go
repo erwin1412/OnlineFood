@@ -22,6 +22,7 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
+	log.Println("✅ GOOGLE_API_KEY =", os.Getenv("GOOGLE_API_KEY"))
 
 	db := config.PostgresInit()
 	merchantRepo := infra.NewPgMerchantRepository(db)
