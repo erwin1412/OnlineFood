@@ -14,15 +14,6 @@ pipeline {
       }
     }
 
-    // 🚫 HAPUS stage Generate
-    /*
-    stage('Generate') {
-      steps {
-        sh 'chmod +x generate.sh && ./generate.sh'
-      }
-    }
-    */
-
     stage('Build Images') {
       steps {
         sh 'docker-compose build'
