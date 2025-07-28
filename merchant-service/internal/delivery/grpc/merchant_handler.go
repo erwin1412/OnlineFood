@@ -1,7 +1,9 @@
 package grpc
 
 import (
+	"auth-service/pkg/utils"
 	"context"
+	"fmt"
 	"merchant-service/internal/app"
 	pb "merchant-service/internal/delivery/grpc/pb"
 	"merchant-service/internal/domain"
@@ -32,6 +34,7 @@ func (h *MerchantHandler) GetByIdMerchant(ctx context.Context, req *pb.GetByIdMe
 			Id:           merchant.ID,
 			UserId:       merchant.UserID,
 			NameMerchant: merchant.NameMerchant,
+			Alamat:       merchant.Alamat,
 			Lat:          merchant.Lat,
 			Long:         merchant.Long,
 			OpenHour:     merchant.OpenHour,
@@ -43,11 +46,17 @@ func (h *MerchantHandler) GetByIdMerchant(ctx context.Context, req *pb.GetByIdMe
 	}, nil
 }
 func (h *MerchantHandler) CreateMerchant(ctx context.Context, req *pb.CreateMerchantRequest) (*pb.MerchantResponse, error) {
+	lat, long, err := utils.GetLatLong(req.GetAlamat())
+	if err != nil {
+		return nil, fmt.Errorf("failed to geocode: %w", err)
+	}
+
 	merchant := &domain.Merchant{
 		UserID:       req.GetUserId(),
 		NameMerchant: req.GetNameMerchant(),
-		Lat:          req.GetLat(),
-		Long:         req.GetLong(),
+		Alamat:       req.GetAlamat(),
+		Lat:          lat,
+		Long:         long,
 		OpenHour:     req.GetOpenHour(),
 		CloseHour:    req.GetCloseHour(),
 		Status:       req.GetStatus(),
@@ -61,6 +70,7 @@ func (h *MerchantHandler) CreateMerchant(ctx context.Context, req *pb.CreateMerc
 			Id:           createdMerchant.ID,
 			UserId:       createdMerchant.UserID,
 			NameMerchant: createdMerchant.NameMerchant,
+			Alamat:       createdMerchant.Alamat,
 			Lat:          createdMerchant.Lat,
 			Long:         createdMerchant.Long,
 			OpenHour:     createdMerchant.OpenHour,
@@ -82,6 +92,7 @@ func (h *MerchantHandler) GetAllMerchant(ctx context.Context, req *pb.Empty) (*p
 			Id:           merchant.ID,
 			UserId:       merchant.UserID,
 			NameMerchant: merchant.NameMerchant,
+			Alamat:       merchant.Alamat,
 			Lat:          merchant.Lat,
 			Long:         merchant.Long,
 			OpenHour:     merchant.OpenHour,
@@ -95,12 +106,18 @@ func (h *MerchantHandler) GetAllMerchant(ctx context.Context, req *pb.Empty) (*p
 }
 
 func (h *MerchantHandler) UpdateMerchant(ctx context.Context, req *pb.UpdateMerchantRequest) (*pb.MerchantResponse, error) {
+	lat, long, err := utils.GetLatLong(req.GetAlamat())
+	if err != nil {
+		return nil, fmt.Errorf("failed to geocode: %w", err)
+	}
+
 	merchant := &domain.Merchant{
 		ID:           req.GetId(),
 		UserID:       req.GetUserId(),
 		NameMerchant: req.GetNameMerchant(),
-		Lat:          req.GetLat(),
-		Long:         req.GetLong(),
+		Alamat:       req.GetAlamat(),
+		Lat:          lat,
+		Long:         long,
 		OpenHour:     req.GetOpenHour(),
 		CloseHour:    req.GetCloseHour(),
 		Status:       req.GetStatus(),
@@ -114,6 +131,7 @@ func (h *MerchantHandler) UpdateMerchant(ctx context.Context, req *pb.UpdateMerc
 			Id:           updatedMerchant.ID,
 			UserId:       updatedMerchant.UserID,
 			NameMerchant: updatedMerchant.NameMerchant,
+			Alamat:       updatedMerchant.Alamat,
 			Lat:          updatedMerchant.Lat,
 			Long:         updatedMerchant.Long,
 			OpenHour:     updatedMerchant.OpenHour,
