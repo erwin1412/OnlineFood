@@ -111,13 +111,39 @@ func (r *pgCourierRepository) UpdateLongLat(ctx context.Context, id, lat, long s
 	return courier, nil
 }
 func (r *pgCourierRepository) Delete(ctx context.Context, id string) error {
-	_, err := r.db.ExecContext(ctx, `
+
+	if id == "" {
+		return errors.New("courier ID cannot be empty")
+	}
+	var userID string
+	// set courier.UserID = userID
+	err := r.db.QueryRowContext(ctx, `
+		SELECT user_id FROM couriers WHERE id = $1
+	`, id).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return errors.New("courier not found")
+		}
+	}
+
+	_, err = r.db.ExecContext(ctx, `
 		DELETE FROM couriers
 		WHERE id = $1
 	`, id)
 	if err != nil {
 		return err
 	}
+
+	// set the user role to user
+	_, err = r.db.ExecContext(ctx, `
+		UPDATE users
+		SET role = 'user'
+		WHERE id = $1
+	`, userID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 func (r *pgCourierRepository) GetAll(ctx context.Context) ([]*domain.Courier, error) {

@@ -70,6 +70,18 @@ func (r *PgMerchantRepository) Create(ctx context.Context, merchant *domain.Merc
 		return nil, err
 	}
 	merchant.ID = id
+
+	// select from user where id = $1 , and update the role = merchant
+	err = r.db.QueryRowContext(ctx, `
+	UPDATE users
+	SET role = 'merchant'
+	WHERE id = $1
+	`, merchant.UserID).Scan()
+	if err != nil {
+		log.Println("Error updating user role to merchant:", err)
+		return nil, err
+	}
+
 	return merchant, nil
 }
 func (r *PgMerchantRepository) GetAll(ctx context.Context) ([]*domain.Merchant, error) {
@@ -109,12 +121,40 @@ func (r *PgMerchantRepository) Update(ctx context.Context, merchant *domain.Merc
 	return merchant, nil
 }
 func (r *PgMerchantRepository) Delete(ctx context.Context, id string) error {
-	_, err := r.db.ExecContext(ctx, `
+
+	if id == "" {
+		return errors.New("merchant ID cannot be empty")
+	}
+	// set the user role to user
+	var userID string
+
+	// set merchant.UserID = userID
+	err := r.db.QueryRowContext(ctx, `
+		SELECT user_id FROM merchants WHERE id = $1
+	`, id).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return errors.New("merchant not found")
+		}
+	}
+
+	_, err = r.db.ExecContext(ctx, `
 		DELETE FROM merchants
 		WHERE id = $1
 	`, id)
 	if err != nil {
 		return err
 	}
+
+	// set the user role to user
+	_, err = r.db.ExecContext(ctx, `
+		UPDATE users
+		SET role = 'user'
+		WHERE id = $1
+	`, userID)
+	if err != nil {
+		log.Println("Error updating user role to user:", err)
+	}
+
 	return nil
 }
