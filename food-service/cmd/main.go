@@ -16,21 +16,24 @@ import (
 )
 
 func main() {
-
-	// 1. Load env file
+	// Load .env kalau ada
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found")
 	}
 
+	// Init DB
 	db := config.PostgresInit()
 	foodRepo := infra.NewPgFoodRepository(db)
 
+	// Init Kafka producer (harus nyala Zookeeper & Kafka broker!)
 	producer := infra.NewKafkaProducer("localhost:9092", "food-created")
 
-	authApp := app.NewFoodApp(foodRepo, producer)
+	// Injek ke FoodApp
+	foodApp := app.NewFoodApp(foodRepo, producer)
 
-	// gRPC handler
-	authGRPC := grpcHandler.NewFoodHandler(authApp)
+	// Init handler gRPC
+	foodGRPC := grpcHandler.NewFoodHandler(foodApp)
+
 	grpcPort := os.Getenv("GRPC_PORT")
 	if grpcPort == "" {
 		grpcPort = "50052"
@@ -42,14 +45,14 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer()
-	pb.RegisterFoodServiceServer(grpcServer, authGRPC)
+	pb.RegisterFoodServiceServer(grpcServer, foodGRPC)
 
-	fmt.Println("🚀 gRPC running at : " + grpcPort)
+	fmt.Println("🚀 gRPC running at :", grpcPort)
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	log.Println("Gracefully shutting down...")
-	db.Close()
+	// Tutup DB connection kalau server stop
+	defer db.Close()
 }

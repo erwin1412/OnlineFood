@@ -12,7 +12,7 @@ type KafkaProducer struct {
 	Writer *kafka.Writer
 }
 
-func NewKafkaProducer(brokerAddress string, topic string) *KafkaProducer {
+func NewKafkaProducer(brokerAddress, topic string) *KafkaProducer {
 	w := &kafka.Writer{
 		Addr:         kafka.TCP(brokerAddress),
 		Topic:        topic,
