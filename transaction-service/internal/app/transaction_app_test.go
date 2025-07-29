@@ -84,15 +84,6 @@ func (m *mockCartRepo) DeleteAll(ctx context.Context, userId string) error {
 	return m.DeleteAllFn(ctx, userId)
 }
 
-// Mock MidtransClient
-type mockMidtransClient struct {
-	CreateSnapTokenFn func(orderID string, total int, customerName, customerEmail string) (string, error)
-}
-
-func (m *mockMidtransClient) CreateSnapToken(orderID string, total int, customerName, customerEmail string) (string, error) {
-	return m.CreateSnapTokenFn(orderID, total, customerName, customerEmail)
-}
-
 func TestTransactionApp_Create_Success(t *testing.T) {
 	mockTxRepo := &mockTransactionRepo{
 		CreateFn: func(ctx context.Context, tx *domain.Transaction) (*domain.Transaction, error) {
