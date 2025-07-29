@@ -118,18 +118,33 @@ func (a *TransactionApp) Create(ctx context.Context, tx *domain.Transaction, det
 
 	// 3️⃣ Generate Snap token
 	// Use hardcoded test values for sandbox testing
-	snapToken, err := a.MidtransClient.CreateSnapToken(
-		createdTx.ID,
-		createdTx.Total,
-		"Test User",                // Hardcoded customer name for sandbox
-		"erwin14120824@google.com", // Hardcoded valid email for sandbox
-	)
-	if err != nil {
-		return nil, err
+	// snapToken, err := a.MidtransClient.CreateSnapToken(
+	// 	createdTx.ID,
+	// 	createdTx.Total,
+	// 	"Test User",                // Hardcoded customer name for sandbox
+	// 	"erwin14120824@google.com", // Hardcoded valid email for sandbox
+	// )
+
+	// 3️⃣ Generate Snap token hanya kalau MidtransClient ada
+	if a.MidtransClient != nil {
+		snapToken, err := a.MidtransClient.CreateSnapToken(
+			createdTx.ID,
+			createdTx.Total,
+			"Test User",
+			"erwin14120824@google.com",
+		)
+		if err != nil {
+			return nil, err
+		}
+		createdTx.SnapToken = snapToken
 	}
 
+	// if err != nil {
+	// 	return nil, err
+	// }
+
 	// 4️⃣ Update transaction with Snap token
-	createdTx.SnapToken = snapToken
+	// createdTx.SnapToken = snapToken
 	createdTx.UpdatedAt = time.Now()
 	updatedTx, err := a.TransactionRepo.Update(ctx, createdTx)
 	if err != nil {
