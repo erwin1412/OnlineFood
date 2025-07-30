@@ -687,11 +687,11 @@ const file_proto_courier_proto_rawDesc = "" +
 	"\x05Empty\"A\n" +
 	"\x19FindNearestCourierRequest\x12\x10\n" +
 	"\x03lat\x18\x01 \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\x02 \x01(\tR\x04long2\xaa\x04\n" +
+	"\x04long\x18\x02 \x01(\tR\x04long2\xb8\x04\n" +
 	"\x0eCourierService\x12H\n" +
-	"\rCreateCourier\x12\x1d.courier.CreateCourierRequest\x1a\x18.courier.CourierResponse\x12C\n" +
-	"\aGetById\x12\x1e.courier.GetByIdCourierRequest\x1a\x18.courier.CourierResponse\x12M\n" +
-	"\fGetByLongLat\x12#.courier.GetByLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12V\n" +
+	"\rCreateCourier\x12\x1d.courier.CreateCourierRequest\x1a\x18.courier.CourierResponse\x12J\n" +
+	"\x0eGetByIdCourier\x12\x1e.courier.GetByIdCourierRequest\x1a\x18.courier.CourierResponse\x12T\n" +
+	"\x13GetByLongLatCourier\x12#.courier.GetByLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12V\n" +
 	"\x14UpdateLongLatCourier\x12$.courier.UpdateLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12N\n" +
 	"\rDeleteCourier\x12\x1d.courier.DeleteCourierRequest\x1a\x1e.courier.DeleteCourierResponse\x12>\n" +
 	"\x0eGetAllCouriers\x12\x0e.courier.Empty\x1a\x1c.courier.CourierListResponse\x12R\n" +
@@ -730,15 +730,15 @@ var file_proto_courier_proto_depIdxs = []int32{
 	0,  // 2: courier.CourierListResponse.couriers:type_name -> courier.Courier
 	0,  // 3: courier.CourierResponse.Courier:type_name -> courier.Courier
 	2,  // 4: courier.CourierService.CreateCourier:input_type -> courier.CreateCourierRequest
-	7,  // 5: courier.CourierService.GetById:input_type -> courier.GetByIdCourierRequest
-	8,  // 6: courier.CourierService.GetByLongLat:input_type -> courier.GetByLongLatCourierRequest
+	7,  // 5: courier.CourierService.GetByIdCourier:input_type -> courier.GetByIdCourierRequest
+	8,  // 6: courier.CourierService.GetByLongLatCourier:input_type -> courier.GetByLongLatCourierRequest
 	3,  // 7: courier.CourierService.UpdateLongLatCourier:input_type -> courier.UpdateLongLatCourierRequest
 	4,  // 8: courier.CourierService.DeleteCourier:input_type -> courier.DeleteCourierRequest
 	9,  // 9: courier.CourierService.GetAllCouriers:input_type -> courier.Empty
 	10, // 10: courier.CourierService.FindNearestCourier:input_type -> courier.FindNearestCourierRequest
 	6,  // 11: courier.CourierService.CreateCourier:output_type -> courier.CourierResponse
-	6,  // 12: courier.CourierService.GetById:output_type -> courier.CourierResponse
-	6,  // 13: courier.CourierService.GetByLongLat:output_type -> courier.CourierResponse
+	6,  // 12: courier.CourierService.GetByIdCourier:output_type -> courier.CourierResponse
+	6,  // 13: courier.CourierService.GetByLongLatCourier:output_type -> courier.CourierResponse
 	6,  // 14: courier.CourierService.UpdateLongLatCourier:output_type -> courier.CourierResponse
 	5,  // 15: courier.CourierService.DeleteCourier:output_type -> courier.DeleteCourierResponse
 	1,  // 16: courier.CourierService.GetAllCouriers:output_type -> courier.CourierListResponse

@@ -27,7 +27,7 @@ func main() {
 	courierGroup := e.Group("/couriers", middleware.JWTAuth)
 	courierGroup.GET("", h.GetAllCouriers)
 	courierGroup.GET("/:id", h.GetByIdCourier)
-	courierGroup.GET("/longlat", h.GetByLongLatCourier)
+	// courierGroup.GET("/longlat", h.GetByLongLatCourier)
 	courierGroup.GET("/longlat/:lat/:long", h.GetByLongLatCourier)
 	courierGroup.POST("", h.CreateCourier)
 	courierGroup.PUT("/:id", h.UpdateLongLatCourier)
@@ -68,7 +68,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = "8032"
 	}
 	log.Println("Gateway Service running at http://localhost:" + port)
 	e.Logger.Fatal(e.Start(":" + port))
