@@ -17,13 +17,3 @@ type Merchant struct {
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
-
-// string id = 1;
-// string user_id = 2;
-// string name_merchant = 3;
-// string lat = 4;
-// string long = 5;
-// string open_hour = 6;
-// string close_hour = 7;
-// google.protobuf.Timestamp created_at = 8;
-// google.protobuf.Timestamp updated_at = 9;

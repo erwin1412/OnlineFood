@@ -72,15 +72,15 @@ func (r *PgMerchantRepository) Create(ctx context.Context, merchant *domain.Merc
 	merchant.ID = id
 
 	// select from user where id = $1 , and update the role = merchant
-	err = r.db.QueryRowContext(ctx, `
-	UPDATE users
-	SET role = 'merchant'
-	WHERE id = $1
-	`, merchant.UserID).Scan()
-	if err != nil {
-		log.Println("Error updating user role to merchant:", err)
-		return nil, err
-	}
+	// err = r.db.QueryRowContext(ctx, `
+	// UPDATE users
+	// SET role = 'merchant'
+	// WHERE id = $1
+	// `, merchant.UserID).Scan()
+	// if err != nil {
+	// 	log.Println("Error updating user role to merchant:", err)
+	// 	return nil, err
+	// }
 
 	return merchant, nil
 }

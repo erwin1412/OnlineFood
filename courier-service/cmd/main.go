@@ -25,10 +25,6 @@ func main() {
 	db := config.PostgresInit()
 	courierRepo := infra.NewPgCourierRepository(db)
 
-	jwtSecret := os.Getenv("JWT_SECRET")
-	if jwtSecret == "" {
-		log.Fatal("JWT_SECRET must be set in .env")
-	}
 	courierApp := app.NewCourierApp(courierRepo)
 
 	// gRPC handler

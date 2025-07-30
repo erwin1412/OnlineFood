@@ -27,6 +27,10 @@ message CreateCourierRequest {
     string vehicle_number = 4; // <== tambahkan ini
     string status = 5;         // <== tambahkan ini
 }
+// raw json data in postman 
+
+
+
 message UpdateLongLatCourierRequest {
     string id = 1;
     string user_id = 2;
@@ -59,6 +63,12 @@ message GetByLongLatCourierRequest {
 
 message Empty {}
 
+message FindNearestCourierRequest {
+    string lat = 1;
+    string long = 2;
+}
+
+
 service CourierService {
     rpc CreateCourier(CreateCourierRequest) returns (CourierResponse);
     rpc GetById(GetByIdCourierRequest) returns (CourierResponse);
@@ -66,5 +76,7 @@ service CourierService {
     rpc UpdateLongLatCourier(UpdateLongLatCourierRequest) returns (CourierResponse);
     rpc DeleteCourier(DeleteCourierRequest) returns (DeleteCourierResponse);
     rpc GetAllCouriers(Empty) returns (CourierListResponse);
+        rpc FindNearestCourier(FindNearestCourierRequest) returns (CourierResponse);
+
     
 }

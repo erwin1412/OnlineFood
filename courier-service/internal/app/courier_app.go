@@ -61,3 +61,10 @@ func (a *CourierApp) Delete(ctx context.Context, id string) error {
 func (a *CourierApp) GetAll(ctx context.Context) ([]*domain.Courier, error) {
 	return a.CourierRepo.GetAll(ctx)
 }
+
+func (a *CourierApp) FindNearest(ctx context.Context, lat, long string) (*domain.Courier, error) {
+	if lat == "" || long == "" {
+		return nil, ErrValidation
+	}
+	return a.CourierRepo.FindNearest(ctx, lat, long)
+}

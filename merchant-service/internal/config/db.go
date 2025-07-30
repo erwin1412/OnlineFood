@@ -50,6 +50,7 @@ func PostgresInit() *sql.DB {
 		id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 		user_id VARCHAR(255) NOT NULL,
 		name_merchant VARCHAR(255) NOT NULL,
+		alamat TEXT NOT NULL, 
 		lat VARCHAR(50) NOT NULL,
 		long VARCHAR(50) NOT NULL,
 		open_hour VARCHAR(50) NOT NULL,

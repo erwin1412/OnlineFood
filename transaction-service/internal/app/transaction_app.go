@@ -14,6 +14,8 @@ type TransactionApp struct {
 	TransactionDetailRepo domain.TransactionDetailRepository
 	CartRepo              domain.CartRepository
 	MidtransClient        *payments.MidtransClient // Add MidtransClient
+	CourierClient         domain.CourierClient
+	MerchantClient        domain.MerchantClient
 }
 
 func NewTransactionApp(
@@ -21,89 +23,50 @@ func NewTransactionApp(
 	detailRepo domain.TransactionDetailRepository,
 	cartRepo domain.CartRepository,
 	midtransClient *payments.MidtransClient, // Add MidtransClient to constructor
+	courierClient domain.CourierClient, // Add CourierClient to constructor
+	merchantClient domain.MerchantClient, // Add MerchantClient to constructor
 ) *TransactionApp {
 	return &TransactionApp{
 		TransactionRepo:       txRepo,
 		TransactionDetailRepo: detailRepo,
 		CartRepo:              cartRepo,
 		MidtransClient:        midtransClient,
+		CourierClient:         courierClient,
+		MerchantClient:        merchantClient,
 	}
 }
-
-// func (a *TransactionApp) Create(ctx context.Context, tx *domain.Transaction, details []*domain.TransactionDetail, userID string) (*domain.Transaction, error) {
-// 	if tx.UserID == "" || tx.CourierID == "" || tx.MerchantID == "" || tx.Total <= 0 || tx.Status == "" {
-// 		return nil, ErrValidation
-// 	}
-
-// 	tx.ID = uuid.NewString()
-// 	tx.CreatedAt = time.Now()
-// 	tx.UpdatedAt = time.Now()
-
-// 	// 1️⃣ Buat header transaksi
-// 	createdTx, err := a.TransactionRepo.Create(ctx, tx)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// 2️⃣ Buat detail transaksi
-// 	for _, detail := range details {
-// 		detail.ID = uuid.NewString()
-// 		detail.TransactionID = createdTx.ID
-// 		detail.MerchantID = createdTx.MerchantID // ✅ isi dari header
-// 		detail.CreatedAt = time.Now()
-// 		detail.UpdatedAt = time.Now()
-
-// 		_, err := a.TransactionDetailRepo.Create(ctx, detail)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 	}
-
-// 	// 3️⃣ Generate Snap token
-// 	// Using UserID as placeholder for customerName and customerEmail
-// 	// Replace with actual user details if available via a UserService
-// 	snapToken, err := a.MidtransClient.CreateSnapToken(
-// 		createdTx.ID,
-// 		createdTx.Total,
-// 		createdTx.UserID, // Placeholder for customer name
-// 		createdTx.UserID, // Placeholder for customer email
-// 	)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// 4️⃣ Update transaction with Snap token
-// 	createdTx.SnapToken = snapToken
-// 	createdTx.UpdatedAt = time.Now()
-// 	updatedTx, err := a.TransactionRepo.Update(ctx, createdTx)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// 5️⃣ Hapus semua cart user
-// 	if err := a.CartRepo.DeleteAll(ctx, userID); err != nil {
-// 		return nil, err
-// 	}
-
-// 	return updatedTx, nil
-// }
-
 func (a *TransactionApp) Create(ctx context.Context, tx *domain.Transaction, details []*domain.TransactionDetail, userID string) (*domain.Transaction, error) {
-	if tx.UserID == "" || tx.CourierID == "" || tx.MerchantID == "" || tx.Total <= 0 || tx.Status == "" {
+	if tx.UserID == "" || tx.MerchantID == "" || tx.Total <= 0 || tx.Status == "" {
 		return nil, ErrValidation
 	}
 
+	// 1️⃣ Get Merchant lat/long
+	merchant, err := a.MerchantClient.GetById(ctx, tx.MerchantID)
+	if err != nil {
+		return nil, err
+	}
+
+	// 2️⃣ Cari courier terdekat
+	nearestCourier, err := a.CourierClient.FindNearest(ctx, merchant.Lat, merchant.Long)
+	if err != nil {
+		return nil, err
+	}
+
+	// 3️⃣ Isi CourierID hasil FindNearest
+	tx.CourierID = nearestCourier.ID
+
+	// 4️⃣ ID & timestamp
 	tx.ID = uuid.NewString()
 	tx.CreatedAt = time.Now()
 	tx.UpdatedAt = time.Now()
 
-	// 1️⃣ Buat header transaksi
+	// 5️⃣ Simpan header transaksi
 	createdTx, err := a.TransactionRepo.Create(ctx, tx)
 	if err != nil {
 		return nil, err
 	}
 
-	// 2️⃣ Buat detail transaksi
+	// 6️⃣ Buat detail transaksi
 	for _, detail := range details {
 		detail.ID = uuid.NewString()
 		detail.TransactionID = createdTx.ID
@@ -116,16 +79,7 @@ func (a *TransactionApp) Create(ctx context.Context, tx *domain.Transaction, det
 		}
 	}
 
-	// 3️⃣ Generate Snap token
-	// Use hardcoded test values for sandbox testing
-	// snapToken, err := a.MidtransClient.CreateSnapToken(
-	// 	createdTx.ID,
-	// 	createdTx.Total,
-	// 	"Test User",                // Hardcoded customer name for sandbox
-	// 	"erwin14120824@google.com", // Hardcoded valid email for sandbox
-	// )
-
-	// 3️⃣ Generate Snap token hanya kalau MidtransClient ada
+	// 7️⃣ Generate Snap token (jika ada)
 	if a.MidtransClient != nil {
 		snapToken, err := a.MidtransClient.CreateSnapToken(
 			createdTx.ID,
@@ -139,19 +93,14 @@ func (a *TransactionApp) Create(ctx context.Context, tx *domain.Transaction, det
 		createdTx.SnapToken = snapToken
 	}
 
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// 4️⃣ Update transaction with Snap token
-	// createdTx.SnapToken = snapToken
+	// 8️⃣ Update transaksi dengan Snap token
 	createdTx.UpdatedAt = time.Now()
 	updatedTx, err := a.TransactionRepo.Update(ctx, createdTx)
 	if err != nil {
 		return nil, err
 	}
 
-	// 5️⃣ Hapus semua cart user
+	// 9️⃣ Hapus cart
 	if err := a.CartRepo.DeleteAll(ctx, userID); err != nil {
 		return nil, err
 	}

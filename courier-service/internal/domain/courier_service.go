@@ -9,4 +9,5 @@ type CourierService interface {
 	UpdateLongLat(ctx context.Context, id, lat, long string) (*Courier, error)
 	Delete(ctx context.Context, id string) error
 	GetAll(ctx context.Context) ([]*Courier, error)
+	FindNearest(ctx context.Context, lat, long string) (*Courier, error)
 }
