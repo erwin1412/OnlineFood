@@ -22,6 +22,35 @@ func NewGatewayHandler(grpcClients *config.GRPCClients) *GatewayHandler {
 	return &GatewayHandler{GRPC: grpcClients}
 }
 
+// Helper functions to extract user information from JWT token context
+func (h *GatewayHandler) GetUserIDFromContext(c echo.Context) (string, error) {
+	userID := c.Get("user_id")
+	if userID == nil {
+		return "", echo.NewHTTPError(http.StatusUnauthorized, "User ID not found in token")
+	}
+
+	userIDStr, ok := userID.(string)
+	if !ok {
+		return "", echo.NewHTTPError(http.StatusInternalServerError, "Invalid user ID format")
+	}
+
+	return userIDStr, nil
+}
+
+func (h *GatewayHandler) GetEmailFromContext(c echo.Context) (string, error) {
+	email := c.Get("email")
+	if email == nil {
+		return "", echo.NewHTTPError(http.StatusUnauthorized, "Email not found in token")
+	}
+
+	emailStr, ok := email.(string)
+	if !ok {
+		return "", echo.NewHTTPError(http.StatusInternalServerError, "Invalid email format")
+	}
+
+	return emailStr, nil
+}
+
 // auth service start
 func (h *GatewayHandler) Register(c echo.Context) error {
 	var req authpb.RegisterRequest
@@ -51,11 +80,16 @@ func (h *GatewayHandler) Login(c echo.Context) error {
 
 // courier service start
 func (h *GatewayHandler) GetByIdCourier(c echo.Context) error {
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
 	var req courierpb.GetByIdCourierRequest
 
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	req.Id = id
 	resp, err := h.GRPC.CourierClient.GetByIdCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -84,6 +118,11 @@ func (h *GatewayHandler) CreateCourier(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CourierClient.CreateCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -95,6 +134,18 @@ func (h *GatewayHandler) UpdateLongLatCourier(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
+
 	resp, err := h.GRPC.CourierClient.UpdateLongLatCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -106,6 +157,11 @@ func (h *GatewayHandler) DeleteCourier(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
 	resp, err := h.GRPC.CourierClient.DeleteCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -201,6 +257,11 @@ func (h *GatewayHandler) GetByIdMerchant(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
 	resp, err := h.GRPC.MerchantClient.GetByIdMerchant(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -212,6 +273,12 @@ func (h *GatewayHandler) CreateMerchant(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.MerchantClient.CreateMerchant(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -231,6 +298,16 @@ func (h *GatewayHandler) UpdateMerchant(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.MerchantClient.UpdateMerchant(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -242,6 +319,11 @@ func (h *GatewayHandler) DeleteMerchant(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
 	resp, err := h.GRPC.MerchantClient.DeleteMerchant(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -258,6 +340,11 @@ func (h *GatewayHandler) CreateCart(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CartClient.CreateCart(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -269,6 +356,11 @@ func (h *GatewayHandler) GetAllCart(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CartClient.GetAllCart(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -280,6 +372,16 @@ func (h *GatewayHandler) GetByIdCart(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CartClient.GetByIdCart(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -291,6 +393,16 @@ func (h *GatewayHandler) UpdateCart(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CartClient.UpdateCart(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -303,6 +415,16 @@ func (h *GatewayHandler) DeleteCart(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CartClient.DeleteCart(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -314,6 +436,11 @@ func (h *GatewayHandler) DeleteAllCart(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.CartClient.DeleteAllCart(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -327,6 +454,11 @@ func (h *GatewayHandler) CreateTransaction(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.TransactionClient.CreateTransaction(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -339,6 +471,11 @@ func (h *GatewayHandler) GetAllTransaction(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.TransactionClient.GetAllTransaction(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -351,6 +488,16 @@ func (h *GatewayHandler) GetByIdTransaction(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.TransactionClient.GetByIdTransaction(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -363,6 +510,16 @@ func (h *GatewayHandler) UpdateTransaction(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.TransactionClient.UpdateTransaction(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -375,6 +532,16 @@ func (h *GatewayHandler) DeleteTransaction(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "courier ID cannot be empty"})
+	}
+	req.Id = id
+	userID, err := h.GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
 	resp, err := h.GRPC.TransactionClient.DeleteTransaction(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})

@@ -27,6 +27,17 @@ func JWTAuth(next echo.HandlerFunc) echo.HandlerFunc {
 		if err != nil || !token.Valid {
 			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid or expired token")
 		}
+
+		// Extract claims and store user information in context
+		if claims, ok := token.Claims.(jwt.MapClaims); ok {
+			if userID, exists := claims["user_id"]; exists {
+				c.Set("user_id", userID)
+			}
+			if email, exists := claims["email"]; exists {
+				c.Set("email", email)
+			}
+		}
+
 		return next(c)
 	}
 }
