@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package cart;
+
+option go_package = "./pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Cart{
+    string id = 1;
+    string merchant_id = 2;
+    string food_id = 3;
+    string user_id = 4;
+    int64 qty = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+}
+
+message CartListResponse {
+    repeated Cart carts = 1;
+}
+
+message CreateCartRequest {
+    string merchant_id = 1;
+    string food_id = 2;
+    string user_id = 3;
+    int64 qty = 4;
+}
+
+message UpdateCartRequest {
+  string id = 1;
+  string merchant_id = 2;
+  string food_id = 3;
+  string user_id = 4;
+  int64 qty = 5;
+}
+
+message DeleteCartRequest {
+  string id = 1;
+  string user_id = 2;
+}
+
+message DeleteCartResponse {
+    string message = 1;
+}
+
+message CartResponse {
+    Cart Cart = 1;
+}
+
+message GetByIdCartRequest {
+    string id = 1;
+    string user_id = 2;
+}
+
+
+message GetAllCartRequest {
+  string user_id = 1;
+}
+
+message DeleteAllCartRequest {
+  string user_id = 1;
+}
+
+message DeleteAllCartResponse {
+  string message = 1;
+}
+
+service CartService {
+  rpc CreateCart(CreateCartRequest) returns (CartResponse);
+  rpc GetAllCart(GetAllCartRequest) returns (CartListResponse);
+  rpc GetByIdCart(GetByIdCartRequest) returns (CartResponse);
+  rpc UpdateCart(UpdateCartRequest) returns (CartResponse);
+  rpc DeleteCart(DeleteCartRequest) returns (DeleteCartResponse);
+  rpc DeleteAllCart(DeleteAllCartRequest) returns (DeleteAllCartResponse); // ✅ Tambahan
+}
