@@ -52,6 +52,7 @@ func (h *GatewayHandler) Login(c echo.Context) error {
 // courier service start
 func (h *GatewayHandler) GetByIdCourier(c echo.Context) error {
 	var req courierpb.GetByIdCourierRequest
+
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
@@ -62,16 +63,22 @@ func (h *GatewayHandler) GetByIdCourier(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 func (h *GatewayHandler) GetByLongLatCourier(c echo.Context) error {
-	var req courierpb.GetByLongLatCourierRequest
-	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
+	lat := c.Param("lat")
+	long := c.Param("long")
+
+	req := courierpb.GetByLongLatCourierRequest{
+		Lat:  lat,
+		Long: long,
 	}
+
+	// ⚠️ Jangan pakai Bind!
 	resp, err := h.GRPC.CourierClient.GetByLongLatCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 	return c.JSON(http.StatusOK, resp)
 }
+
 func (h *GatewayHandler) CreateCourier(c echo.Context) error {
 	var req courierpb.CreateCourierRequest
 	if err := c.Bind(&req); err != nil {
