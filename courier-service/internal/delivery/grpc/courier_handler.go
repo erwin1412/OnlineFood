@@ -137,3 +137,25 @@ func (h *CourierHandler) GetAllCouriers(ctx context.Context, req *pb.Empty) (*pb
 	}
 	return &pb.CourierListResponse{Couriers: courierList}, nil
 }
+
+func (h *CourierHandler) FindNearestCourier(ctx context.Context, req *pb.FindNearestCourierRequest) (*pb.CourierResponse, error) {
+	courier, err := h.App.FindNearest(ctx, req.GetLat(), req.GetLong())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to find nearest courier: %v", err)
+	}
+	if courier == nil {
+		return nil, status.Errorf(codes.NotFound, "no courier found near the specified location")
+	}
+	return &pb.CourierResponse{
+		Courier: &pb.Courier{
+			Id:            courier.ID,
+			UserId:        courier.UserID,
+			Lat:           courier.Lat,
+			Long:          courier.Long,
+			VehicleNumber: courier.VehicleNumber,
+			Status:        courier.Status,
+			CreatedAt:     timestamppb.New(courier.CreatedAt),
+			UpdatedAt:     timestamppb.New(courier.UpdatedAt),
+		},
+	}, nil
+}

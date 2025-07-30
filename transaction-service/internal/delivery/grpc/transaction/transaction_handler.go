@@ -21,24 +21,28 @@ func NewTransactionHandler(app *app.TransactionApp) *TransactionHandler {
 }
 
 func (h *TransactionHandler) CreateTransaction(ctx context.Context, req *pb.CreateTransactionRequest) (*pb.TransactionResponse, error) {
+	// fmt.Println("CreateTransaction called with request:", req)
+
 	tx := &domain.Transaction{
 		UserID:     req.GetUserId(),
 		CourierID:  req.GetCourierId(),
 		MerchantID: req.GetMerchantId(),
-		Total:      req.GetTotal(),
 		Status:     req.GetStatus(),
 		SnapToken:  req.GetSnapToken(),
 	}
 
-	// ✅ Ambil data detail dari request
 	var details []*domain.TransactionDetail
+	var total int64
+	total = 0
 	for _, d := range req.GetDetails() {
 		details = append(details, &domain.TransactionDetail{
 			FoodID: d.GetFoodId(),
 			Qty:    d.GetQty(),
 			Price:  d.GetPrice(),
 		})
+		total += d.GetQty() * d.GetPrice()
 	}
+	tx.Total = total
 
 	createdTx, err := h.App.Create(ctx, tx, details, tx.UserID)
 	if err != nil {

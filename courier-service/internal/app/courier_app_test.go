@@ -17,6 +17,7 @@ type mockCourierRepo struct {
 	UpdateLongLatFn func(ctx context.Context, id, lat, long string) (*domain.Courier, error)
 	DeleteFn        func(ctx context.Context, id string) error
 	GetAllFn        func(ctx context.Context) ([]*domain.Courier, error)
+	FindNearestFn   func(ctx context.Context, lat, long string) (*domain.Courier, error)
 }
 
 func (m *mockCourierRepo) GetById(ctx context.Context, id string) (*domain.Courier, error) {
@@ -41,6 +42,10 @@ func (m *mockCourierRepo) Delete(ctx context.Context, id string) error {
 
 func (m *mockCourierRepo) GetAll(ctx context.Context) ([]*domain.Courier, error) {
 	return m.GetAllFn(ctx)
+}
+
+func (m *mockCourierRepo) FindNearest(ctx context.Context, lat, long string) (*domain.Courier, error) {
+	return m.FindNearestFn(ctx, lat, long)
 }
 
 func TestCourierApp_Create_Success(t *testing.T) {
@@ -189,5 +194,30 @@ func TestCourierApp_GetAll_Success(t *testing.T) {
 	result, err := appSvc.GetAll(context.Background())
 	if err != nil || len(result) != 2 {
 		t.Errorf("unexpected: %+v, err: %v", result, err)
+	}
+}
+
+func TestCourierApp_FindNearest_Success(t *testing.T) {
+	mockRepo := &mockCourierRepo{
+		FindNearestFn: func(ctx context.Context, lat, long string) (*domain.Courier, error) {
+			return &domain.Courier{ID: "1", Lat: lat, Long: long}, nil
+		},
+	}
+
+	appSvc := app.NewCourierApp(mockRepo)
+	result, err := appSvc.FindNearest(context.Background(), "-6.2", "106.8")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result == nil || result.ID != "1" {
+		t.Errorf("unexpected result: %+v", result)
+	}
+}
+
+func TestCourierApp_FindNearest_Validation(t *testing.T) {
+	appSvc := app.NewCourierApp(nil)
+	_, err := appSvc.FindNearest(context.Background(), "", "")
+	if !errors.Is(err, app.ErrValidation) {
+		t.Errorf("expected ErrValidation, got %v", err)
 	}
 }

@@ -112,21 +112,21 @@ func (r *pgCourierRepository) UpdateLongLat(ctx context.Context, id, lat, long s
 }
 func (r *pgCourierRepository) Delete(ctx context.Context, id string) error {
 
-	if id == "" {
-		return errors.New("courier ID cannot be empty")
-	}
-	var userID string
-	// set courier.UserID = userID
-	err := r.db.QueryRowContext(ctx, `
-		SELECT user_id FROM couriers WHERE id = $1
-	`, id).Scan(&userID)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return errors.New("courier not found")
-		}
-	}
+	// if id == "" {
+	// 	return errors.New("courier ID cannot be empty")
+	// }
+	// var userID string
+	// // set courier.UserID = userID
+	// err := r.db.QueryRowContext(ctx, `
+	// 	SELECT user_id FROM couriers WHERE id = $1
+	// `, id).Scan(&userID)
+	// if err != nil {
+	// 	if err == sql.ErrNoRows {
+	// 		return errors.New("courier not found")
+	// 	}
+	// }
 
-	_, err = r.db.ExecContext(ctx, `
+	_, err := r.db.ExecContext(ctx, `
 		DELETE FROM couriers
 		WHERE id = $1
 	`, id)
@@ -135,14 +135,14 @@ func (r *pgCourierRepository) Delete(ctx context.Context, id string) error {
 	}
 
 	// set the user role to user
-	_, err = r.db.ExecContext(ctx, `
-		UPDATE users
-		SET role = 'user'
-		WHERE id = $1
-	`, userID)
-	if err != nil {
-		return err
-	}
+	// _, err = r.db.ExecContext(ctx, `
+	// 	UPDATE users
+	// 	SET role = 'user'
+	// 	WHERE id = $1
+	// `, userID)
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
@@ -169,4 +169,37 @@ func (r *pgCourierRepository) GetAll(ctx context.Context) ([]*domain.Courier, er
 		return nil, err
 	}
 	return couriers, nil
+}
+func (r *pgCourierRepository) FindNearest(ctx context.Context, lat, long string) (*domain.Courier, error) {
+	query := `
+	SELECT id, user_id, lat, long, vehicle_number, status, created_at, updated_at,
+	(
+		6371 * acos(
+			cos(radians($1)) * cos(radians(CAST(lat AS DOUBLE PRECISION)))
+			* cos(radians(CAST(long AS DOUBLE PRECISION)) - radians($2))
+			+ sin(radians($1)) * sin(radians(CAST(lat AS DOUBLE PRECISION)))
+		)
+	) AS distance
+	FROM couriers
+	WHERE status = 'available'
+	ORDER BY distance ASC
+	LIMIT 1;
+	`
+	var courier domain.Courier
+	var dummyDistance float64
+
+	err := r.db.QueryRowContext(ctx, query, lat, long).Scan(
+		&courier.ID, &courier.UserID, &courier.Lat, &courier.Long,
+		&courier.VehicleNumber, &courier.Status, &courier.CreatedAt,
+		&courier.UpdatedAt,
+		&dummyDistance, // FIX ⬅️
+	)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil // No available courier found
+		}
+		return nil, err
+	}
+	return &courier, nil
 }

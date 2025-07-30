@@ -24,36 +24,59 @@ func main() {
 		log.Println("No .env file found")
 	}
 
-	// 2️⃣ Get Midtrans server key from environment
+	// 2️⃣ Midtrans
 	serverKey := os.Getenv("MIDTRANS_SERVER_KEY")
 	if serverKey == "" {
-		log.Fatal("MIDTRANS_SERVER_KEY environment variable is not set")
+		log.Fatal("MIDTRANS_SERVER_KEY not set")
 	}
-	isProduction := os.Getenv("MIDTRANS_ENV") == "production" // Fixed: true only for production
-
-	// 3️⃣ Initialize Midtrans client
+	isProduction := os.Getenv("MIDTRANS_ENV") == "production"
 	midtransClient := payments.NewMidtransClient(serverKey, isProduction)
 
-	// 4️⃣ Init DB
+	// 3️⃣ DB
 	db := config.PostgresInit()
 
-	// 5️⃣ Init repos
+	// 4️⃣ Repos
 	cartRepo := infra.NewPgCartRepository(db)
 	transactionRepo := infra.NewPgTransactionRepository(db)
 	transactionDetailRepo := infra.NewPgTransactionDetailRepository(transactionRepo)
 
-	// 6️⃣ Init apps
-	cartApp := app.NewCartApp(cartRepo)
-	transactionApp := app.NewTransactionApp(transactionRepo, transactionDetailRepo, cartRepo, midtransClient)
+	// 5️⃣ 🔗 gRPC connection to Courier Service
+	courierConn, err := grpc.Dial(os.Getenv("COURIER_SERVICE_ADDR"), grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect to Courier Service: %v", err)
+	}
+	defer courierConn.Close()
 
-	// 7️⃣ Init handlers
+	courierClient := infra.NewCourierClient(courierConn)
+
+	// 6️⃣ 🔗 gRPC connection to Merchant Service
+	merchantConn, err := grpc.Dial(os.Getenv("MERCHANT_SERVICE_ADDR"), grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect to Merchant Service: %v", err)
+	}
+	defer merchantConn.Close()
+
+	merchantClient := infra.NewMerchantClient(merchantConn)
+
+	// 7️⃣ Apps
+	cartApp := app.NewCartApp(cartRepo)
+	transactionApp := app.NewTransactionApp(
+		transactionRepo,
+		transactionDetailRepo,
+		cartRepo,
+		midtransClient,
+		courierClient,
+		merchantClient,
+	)
+
+	// 8️⃣ Handlers
 	cartHandler := cartGrpc.NewCartHandler(cartApp)
 	transactionHandler := transactionGrpc.NewTransactionHandler(transactionApp)
 
-	// 8️⃣ gRPC server
+	// 9️⃣ gRPC server
 	grpcPort := os.Getenv("GRPC_PORT")
 	if grpcPort == "" {
-		grpcPort = "50055" // default port transaction-service
+		grpcPort = "50055"
 	}
 
 	lis, err := net.Listen("tcp", ":"+grpcPort)
@@ -63,7 +86,6 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 
-	// ✅ Register multiple services
 	cartPb.RegisterCartServiceServer(grpcServer, cartHandler)
 	transactionPb.RegisterTransactionServiceServer(grpcServer, transactionHandler)
 
@@ -73,7 +95,7 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	// 9️⃣ Clean shutdown
+	// Clean shutdown
 	log.Println("Gracefully shutting down...")
 	db.Close()
 }
