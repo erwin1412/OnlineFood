@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package courier;
+
+option go_package = "./pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Courier{
+    string id = 1;
+    string user_id = 2;
+    string lat = 3;
+    string long = 4;
+    string vehicle_number = 5;
+    string status = 6; // e.g., "available", "busy", "offline"
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+
+message CourierListResponse {
+    repeated Courier couriers = 1;
+}
+
+message CreateCourierRequest {
+    string user_id = 1;
+    string lat = 2;
+    string long = 3;
+    string vehicle_number = 4; // <== tambahkan ini
+    string status = 5;         // <== tambahkan ini
+}
+message UpdateLongLatCourierRequest {
+    string id = 1;
+    string user_id = 2;
+    string lat = 3;
+    string long = 4;
+    string vehicle_number = 5; // <== tambahkan ini
+    string status = 6;         // <== tambahkan ini
+}
+
+message DeleteCourierRequest {
+    string id = 1;
+}
+
+message DeleteCourierResponse {
+    string message = 1;
+}
+
+message CourierResponse {
+    Courier Courier = 1;
+}
+
+message GetByIdCourierRequest {
+    string id = 1;
+}
+
+message GetByLongLatCourierRequest {
+    string lat = 1;
+    string long = 2;
+}
+
+message EmptyCourier {}
+
+service CourierService {
+    rpc CreateCourier(CreateCourierRequest) returns (CourierResponse);
+    rpc GetById(GetByIdCourierRequest) returns (CourierResponse);
+    rpc GetByLongLat(GetByLongLatCourierRequest) returns (CourierResponse);
+    rpc UpdateLongLatCourier(UpdateLongLatCourierRequest) returns (CourierResponse);
+    rpc DeleteCourier(DeleteCourierRequest) returns (DeleteCourierResponse);
+    rpc GetAllCouriers(EmptyCourier) returns (CourierListResponse);
+    
+}
