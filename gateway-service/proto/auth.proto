@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;
 
-option go_package = "./pb;pb";
+option go_package = "./pb/auth;pb";
 import "google/protobuf/timestamp.proto";
 
 message RegisterRequest{

@@ -554,26 +554,26 @@ func (x *GetByLongLatCourierRequest) GetLong() string {
 	return ""
 }
 
-type EmptyCourier struct {
+type Empty struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *EmptyCourier) Reset() {
-	*x = EmptyCourier{}
+func (x *Empty) Reset() {
+	*x = Empty{}
 	mi := &file_proto_courier_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *EmptyCourier) String() string {
+func (x *Empty) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*EmptyCourier) ProtoMessage() {}
+func (*Empty) ProtoMessage() {}
 
-func (x *EmptyCourier) ProtoReflect() protoreflect.Message {
+func (x *Empty) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_courier_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -585,9 +585,61 @@ func (x *EmptyCourier) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use EmptyCourier.ProtoReflect.Descriptor instead.
-func (*EmptyCourier) Descriptor() ([]byte, []int) {
+// Deprecated: Use Empty.ProtoReflect.Descriptor instead.
+func (*Empty) Descriptor() ([]byte, []int) {
 	return file_proto_courier_proto_rawDescGZIP(), []int{9}
+}
+
+type FindNearestCourierRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Lat           string                 `protobuf:"bytes,1,opt,name=lat,proto3" json:"lat,omitempty"`
+	Long          string                 `protobuf:"bytes,2,opt,name=long,proto3" json:"long,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FindNearestCourierRequest) Reset() {
+	*x = FindNearestCourierRequest{}
+	mi := &file_proto_courier_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindNearestCourierRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindNearestCourierRequest) ProtoMessage() {}
+
+func (x *FindNearestCourierRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_courier_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindNearestCourierRequest.ProtoReflect.Descriptor instead.
+func (*FindNearestCourierRequest) Descriptor() ([]byte, []int) {
+	return file_proto_courier_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *FindNearestCourierRequest) GetLat() string {
+	if x != nil {
+		return x.Lat
+	}
+	return ""
+}
+
+func (x *FindNearestCourierRequest) GetLong() string {
+	if x != nil {
+		return x.Long
+	}
+	return ""
 }
 
 var File_proto_courier_proto protoreflect.FileDescriptor
@@ -631,15 +683,19 @@ const file_proto_courier_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"B\n" +
 	"\x1aGetByLongLatCourierRequest\x12\x10\n" +
 	"\x03lat\x18\x01 \x01(\tR\x03lat\x12\x12\n" +
-	"\x04long\x18\x02 \x01(\tR\x04long\"\x0e\n" +
-	"\fEmptyCourier2\xdd\x03\n" +
+	"\x04long\x18\x02 \x01(\tR\x04long\"\a\n" +
+	"\x05Empty\"A\n" +
+	"\x19FindNearestCourierRequest\x12\x10\n" +
+	"\x03lat\x18\x01 \x01(\tR\x03lat\x12\x12\n" +
+	"\x04long\x18\x02 \x01(\tR\x04long2\xb8\x04\n" +
 	"\x0eCourierService\x12H\n" +
-	"\rCreateCourier\x12\x1d.courier.CreateCourierRequest\x1a\x18.courier.CourierResponse\x12C\n" +
-	"\aGetById\x12\x1e.courier.GetByIdCourierRequest\x1a\x18.courier.CourierResponse\x12M\n" +
-	"\fGetByLongLat\x12#.courier.GetByLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12V\n" +
+	"\rCreateCourier\x12\x1d.courier.CreateCourierRequest\x1a\x18.courier.CourierResponse\x12J\n" +
+	"\x0eGetByIdCourier\x12\x1e.courier.GetByIdCourierRequest\x1a\x18.courier.CourierResponse\x12T\n" +
+	"\x13GetByLongLatCourier\x12#.courier.GetByLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12V\n" +
 	"\x14UpdateLongLatCourier\x12$.courier.UpdateLongLatCourierRequest\x1a\x18.courier.CourierResponse\x12N\n" +
-	"\rDeleteCourier\x12\x1d.courier.DeleteCourierRequest\x1a\x1e.courier.DeleteCourierResponse\x12E\n" +
-	"\x0eGetAllCouriers\x12\x15.courier.EmptyCourier\x1a\x1c.courier.CourierListResponseB\tZ\a./pb;pbb\x06proto3"
+	"\rDeleteCourier\x12\x1d.courier.DeleteCourierRequest\x1a\x1e.courier.DeleteCourierResponse\x12>\n" +
+	"\x0eGetAllCouriers\x12\x0e.courier.Empty\x1a\x1c.courier.CourierListResponse\x12R\n" +
+	"\x12FindNearestCourier\x12\".courier.FindNearestCourierRequest\x1a\x18.courier.CourierResponseB\x11Z\x0f./pb/courier;pbb\x06proto3"
 
 var (
 	file_proto_courier_proto_rawDescOnce sync.Once
@@ -653,7 +709,7 @@ func file_proto_courier_proto_rawDescGZIP() []byte {
 	return file_proto_courier_proto_rawDescData
 }
 
-var file_proto_courier_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_proto_courier_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_proto_courier_proto_goTypes = []any{
 	(*Courier)(nil),                     // 0: courier.Courier
 	(*CourierListResponse)(nil),         // 1: courier.CourierListResponse
@@ -664,28 +720,31 @@ var file_proto_courier_proto_goTypes = []any{
 	(*CourierResponse)(nil),             // 6: courier.CourierResponse
 	(*GetByIdCourierRequest)(nil),       // 7: courier.GetByIdCourierRequest
 	(*GetByLongLatCourierRequest)(nil),  // 8: courier.GetByLongLatCourierRequest
-	(*EmptyCourier)(nil),                // 9: courier.EmptyCourier
-	(*timestamppb.Timestamp)(nil),       // 10: google.protobuf.Timestamp
+	(*Empty)(nil),                       // 9: courier.Empty
+	(*FindNearestCourierRequest)(nil),   // 10: courier.FindNearestCourierRequest
+	(*timestamppb.Timestamp)(nil),       // 11: google.protobuf.Timestamp
 }
 var file_proto_courier_proto_depIdxs = []int32{
-	10, // 0: courier.Courier.created_at:type_name -> google.protobuf.Timestamp
-	10, // 1: courier.Courier.updated_at:type_name -> google.protobuf.Timestamp
+	11, // 0: courier.Courier.created_at:type_name -> google.protobuf.Timestamp
+	11, // 1: courier.Courier.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: courier.CourierListResponse.couriers:type_name -> courier.Courier
 	0,  // 3: courier.CourierResponse.Courier:type_name -> courier.Courier
 	2,  // 4: courier.CourierService.CreateCourier:input_type -> courier.CreateCourierRequest
-	7,  // 5: courier.CourierService.GetById:input_type -> courier.GetByIdCourierRequest
-	8,  // 6: courier.CourierService.GetByLongLat:input_type -> courier.GetByLongLatCourierRequest
+	7,  // 5: courier.CourierService.GetByIdCourier:input_type -> courier.GetByIdCourierRequest
+	8,  // 6: courier.CourierService.GetByLongLatCourier:input_type -> courier.GetByLongLatCourierRequest
 	3,  // 7: courier.CourierService.UpdateLongLatCourier:input_type -> courier.UpdateLongLatCourierRequest
 	4,  // 8: courier.CourierService.DeleteCourier:input_type -> courier.DeleteCourierRequest
-	9,  // 9: courier.CourierService.GetAllCouriers:input_type -> courier.EmptyCourier
-	6,  // 10: courier.CourierService.CreateCourier:output_type -> courier.CourierResponse
-	6,  // 11: courier.CourierService.GetById:output_type -> courier.CourierResponse
-	6,  // 12: courier.CourierService.GetByLongLat:output_type -> courier.CourierResponse
-	6,  // 13: courier.CourierService.UpdateLongLatCourier:output_type -> courier.CourierResponse
-	5,  // 14: courier.CourierService.DeleteCourier:output_type -> courier.DeleteCourierResponse
-	1,  // 15: courier.CourierService.GetAllCouriers:output_type -> courier.CourierListResponse
-	10, // [10:16] is the sub-list for method output_type
-	4,  // [4:10] is the sub-list for method input_type
+	9,  // 9: courier.CourierService.GetAllCouriers:input_type -> courier.Empty
+	10, // 10: courier.CourierService.FindNearestCourier:input_type -> courier.FindNearestCourierRequest
+	6,  // 11: courier.CourierService.CreateCourier:output_type -> courier.CourierResponse
+	6,  // 12: courier.CourierService.GetByIdCourier:output_type -> courier.CourierResponse
+	6,  // 13: courier.CourierService.GetByLongLatCourier:output_type -> courier.CourierResponse
+	6,  // 14: courier.CourierService.UpdateLongLatCourier:output_type -> courier.CourierResponse
+	5,  // 15: courier.CourierService.DeleteCourier:output_type -> courier.DeleteCourierResponse
+	1,  // 16: courier.CourierService.GetAllCouriers:output_type -> courier.CourierListResponse
+	6,  // 17: courier.CourierService.FindNearestCourier:output_type -> courier.CourierResponse
+	11, // [11:18] is the sub-list for method output_type
+	4,  // [4:11] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
 	4,  // [4:4] is the sub-list for extension extendee
 	0,  // [0:4] is the sub-list for field type_name
@@ -702,7 +761,7 @@ func file_proto_courier_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_courier_proto_rawDesc), len(file_proto_courier_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

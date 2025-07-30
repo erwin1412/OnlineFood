@@ -760,7 +760,7 @@ const file_proto_transaction_proto_rawDesc = "" +
 	"\x11GetAllTransaction\x12%.transaction.GetAllTransactionRequest\x1a$.transaction.TransactionListResponse\x12^\n" +
 	"\x12GetByIdTransaction\x12&.transaction.GetByIdTransactionRequest\x1a .transaction.TransactionResponse\x12\\\n" +
 	"\x11UpdateTransaction\x12%.transaction.UpdateTransactionRequest\x1a .transaction.TransactionResponse\x12b\n" +
-	"\x11DeleteTransaction\x12%.transaction.DeleteTransactionRequest\x1a&.transaction.DeleteTransactionResponseB\tZ\a./pb;pbb\x06proto3"
+	"\x11DeleteTransaction\x12%.transaction.DeleteTransactionRequest\x1a&.transaction.DeleteTransactionResponseB\x15Z\x13./pb/transaction;pbb\x06proto3"
 
 var (
 	file_proto_transaction_proto_rawDescOnce sync.Once

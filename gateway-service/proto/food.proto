@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package food;
 
-option go_package = "./pb;pb";
+option go_package = "./pb/food;pb";
 import "google/protobuf/timestamp.proto";
 
 message Food{

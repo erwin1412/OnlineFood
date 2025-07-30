@@ -685,7 +685,7 @@ const file_proto_cart_proto_rawDesc = "" +
 	"UpdateCart\x12\x17.cart.UpdateCartRequest\x1a\x12.cart.CartResponse\x12?\n" +
 	"\n" +
 	"DeleteCart\x12\x17.cart.DeleteCartRequest\x1a\x18.cart.DeleteCartResponse\x12H\n" +
-	"\rDeleteAllCart\x12\x1a.cart.DeleteAllCartRequest\x1a\x1b.cart.DeleteAllCartResponseB\tZ\a./pb;pbb\x06proto3"
+	"\rDeleteAllCart\x12\x1a.cart.DeleteAllCartRequest\x1a\x1b.cart.DeleteAllCartResponseB\x0eZ\f./pb/cart;pbb\x06proto3"
 
 var (
 	file_proto_cart_proto_rawDescOnce sync.Once

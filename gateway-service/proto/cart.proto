@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cart;
 
-option go_package = "./pb;pb";
+option go_package = "./pb/cart;pb";
 import "google/protobuf/timestamp.proto";
 
 message Cart{

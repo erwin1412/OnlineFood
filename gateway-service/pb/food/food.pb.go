@@ -568,7 +568,7 @@ const file_proto_food_proto_rawDesc = "" +
 	"\n" +
 	"UpdateFood\x12\x17.food.UpdateFoodRequest\x1a\x12.food.FoodResponse\x12?\n" +
 	"\n" +
-	"DeleteFood\x12\x17.food.DeleteFoodRequest\x1a\x18.food.DeleteFoodResponseB\tZ\a./pb;pbb\x06proto3"
+	"DeleteFood\x12\x17.food.DeleteFoodRequest\x1a\x18.food.DeleteFoodResponseB\x0eZ\f./pb/food;pbb\x06proto3"
 
 var (
 	file_proto_food_proto_rawDescOnce sync.Once

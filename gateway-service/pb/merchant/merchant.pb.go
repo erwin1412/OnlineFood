@@ -641,7 +641,7 @@ const file_proto_merchant_proto_rawDesc = "" +
 	"\x0eGetAllMerchant\x12\x17.merchant.EmptyMerchant\x1a\x1e.merchant.MerchantListResponse\x12O\n" +
 	"\x0fGetByIdMerchant\x12 .merchant.GetByIdMerchantRequest\x1a\x1a.merchant.MerchantResponse\x12M\n" +
 	"\x0eUpdateMerchant\x12\x1f.merchant.UpdateMerchantRequest\x1a\x1a.merchant.MerchantResponse\x12S\n" +
-	"\x0eDeleteMerchant\x12\x1f.merchant.DeleteMerchantRequest\x1a .merchant.DeleteMerchantResponseB\tZ\a./pb;pbb\x06proto3"
+	"\x0eDeleteMerchant\x12\x1f.merchant.DeleteMerchantRequest\x1a .merchant.DeleteMerchantResponseB\x12Z\x10./pb/merchant;pbb\x06proto3"
 
 var (
 	file_proto_merchant_proto_rawDescOnce sync.Once

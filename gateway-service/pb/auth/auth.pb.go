@@ -332,7 +332,7 @@ const file_proto_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword2u\n" +
 	"\vAuthService\x125\n" +
 	"\bRegister\x12\x15.auth.RegisterRequest\x1a\x12.auth.AuthResponse\x12/\n" +
-	"\x05Login\x12\x12.auth.LoginRequest\x1a\x12.auth.AuthResponseB\tZ\a./pb;pbb\x06proto3"
+	"\x05Login\x12\x12.auth.LoginRequest\x1a\x12.auth.AuthResponseB\x0eZ\f./pb/auth;pbb\x06proto3"
 
 var (
 	file_proto_auth_proto_rawDescOnce sync.Once

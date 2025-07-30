@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package merchant;
 
-option go_package = "./pb;pb";
+option go_package = "./pb/merchant;pb";
 import "google/protobuf/timestamp.proto";
 
 message Merchant{

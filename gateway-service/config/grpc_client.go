@@ -4,12 +4,12 @@ import (
 	"log"
 	"os"
 
-	authpb "gateway-service/pb"
-	cartpb "gateway-service/pb"
-	courierpb "gateway-service/pb"
-	foodpb "gateway-service/pb"
-	merchantpb "gateway-service/pb"
-	transactionpb "gateway-service/pb"
+	authpb "gateway-service/pb/auth"
+	cartpb "gateway-service/pb/cart"
+	courierpb "gateway-service/pb/courier"
+	foodpb "gateway-service/pb/food"
+	merchantpb "gateway-service/pb/merchant"
+	transactionpb "gateway-service/pb/transaction"
 
 	"google.golang.org/grpc"
 )

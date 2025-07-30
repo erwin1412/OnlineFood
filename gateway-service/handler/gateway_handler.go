@@ -3,12 +3,12 @@ package handler
 import (
 	"context"
 	"gateway-service/config"
-	authpb "gateway-service/pb"
-	cartpb "gateway-service/pb"
-	courierpb "gateway-service/pb"
-	foodpb "gateway-service/pb"
-	merchantpb "gateway-service/pb"
-	transactionpb "gateway-service/pb"
+	authpb "gateway-service/pb/auth"
+	cartpb "gateway-service/pb/cart"
+	courierpb "gateway-service/pb/courier"
+	foodpb "gateway-service/pb/food"
+	merchantpb "gateway-service/pb/merchant"
+	transactionpb "gateway-service/pb/transaction"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -55,7 +55,7 @@ func (h *GatewayHandler) GetByIdCourier(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
-	resp, err := h.GRPC.CourierClient.GetById(context.Background(), &req)
+	resp, err := h.GRPC.CourierClient.GetByIdCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
@@ -66,7 +66,7 @@ func (h *GatewayHandler) GetByLongLatCourier(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
-	resp, err := h.GRPC.CourierClient.GetByLongLat(context.Background(), &req)
+	resp, err := h.GRPC.CourierClient.GetByLongLatCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
@@ -106,8 +106,20 @@ func (h *GatewayHandler) DeleteCourier(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 func (h *GatewayHandler) GetAllCouriers(c echo.Context) error {
-	var req courierpb.EmptyCourier
+	var req courierpb.Empty
 	resp, err := h.GRPC.CourierClient.GetAllCouriers(context.Background(), &req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+func (h *GatewayHandler) FindNearestCourier(c echo.Context) error {
+	var req courierpb.FindNearestCourierRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
+	}
+	resp, err := h.GRPC.CourierClient.FindNearestCourier(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
