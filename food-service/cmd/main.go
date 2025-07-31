@@ -28,15 +28,24 @@ func main() {
 	// Init Kafka producer (harus nyala Zookeeper & Kafka broker!)
 	producer := infra.NewKafkaProducer("localhost:9092", "food-created")
 
+	merchantConn, err := grpc.Dial(os.Getenv("MERCHANT_SERVICE_ADDR"), grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect to Merchant Service: %v", err)
+	}
+	defer merchantConn.Close()
+
+	merchantClient := infra.NewMerchantClient(merchantConn)
+
 	// Injek ke FoodApp
-	foodApp := app.NewFoodApp(foodRepo, producer)
+	foodApp := app.NewFoodApp(foodRepo, producer, merchantClient)
 
 	// Init handler gRPC
+
 	foodGRPC := grpcHandler.NewFoodHandler(foodApp)
 
 	grpcPort := os.Getenv("GRPC_PORT")
 	if grpcPort == "" {
-		grpcPort = "50052"
+		grpcPort = "50053"
 	}
 
 	lis, err := net.Listen("tcp", ":"+grpcPort)

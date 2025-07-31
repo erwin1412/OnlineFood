@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"google.golang.org/grpc/metadata"
 )
 
 type GatewayFoodHandler struct {
@@ -37,7 +38,21 @@ func (h *GatewayFoodHandler) CreateFood(c echo.Context) error {
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "invalid request"})
 	}
-	resp, err := h.GRPC.FoodClient.CreateFood(context.Background(), &req)
+
+	userID, err := GetUserIDFromContext(c)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"error": "unauthenticated"})
+	}
+
+	// Buat metadata gRPC
+	md := metadata.New(map[string]string{
+		"user_id": userID,
+	})
+
+	// Buat context dengan metadata
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+
+	resp, err := h.GRPC.FoodClient.CreateFood(ctx, &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}

@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package merchant;
+
+option go_package = "internal/delivery/grpc/pb;pb";
+import "google/protobuf/timestamp.proto";
+
+message Merchant{
+    string id = 1;
+    string user_id = 2;
+    string name_merchant = 3;
+    string alamat = 4; // Address of the merchant
+    string lat = 5;
+    string long = 6;
+    string open_hour = 7;
+    string close_hour = 8;
+    string status = 9; // e.g. "open", "closed"
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp updated_at = 11;
+}
+
+message MerchantListResponse {
+    repeated Merchant merchants = 1;
+}
+
+message CreateMerchantRequest {
+    string user_id = 1;
+    string name_merchant = 2;
+    string alamat = 3; // Address for geocoding
+    string lat = 4;
+    string long = 5;
+    string open_hour = 6;
+    string close_hour = 7;
+    string status = 8; // e.g. "open", "closed"
+}
+
+message UpdateMerchantRequest {
+    string id = 1;
+    string user_id = 2;
+    string name_merchant = 3;
+    string alamat = 4; // Address for geocoding
+    string lat = 5;
+    string long = 6;
+    string open_hour = 7;
+    string close_hour = 8;
+    string status = 9; // e.g. "open", "closed"
+}
+
+message DeleteMerchantRequest {
+    string id = 1;
+}
+
+message DeleteMerchantResponse {
+    string message = 1;
+}
+
+message MerchantResponse {
+    Merchant Merchant = 1;
+}
+
+message GetByIdMerchantRequest {
+    string id = 1;
+}
+
+message Empty {}
+
+message GetMerchantByUserIdRequest {
+    string user_id = 1;
+}
+
+message GetMerchantByUserIdResponse {
+    Merchant merchant = 1;
+}
+
+service MerchantService {
+  rpc CreateMerchant(CreateMerchantRequest) returns (MerchantResponse);
+  rpc GetAllMerchant(Empty) returns (MerchantListResponse); // ✅ BENAR
+  rpc GetByIdMerchant(GetByIdMerchantRequest) returns (MerchantResponse);
+  rpc UpdateMerchant(UpdateMerchantRequest) returns (MerchantResponse);
+  rpc DeleteMerchant(DeleteMerchantRequest) returns (DeleteMerchantResponse);
+    rpc GetMerchantByUserId(GetMerchantByUserIdRequest) returns (GetMerchantByUserIdResponse);
+}

@@ -2,11 +2,13 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 	"food-service/internal/app"
 	pb "food-service/internal/delivery/grpc/pb"
 	"food-service/internal/domain"
 
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
@@ -47,15 +49,63 @@ func (h *FoodHandler) GetByIdFood(ctx context.Context, req *pb.GetByIdFoodReques
 		},
 	}, nil
 }
+
+// func (h *FoodHandler) CreateFood(ctx context.Context, req *pb.CreateFoodRequest) (*pb.FoodResponse, error) {
+// 	food := &domain.Food{
+// 		MerchantID:   req.GetMerchantId(),
+// 		Name:         req.GetNameFoods(),
+// 		Price:        req.GetPrice(),
+// 		Availability: req.GetAvailability(),
+// 	}
+
+// 	createdFood, err := h.App.Create(ctx, food)
+// 	if err != nil {
+// 		return nil, status.Errorf(codes.Internal, "failed to create food: %v", err)
+// 	}
+
+// 	return &pb.FoodResponse{
+// 		Food: &pb.Food{
+// 			Id:           createdFood.ID,
+// 			MerchantId:   createdFood.MerchantID,
+// 			NameFoods:    createdFood.Name,
+// 			Price:        createdFood.Price,
+// 			Availability: createdFood.Availability,
+// 			// kalau mau isi created_at, updated_at => mapping ke timestamp di sini
+// 		},
+// 	}, nil
+// }
+
 func (h *FoodHandler) CreateFood(ctx context.Context, req *pb.CreateFoodRequest) (*pb.FoodResponse, error) {
+	// Baca user_id dari metadata
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, status.Errorf(codes.Unauthenticated, "unauthenticated: metadata not found")
+	}
+	userIDs := md.Get("user_id")
+	if len(userIDs) == 0 {
+		return nil, status.Errorf(codes.Unauthenticated, "unauthenticated: user_id not found in metadata")
+	}
+
+	userID := userIDs[0]
+	fmt.Println("UserID:", userID)
+
+	// get merchant ID from user GetMerchantByUserId
+	merchant, err := h.App.MerchantClient.GetMerchantByUserId(ctx, userID)
+	if err != nil {
+		if err == domain.ErrMerchantNotFound {
+			return nil, status.Errorf(codes.NotFound, "merchant not found for user ID: %s", userID)
+		}
+		return nil, status.Errorf(codes.Internal, "failed to get merchant by user ID: %v", err)
+	}
+
 	food := &domain.Food{
-		MerchantID:   req.GetMerchantId(),
+		MerchantID:   merchant.ID,
 		Name:         req.GetNameFoods(),
 		Price:        req.GetPrice(),
 		Availability: req.GetAvailability(),
 	}
 
-	createdFood, err := h.App.Create(ctx, food)
+	createdFood, err := h.App.Create(ctx, food, userID)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "failed to create food: %v", err)
 	}
@@ -67,7 +117,6 @@ func (h *FoodHandler) CreateFood(ctx context.Context, req *pb.CreateFoodRequest)
 			NameFoods:    createdFood.Name,
 			Price:        createdFood.Price,
 			Availability: createdFood.Availability,
-			// kalau mau isi created_at, updated_at => mapping ke timestamp di sini
 		},
 	}, nil
 }
