@@ -1,23 +1,25 @@
-# Gunakan official Go image sebagai base image
 FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Copy go.mod dan go.sum lebih dulu
 COPY go.mod go.sum ./
-
-# Download dependency dasar
 RUN go mod tidy
 RUN go mod download
 
-# Copy semua source code
 COPY . .
 
-# Penting! Jalankan tidy lagi, untuk dependencies yg ketemu setelah copy source
 RUN go mod tidy
 
-# Build
 RUN go build -o food-service ./cmd/main.go
+RUN go build -o consumer ./cmd/consumer/consumer.go
+
+FROM alpine:3.19
+
+WORKDIR /app
+
+COPY --from=builder /app/food-service .
+COPY --from=builder /app/consumer .
 
 EXPOSE 50053
-CMD ["./food-service"]
+
+CMD ["sh", "-c", "./food-service & ./consumer && wait"]

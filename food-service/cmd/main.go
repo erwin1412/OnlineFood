@@ -26,7 +26,12 @@ func main() {
 	foodRepo := infra.NewPgFoodRepository(db)
 
 	// Init Kafka producer (harus nyala Zookeeper & Kafka broker!)
-	producer := infra.NewKafkaProducer("localhost:9092", "food-created")
+	kafkaBroker := os.Getenv("KAFKA_BROKER")
+	if kafkaBroker == "" {
+		log.Println("⚠️  KAFKA_BROKER not set, using default localhost:9092")
+		kafkaBroker = "localhost:9092"
+	}
+	producer := infra.NewKafkaProducer(kafkaBroker, "food-created")
 
 	merchantConn, err := grpc.Dial(os.Getenv("MERCHANT_SERVICE_ADDR"), grpc.WithInsecure())
 	if err != nil {
