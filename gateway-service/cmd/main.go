@@ -27,6 +27,7 @@ func main() {
 	// AUTH endpoints (proxy ke Auth Service via gRPC)
 	e.POST("/register", ah.Register)
 	e.POST("/login", ah.Login)
+	e.Static("/docs", "docs")
 
 	// COURIER endpoints (proxy ke Courier Service via gRPC, protected by JWT)
 	courierGroup := e.Group("/couriers", middleware.JWTAuth)
