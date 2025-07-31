@@ -49,7 +49,7 @@ func (h *GatewayMerchantHandler) CreateMerchant(c echo.Context) error {
 	return c.JSON(http.StatusCreated, resp)
 }
 func (h *GatewayMerchantHandler) GetAllMerchant(c echo.Context) error {
-	var req merchantpb.EmptyMerchant
+	var req merchantpb.Empty
 	resp, err := h.GRPC.MerchantClient.GetAllMerchant(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
@@ -85,6 +85,20 @@ func (h *GatewayMerchantHandler) DeleteMerchant(c echo.Context) error {
 	}
 	req.Id = id
 	resp, err := h.GRPC.MerchantClient.DeleteMerchant(context.Background(), &req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+func (h *GatewayMerchantHandler) GetMerchantByUserId(c echo.Context) error {
+	var req merchantpb.GetMerchantByUserIdRequest
+	userID, err := GetUserIDFromContext(c)
+	if err != nil {
+		return err
+	}
+	req.UserId = userID
+	resp, err := h.GRPC.MerchantClient.GetMerchantByUserId(context.Background(), &req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}

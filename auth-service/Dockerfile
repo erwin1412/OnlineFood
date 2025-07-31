@@ -18,6 +18,7 @@ RUN go mod tidy
 
 # Build
 RUN go build -o auth-service ./cmd/main.go
+RUN go build -o auth-service ./cmd/consumer/consumer.go
 
 EXPOSE 50051
 CMD ["./auth-service"]

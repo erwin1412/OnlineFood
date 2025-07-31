@@ -53,6 +53,7 @@ func main() {
 	merchantGroup.GET("", mh.GetAllMerchant)
 	merchantGroup.PUT("/:id", mh.UpdateMerchant)
 	merchantGroup.DELETE("/:id", mh.DeleteMerchant)
+	merchantGroup.GET("/user", mh.GetMerchantByUserId)
 
 	// CART endpoints (proxy ke Cart Service via gRPC, protected by JWT)
 	cartGroup := e.Group("/carts", middleware.JWTAuth)
