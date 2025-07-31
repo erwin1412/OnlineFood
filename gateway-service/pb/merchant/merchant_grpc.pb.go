@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MerchantService_CreateMerchant_FullMethodName  = "/merchant.MerchantService/CreateMerchant"
-	MerchantService_GetAllMerchant_FullMethodName  = "/merchant.MerchantService/GetAllMerchant"
-	MerchantService_GetByIdMerchant_FullMethodName = "/merchant.MerchantService/GetByIdMerchant"
-	MerchantService_UpdateMerchant_FullMethodName  = "/merchant.MerchantService/UpdateMerchant"
-	MerchantService_DeleteMerchant_FullMethodName  = "/merchant.MerchantService/DeleteMerchant"
+	MerchantService_CreateMerchant_FullMethodName      = "/merchant.MerchantService/CreateMerchant"
+	MerchantService_GetAllMerchant_FullMethodName      = "/merchant.MerchantService/GetAllMerchant"
+	MerchantService_GetByIdMerchant_FullMethodName     = "/merchant.MerchantService/GetByIdMerchant"
+	MerchantService_UpdateMerchant_FullMethodName      = "/merchant.MerchantService/UpdateMerchant"
+	MerchantService_DeleteMerchant_FullMethodName      = "/merchant.MerchantService/DeleteMerchant"
+	MerchantService_GetMerchantByUserId_FullMethodName = "/merchant.MerchantService/GetMerchantByUserId"
 )
 
 // MerchantServiceClient is the client API for MerchantService service.
@@ -31,10 +32,11 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MerchantServiceClient interface {
 	CreateMerchant(ctx context.Context, in *CreateMerchantRequest, opts ...grpc.CallOption) (*MerchantResponse, error)
-	GetAllMerchant(ctx context.Context, in *EmptyMerchant, opts ...grpc.CallOption) (*MerchantListResponse, error)
+	GetAllMerchant(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MerchantListResponse, error)
 	GetByIdMerchant(ctx context.Context, in *GetByIdMerchantRequest, opts ...grpc.CallOption) (*MerchantResponse, error)
 	UpdateMerchant(ctx context.Context, in *UpdateMerchantRequest, opts ...grpc.CallOption) (*MerchantResponse, error)
 	DeleteMerchant(ctx context.Context, in *DeleteMerchantRequest, opts ...grpc.CallOption) (*DeleteMerchantResponse, error)
+	GetMerchantByUserId(ctx context.Context, in *GetMerchantByUserIdRequest, opts ...grpc.CallOption) (*GetMerchantByUserIdResponse, error)
 }
 
 type merchantServiceClient struct {
@@ -55,7 +57,7 @@ func (c *merchantServiceClient) CreateMerchant(ctx context.Context, in *CreateMe
 	return out, nil
 }
 
-func (c *merchantServiceClient) GetAllMerchant(ctx context.Context, in *EmptyMerchant, opts ...grpc.CallOption) (*MerchantListResponse, error) {
+func (c *merchantServiceClient) GetAllMerchant(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*MerchantListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(MerchantListResponse)
 	err := c.cc.Invoke(ctx, MerchantService_GetAllMerchant_FullMethodName, in, out, cOpts...)
@@ -95,15 +97,26 @@ func (c *merchantServiceClient) DeleteMerchant(ctx context.Context, in *DeleteMe
 	return out, nil
 }
 
+func (c *merchantServiceClient) GetMerchantByUserId(ctx context.Context, in *GetMerchantByUserIdRequest, opts ...grpc.CallOption) (*GetMerchantByUserIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMerchantByUserIdResponse)
+	err := c.cc.Invoke(ctx, MerchantService_GetMerchantByUserId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MerchantServiceServer is the server API for MerchantService service.
 // All implementations must embed UnimplementedMerchantServiceServer
 // for forward compatibility.
 type MerchantServiceServer interface {
 	CreateMerchant(context.Context, *CreateMerchantRequest) (*MerchantResponse, error)
-	GetAllMerchant(context.Context, *EmptyMerchant) (*MerchantListResponse, error)
+	GetAllMerchant(context.Context, *Empty) (*MerchantListResponse, error)
 	GetByIdMerchant(context.Context, *GetByIdMerchantRequest) (*MerchantResponse, error)
 	UpdateMerchant(context.Context, *UpdateMerchantRequest) (*MerchantResponse, error)
 	DeleteMerchant(context.Context, *DeleteMerchantRequest) (*DeleteMerchantResponse, error)
+	GetMerchantByUserId(context.Context, *GetMerchantByUserIdRequest) (*GetMerchantByUserIdResponse, error)
 	mustEmbedUnimplementedMerchantServiceServer()
 }
 
@@ -117,7 +130,7 @@ type UnimplementedMerchantServiceServer struct{}
 func (UnimplementedMerchantServiceServer) CreateMerchant(context.Context, *CreateMerchantRequest) (*MerchantResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMerchant not implemented")
 }
-func (UnimplementedMerchantServiceServer) GetAllMerchant(context.Context, *EmptyMerchant) (*MerchantListResponse, error) {
+func (UnimplementedMerchantServiceServer) GetAllMerchant(context.Context, *Empty) (*MerchantListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllMerchant not implemented")
 }
 func (UnimplementedMerchantServiceServer) GetByIdMerchant(context.Context, *GetByIdMerchantRequest) (*MerchantResponse, error) {
@@ -128,6 +141,9 @@ func (UnimplementedMerchantServiceServer) UpdateMerchant(context.Context, *Updat
 }
 func (UnimplementedMerchantServiceServer) DeleteMerchant(context.Context, *DeleteMerchantRequest) (*DeleteMerchantResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMerchant not implemented")
+}
+func (UnimplementedMerchantServiceServer) GetMerchantByUserId(context.Context, *GetMerchantByUserIdRequest) (*GetMerchantByUserIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMerchantByUserId not implemented")
 }
 func (UnimplementedMerchantServiceServer) mustEmbedUnimplementedMerchantServiceServer() {}
 func (UnimplementedMerchantServiceServer) testEmbeddedByValue()                         {}
@@ -169,7 +185,7 @@ func _MerchantService_CreateMerchant_Handler(srv interface{}, ctx context.Contex
 }
 
 func _MerchantService_GetAllMerchant_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EmptyMerchant)
+	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -181,7 +197,7 @@ func _MerchantService_GetAllMerchant_Handler(srv interface{}, ctx context.Contex
 		FullMethod: MerchantService_GetAllMerchant_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MerchantServiceServer).GetAllMerchant(ctx, req.(*EmptyMerchant))
+		return srv.(MerchantServiceServer).GetAllMerchant(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -240,6 +256,24 @@ func _MerchantService_DeleteMerchant_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MerchantService_GetMerchantByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMerchantByUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MerchantServiceServer).GetMerchantByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MerchantService_GetMerchantByUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MerchantServiceServer).GetMerchantByUserId(ctx, req.(*GetMerchantByUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MerchantService_ServiceDesc is the grpc.ServiceDesc for MerchantService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var MerchantService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteMerchant",
 			Handler:    _MerchantService_DeleteMerchant_Handler,
+		},
+		{
+			MethodName: "GetMerchantByUserId",
+			Handler:    _MerchantService_GetMerchantByUserId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
