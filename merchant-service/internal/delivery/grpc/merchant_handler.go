@@ -151,3 +151,29 @@ func (h *MerchantHandler) DeleteMerchant(ctx context.Context, req *pb.DeleteMerc
 		Message: "Merchant deleted successfully",
 	}, nil
 }
+
+func (h *MerchantHandler) GetMerchantByUserId(ctx context.Context, req *pb.GetMerchantByUserIdRequest) (*pb.GetMerchantByUserIdResponse, error) {
+
+	merchant, err := h.App.GetMerchantByUserId(ctx, req.GetUserId())
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "failed to get merchant by user id: %v", err)
+	}
+	if merchant == nil {
+		return nil, status.Errorf(codes.NotFound, "merchant not found for user id: %s", req.GetUserId())
+	}
+	return &pb.GetMerchantByUserIdResponse{
+		Merchant: &pb.Merchant{
+			Id:           merchant.ID,
+			UserId:       merchant.UserID,
+			NameMerchant: merchant.NameMerchant,
+			Alamat:       merchant.Alamat,
+			Lat:          merchant.Lat,
+			Long:         merchant.Long,
+			OpenHour:     merchant.OpenHour,
+			CloseHour:    merchant.CloseHour,
+			Status:       merchant.Status,
+			CreatedAt:    timestamppb.New(merchant.CreatedAt),
+			UpdatedAt:    timestamppb.New(merchant.UpdatedAt),
+		},
+	}, nil
+}

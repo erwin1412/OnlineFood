@@ -12,14 +12,16 @@ type Producer interface {
 }
 
 type FoodApp struct {
-	FoodRepo domain.FoodRepository
-	Producer Producer // ✅ interface, tidak terikat struct
+	FoodRepo       domain.FoodRepository
+	Producer       Producer              // ✅ interface, tidak terikat struct
+	MerchantClient domain.MerchantClient // Add MerchantClient
 }
 
-func NewFoodApp(repo domain.FoodRepository, producer Producer) *FoodApp {
+func NewFoodApp(repo domain.FoodRepository, producer Producer, merchantClient domain.MerchantClient) *FoodApp {
 	return &FoodApp{
-		FoodRepo: repo,
-		Producer: producer,
+		FoodRepo:       repo,
+		Producer:       producer,
+		MerchantClient: merchantClient,
 	}
 }
 
@@ -30,10 +32,19 @@ func (a *FoodApp) GetById(ctx context.Context, id string) (*domain.Food, error) 
 	return a.FoodRepo.GetById(ctx, id)
 }
 
-func (a *FoodApp) Create(ctx context.Context, food *domain.Food) (*domain.Food, error) {
+func (a *FoodApp) Create(ctx context.Context, food *domain.Food, userID string) (*domain.Food, error) {
 	if food.Name == "" || food.Price <= 0 {
 		return nil, ErrValidation
 	}
+
+	merchant, err := a.MerchantClient.GetMerchantByUserId(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	if merchant == nil {
+		return nil, domain.ErrMerchantNotFound
+	}
+
 	food.CreatedAt = time.Now()
 	food.UpdatedAt = time.Now()
 

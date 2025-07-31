@@ -18,6 +18,11 @@ type mockMerchantRepo struct {
 	DeleteFn  func(ctx context.Context, id string) error
 }
 
+// Mock implementation of GetMerchantByUserId
+func (m *mockMerchantRepo) GetMerchantByUserId(ctx context.Context, userId string) (*domain.Merchant, error) {
+	return nil, nil
+}
+
 func (m *mockMerchantRepo) GetById(ctx context.Context, id string) (*domain.Merchant, error) {
 	return m.GetByIdFn(ctx, id)
 }

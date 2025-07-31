@@ -45,3 +45,10 @@ func (a *MerchantApp) Delete(ctx context.Context, id string) error {
 	}
 	return a.MerchantRepo.Delete(ctx, id)
 }
+
+func (a *MerchantApp) GetMerchantByUserId(ctx context.Context, userId string) (*domain.Merchant, error) {
+	if userId == "" {
+		return nil, ErrValidation
+	}
+	return a.MerchantRepo.GetMerchantByUserId(ctx, userId)
+}

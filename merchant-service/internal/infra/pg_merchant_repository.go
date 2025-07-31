@@ -57,7 +57,17 @@ func (r *PgMerchantRepository) Create(ctx context.Context, merchant *domain.Merc
 	if id == "" {
 		return nil, errors.New("failed to generate UUID")
 	}
-	_, err := r.db.ExecContext(ctx, `
+
+	// if user has a merchant, return error
+	existingMerchant, err := r.GetMerchantByUserId(ctx, merchant.UserID)
+	if err != nil {
+		return nil, err
+	}
+	if existingMerchant != nil {
+		return nil, errors.New("user already has a merchant")
+	}
+
+	_, err = r.db.ExecContext(ctx, `
 		INSERT INTO merchants
 		(id, user_id, name_merchant, alamat ,lat, long, open_hour, close_hour,status, created_at, updated_at)
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10 , $11)
@@ -157,4 +167,24 @@ func (r *PgMerchantRepository) Delete(ctx context.Context, id string) error {
 	}
 
 	return nil
+}
+
+func (r *PgMerchantRepository) GetMerchantByUserId(ctx context.Context, userId string) (*domain.Merchant, error) {
+	var merchant domain.Merchant
+	err := r.db.QueryRowContext(ctx, `
+		SELECT id, user_id, name_merchant, alamat, lat, long, open_hour, close_hour, status, created_at, updated_at
+		FROM merchants
+		WHERE user_id = $1 LIMIT 1
+	`, userId).Scan(
+		&merchant.ID, &merchant.UserID, &merchant.NameMerchant, &merchant.Alamat,
+		&merchant.Lat, &merchant.Long, &merchant.OpenHour, &merchant.CloseHour,
+		&merchant.Status, &merchant.CreatedAt, &merchant.UpdatedAt,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil // No merchant found for this user
+		}
+		return nil, err
+	}
+	return &merchant, nil
 }

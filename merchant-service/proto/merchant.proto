@@ -64,10 +64,19 @@ message GetByIdMerchantRequest {
 
 message Empty {}
 
+message GetMerchantByUserIdRequest {
+    string user_id = 1;
+}
+
+message GetMerchantByUserIdResponse {
+    Merchant merchant = 1;
+}
+
 service MerchantService {
   rpc CreateMerchant(CreateMerchantRequest) returns (MerchantResponse);
   rpc GetAllMerchant(Empty) returns (MerchantListResponse); // ✅ BENAR
   rpc GetByIdMerchant(GetByIdMerchantRequest) returns (MerchantResponse);
   rpc UpdateMerchant(UpdateMerchantRequest) returns (MerchantResponse);
   rpc DeleteMerchant(DeleteMerchantRequest) returns (DeleteMerchantResponse);
+    rpc GetMerchantByUserId(GetMerchantByUserIdRequest) returns (GetMerchantByUserIdResponse);
 }
