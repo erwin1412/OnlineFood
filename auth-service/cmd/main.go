@@ -38,7 +38,14 @@ func main() {
 	jwtManager := jwt.NewManager(jwtSecret)
 	passwordHasher := hasher.NewBcrypt()
 
-	producer := infra.NewKafkaProducer("localhost:9092", "user-registered")
+	// producer := infra.NewKafkaProducer("localhost:9092", "user-registered")
+
+	kafkaBroker := os.Getenv("KAFKA_BROKER")
+	if kafkaBroker == "" {
+		log.Println("⚠️  KAFKA_BROKER not set, using default localhost:9092")
+		kafkaBroker = "localhost:9092"
+	}
+	producer := infra.NewKafkaProducer(kafkaBroker, "user-registered")
 
 	authApp := app.NewAuthApp(userRepo, passwordHasher, jwtManager, producer)
 

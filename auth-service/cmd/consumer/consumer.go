@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/segmentio/kafka-go"
@@ -19,9 +20,14 @@ func main() {
 	// PENTING: Init SMTP config dulu
 	config.InitSMTP()
 	// log.Println("SMTP CONFIG:", config.SMTP)
+	kafkaBroker := os.Getenv("KAFKA_BROKER")
+	if kafkaBroker == "" {
+		log.Println("⚠️  KAFKA_BROKER not set, using default localhost:9092")
+		kafkaBroker = "localhost:9092"
+	}
 
 	r := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{"localhost:9092"},
+		Brokers: []string{kafkaBroker},
 		Topic:   "user-registered",
 		GroupID: "auth-consumer-group",
 	})
