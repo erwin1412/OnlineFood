@@ -1,23 +1,23 @@
 # Gunakan official Go image sebagai base image
 FROM golang:1.24-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy go.mod dan go.sum
+# Copy go.mod dan go.sum lebih dulu
 COPY go.mod go.sum ./
 
-# Download dependencies
+# Download dependency dasar
+RUN go mod tidy
 RUN go mod download
 
-# Copy semua file project
+# Copy semua source code
 COPY . .
 
-# Build binary
+# Penting! Jalankan tidy lagi, untuk dependencies yg ketemu setelah copy source
+RUN go mod tidy
+
+# Build
 RUN go build -o food-service ./cmd/main.go
 
-# Expose gRPC port
 EXPOSE 50053
-
-# Jalankan binary
 CMD ["./food-service"]

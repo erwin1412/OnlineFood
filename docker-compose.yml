@@ -1,5 +1,6 @@
 version: '3.8'
 
+
 services:
   auth-service:
     build:
@@ -57,9 +58,10 @@ services:
     environment:
       - DATABASE_URI=postgres://postgres:1234@postgres:5432/merchant_service?sslmode=disable
       - GRPC_PORT=50054
+      - GOOGLE_API_KEY=AIzaSyADuYB4pe4PPKai6ULrUMVDjUFWxl22afc
     depends_on:
       - postgres
-
+      
   transaction-service:
     build:
       context: ./transaction-service
@@ -71,28 +73,35 @@ services:
       - DATABASE_URI=postgres://postgres:1234@postgres:5432/transaction_service?sslmode=disable
       - GRPC_PORT=50055
       - GOOGLE_API_KEY=AIzaSyADuYB4pe4PPKai6ULrUMVDjUFWxl22afc
+      - MIDTRANS_SERVER_KEY=SB-Mid-server-FzH5xlkx-uwmU__xroDdRPUG
+      - MIDTRANS_CLIENT_KEY=SB-Mid-client-mMqK1sLFvF
+      - MIDTRANS_ENV=sandbox
+      - COURIER_SERVICE_ADDR=courier-service:50052
+      - MERCHANT_SERVICE_ADDR=merchant-service:50054
     depends_on:
       - postgres
 
-  # gateway-service:
-  #   build:
-  #     context: ./gateway-service
-  #   container_name: gateway-service
-  #   ports:
-  #     - "8081:8081"
-  #   environment:
-  #     - AUTH_GRPC_HOST=auth-service:50051
-  #     - COURIER_GRPC_HOST=courier-service:50052
-  #     - FOOD_GRPC_HOST=food-service:50053
-  #     - MERCHANT_GRPC_HOST=merchant-service:50054
-  #     - TRANSACTION_GRPC_HOST=transaction-service:50055
-  #     - GATEWAY_PORT=8081
-  #   depends_on:
-  #     - auth-service
-  #     - courier-service
-  #     - food-service
-  #     - merchant-service
-  #     - transaction-service
+  gateway-service:
+    build:
+      context: ./gateway-service
+    container_name: gateway-service
+    ports:
+      - "8032:8032"
+    image: asia-southeast2-docker.pkg.dev/exalted-arcanum-465715-h7/onlinefood-repo/gateway-service:latest
+    environment:
+      - AUTH_SERVICE_URL=auth-service:50051
+      - COURIER_SERVICE_URL=courier-service:50052
+      - FOOD_SERVICE_URL=food-service:50053
+      - MERCHANT_SERVICE_URL=merchant-service:50054
+      - TRANSACTION_SERVICE_URL=transaction-service:50055
+      - JWT_SECRET=your_jwt_secret_key
+      - PORT=8032
+    depends_on:
+      - auth-service
+      - courier-service
+      - food-service
+      - merchant-service
+      - transaction-service
 
   postgres:
     image: postgres:15

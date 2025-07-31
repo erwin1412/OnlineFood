@@ -1,12 +1,12 @@
 package grpc
 
 import (
-	"auth-service/pkg/utils"
 	"context"
 	"fmt"
 	"merchant-service/internal/app"
 	pb "merchant-service/internal/delivery/grpc/pb"
 	"merchant-service/internal/domain"
+	"merchant-service/pkg/utils"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
