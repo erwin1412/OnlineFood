@@ -1,3 +1,4 @@
+
 # Gunakan official Go image sebagai base image
 FROM golang:1.24-alpine AS builder
 
