@@ -48,6 +48,7 @@ services:
       - DATABASE_URI=postgres://postgres:1234@postgres:5432/food_service?sslmode=disable
       - GRPC_PORT=50053
       - KAFKA_BROKER=kafka:9092
+      - MERCHANT_SERVICE_ADDR=merchant-service:50054
     depends_on:
       - postgres
       - kafka
